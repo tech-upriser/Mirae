@@ -74,7 +74,7 @@ const extractSkillsWithAI = async (text, isResume = false) => {
   const systemPrompt = isResume 
     ? `You are an expert resume parser.
 
-Extract ONLY technical skills from the resume.
+Extract ONLY technical skills from the resume (Programming Languages, Frameworks, Libraries, Databases, Cloud Providers, Tools).
 
 Return ONLY valid JSON.
 
@@ -92,21 +92,24 @@ Rules:
 - No markdown.
 - No comments.
 - No duplicate skills.
-- Normalize names.
-- Ignore soft skills.
-- Ignore education.
-- Ignore projects.
-- Ignore companies.
-- Ignore achievements.
-- Ignore responsibilities.`
-    : `Extract ONLY technical skills from this job description.
+- Normalize names (e.g. "ReactJS" -> "React", "Node" -> "Node.js").
+- Ignore soft skills (e.g. leadership, communication).
+- Ignore education, projects, companies, and achievements.`
+    : `You are an expert technical recruiter.
+    
+Extract ONLY technical skills required from this job description (Programming Languages, Frameworks, Libraries, Databases, Cloud Platforms, Developer Tools).
 
 Return ONLY JSON.
 
 Format:
 {
   "skills": []
-}`;
+}
+
+Rules:
+- No soft skills.
+- Normalize names (e.g., "JS" -> "JavaScript").
+- Extract explicit technical requirements only.`;
 
   const userMessage = isResume 
     ? `Resume Text:\n${text.substring(0, 6000)}`
@@ -165,9 +168,13 @@ const computeSkillGap = (resumeSkills = [], jobSkills = []) => {
   );
 
   let matchPercentage = null;
-  const minLength = Math.min(normUser.length, normJob.length);
-  if (minLength > 0) {
-    matchPercentage = Math.round((matchedSkills.length / minLength) * 100);
+  const totalRequired = normJob.length;
+  if (totalRequired > 0) {
+    // Score is (matched / total required by job) * 100
+    matchPercentage = Math.round((matchedSkills.length / totalRequired) * 100);
+  } else if (normUser.length > 0) {
+    // Edge case: if job has 0 skills but user has skills, we can't mathematically calculate a score
+    matchPercentage = null;
   }
 
   return {
