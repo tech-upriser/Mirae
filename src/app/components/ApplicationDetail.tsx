@@ -2,12 +2,18 @@ import { X, MapPin, Calendar, Clock, Search, BarChart3 } from 'lucide-react';
 import { motion } from 'motion/react';
 import { useEffect, useState } from 'react';
 import { updateJobContacts, updateJobNotes } from '../services/dashboardService';
+import { useUser } from '../contexts/UserContext';
 
 interface Application {
   id: string;
   company: string;
   role: string;
   matchScore: number | null;
+  matchPercentage?: number | null;
+  matchedSkills?: string[];
+  missingSkills?: string[];
+  jobSkills?: string[];
+  resumeSkills?: string[];
   appliedDate: string;
   stage: string;
   companyAcronym: string;
@@ -56,9 +62,15 @@ export function ApplicationDetail({ application, onClose, onStatusChange, onCont
 
   const tabs = ['Overview', 'Timeline & Prep', 'Networking', 'Notes'];
 
-  const { skills, description = 'No description available.', location, postedDate, deadline, salaryRange, matchScore } = application;
-  const { all = [], matched = [], missing = {} as any } = skills || {};
-  const missingArray = Array.isArray(missing) ? missing : [];
+  const { user } = useUser();
+
+
+
+  const { skills, description = 'No description available.', location, postedDate, deadline, salaryRange, matchScore, matchPercentage, matchedSkills, missingSkills } = application;
+  const finalMatchScore = matchPercentage !== undefined && matchPercentage !== null ? matchPercentage : (matchScore ?? null);
+  const finalMatched = Array.isArray(matchedSkills) ? matchedSkills : (skills?.matched || []);
+  const finalMissing = Array.isArray(missingSkills) ? missingSkills : (Array.isArray(skills?.missing) ? skills.missing : []);
+  const finalAll = skills?.all || [];
   const normalizedPostedDate = postedDate && !/not specified|unknown/i.test(postedDate) ? postedDate : '';
   const displayDeadline = deadline
     ? new Date(deadline).toString() !== 'Invalid Date'
@@ -156,8 +168,8 @@ export function ApplicationDetail({ application, onClose, onStatusChange, onCont
 
 
 
-  const hasSkillAnalysis = all.length > 0 || matched.length > 0 || missingArray.length > 0;
-  const hasResumeBackedScore = matchScore !== null && matchScore !== undefined;
+  const hasSkillAnalysis = finalAll.length > 0 || finalMatched.length > 0 || finalMissing.length > 0;
+  const hasUserResumeSkills = Array.isArray(user?.resumeSkills) && user.resumeSkills.length > 0;
 
   return (
     <>
@@ -288,15 +300,19 @@ export function ApplicationDetail({ application, onClose, onStatusChange, onCont
                 <div className="flex-1 mr-8">
                   <h3 className="text-lg font-bold text-[#000000] mb-3">Skill Gap Analysis</h3>
 
-                  {hasSkillAnalysis ? (
+                  {!hasUserResumeSkills ? (
+                    <div className="rounded-lg border border-[#E5E5E5] bg-gray-50 p-4 text-sm text-gray-600">
+                      <p className="font-semibold text-red-600 mb-1">Please upload your resume to enable skill gap analysis.</p>
+                    </div>
+                  ) : (
                     <>
                       <div className="mb-4">
                         <p className="text-sm font-semibold text-gray-600 mb-2">Matched Skills</p>
                         <div className="flex flex-wrap gap-2">
-                          {matched.length > 0 ? (
-                            matched.map((skill, i) => (
+                          {finalMatched.length > 0 ? (
+                            finalMatched.map((skill, i) => (
                               <span key={i} className="px-3 py-1.5 bg-[#14213D] text-white rounded-full text-xs font-medium">
-                                {skill}
+                                ✓ {skill}
                               </span>
                             ))
                           ) : (
@@ -308,8 +324,8 @@ export function ApplicationDetail({ application, onClose, onStatusChange, onCont
                       <div className="mb-4">
                         <p className="text-sm font-semibold text-gray-600 mb-2">Missing Skills</p>
                         <div className="flex flex-wrap gap-2">
-                          {missingArray.length > 0 ? (
-                            missingArray.map((skill: string, i: number) => (
+                          {finalMissing.length > 0 ? (
+                            finalMissing.map((skill: string, i: number) => (
                               <span key={i} className="px-3 py-1.5 bg-red-100 text-red-700 rounded-full text-xs font-medium border border-red-200">
                                 {skill}
                               </span>
@@ -323,8 +339,8 @@ export function ApplicationDetail({ application, onClose, onStatusChange, onCont
                       <div>
                         <p className="text-sm font-semibold text-gray-600 mb-2">All Required</p>
                         <div className="flex flex-wrap gap-2">
-                          {all.length > 0 ? (
-                            all.map((skill, i) => (
+                          {finalAll.length > 0 ? (
+                            finalAll.map((skill, i) => (
                               <span key={i} className="px-2 py-1 bg-gray-100 text-gray-600 rounded text-xs">
                                 {skill}
                               </span>
@@ -335,15 +351,6 @@ export function ApplicationDetail({ application, onClose, onStatusChange, onCont
                         </div>
                       </div>
                     </>
-                  ) : (
-                    <div className="rounded-lg border border-[#E5E5E5] bg-gray-50 p-4 text-sm text-gray-600">
-                      <p className="font-semibold text-[#14213D] mb-1">Detailed skill gap analysis is not available for this role yet.</p>
-                      <p>
-                        {hasResumeBackedScore
-                          ? 'Mirae calculated a partial match score, but this job did not return a structured skills breakdown.'
-                          : 'Upload your resume and re-save this job to generate matched and missing skills.'}
-                      </p>
-                    </div>
                   )}
                 </div>
 
@@ -353,13 +360,13 @@ export function ApplicationDetail({ application, onClose, onStatusChange, onCont
                     <circle
                       cx="64" cy="64" r="56" stroke="#FCA311" strokeWidth="12" fill="none"
                       strokeDasharray={`${2 * Math.PI * 56}`}
-                      strokeDashoffset={`${2 * Math.PI * 56 * (1 - ((matchScore ?? 0) / 100))}`}
+                      strokeDashoffset={`${2 * Math.PI * 56 * (1 - ((finalMatchScore ?? 0) / 100))}`}
                       className="transition-all duration-1000 ease-out"
                     />
                   </svg>
-                  <div className="absolute inset-0 flex flex-col items-center justify-center">
-                    <span className="text-3xl font-bold text-[#FCA311]">{matchScore !== null ? `${matchScore}%` : 'N/A'}</span>
-                    <span className="text-[10px] text-gray-500 font-bold uppercase tracking-wider">Match</span>
+                  <div className="absolute inset-0 flex flex-col items-center justify-center p-2 text-center">
+                    <span className="text-sm font-bold text-gray-500 uppercase tracking-wider mb-0.5">Match</span>
+                    <span className="text-xl font-extrabold text-[#FCA311]">{finalMatchScore !== null ? `${finalMatchScore}%` : 'N/A'}</span>
                   </div>
                 </div>
               </div>

@@ -5,6 +5,7 @@ const User = require('../models/User');
 const Job = require('../models/Job');
 const bcrypt = require('bcrypt');
 const { resumeUploadDir } = require('../middlewares/uploadMiddleware');
+const { extractSkillsWithAI } = require('./trackerController');
 
 const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
@@ -152,9 +153,11 @@ exports.updateResume = async (req, res) => {
       return res.status(400).json({ error: "No resume text provided" });
     }
 
+    const resumeSkills = await extractSkillsWithAI(resumeText, true);
+
     const updatedUser = await User.findByIdAndUpdate(
       req.user.id,
-      { resumeText },
+      { resumeText, resumeSkills },
       { new: true } // Returns the updated document
     ).select('-password');
 
@@ -190,10 +193,13 @@ exports.uploadResume = async (req, res) => {
 
     const previousFileName = existingUser.resumeFileName;
 
+    const resumeSkills = await extractSkillsWithAI(resumeText, true);
+
     const updatedUser = await User.findByIdAndUpdate(
       req.user.id,
       {
         resumeText,
+        resumeSkills,
         resumeFileName: req.file.filename,
         resumeUploadedAt: new Date(),
       },

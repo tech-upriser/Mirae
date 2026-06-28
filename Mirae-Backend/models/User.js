@@ -23,6 +23,10 @@ const userSchema = new mongoose.Schema({
     type: String,
     default: "",
   },
+  resumeSkills: {
+    type: [String],
+    default: [],
+  },
   // 📁 Stores metadata about the uploaded resume file
   resumeFileName: {
     type: String,

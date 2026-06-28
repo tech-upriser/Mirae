@@ -28,6 +28,7 @@ const jobSchema = new mongoose.Schema({
     matched: { type: [String], default: [] },
     missing: { type: [String], default: [] }
   },
+  jobSkills: { type: [String], default: [] },
   postedDate: { type: String, default: '' },
 
   // 4. Details (Can be scraped, or added manually later via your popup form)
@@ -57,6 +58,19 @@ const jobSchema = new mongoose.Schema({
   // This automatically adds 'createdAt' and 'updatedAt' timestamps to every document!
   timestamps: true 
 });
+
+jobSchema.virtual('matchPercentage').get(function() {
+  return this.matchScore;
+});
+jobSchema.virtual('matchedSkills').get(function() {
+  return this.skills ? this.skills.matched : [];
+});
+jobSchema.virtual('missingSkills').get(function() {
+  return this.skills ? this.skills.missing : [];
+});
+
+jobSchema.set('toJSON', { virtuals: true });
+jobSchema.set('toObject', { virtuals: true });
 
 jobSchema.index({ userId: 1, status: 1, matchScore: -1 });
 jobSchema.index({ title: 'text', company: 'text' });

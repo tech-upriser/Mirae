@@ -15,6 +15,10 @@ export interface Job {
 
   // 3. Smart Features
   matchScore: number | null;
+  matchPercentage?: number | null;
+  matchedSkills?: string[];
+  missingSkills?: string[];
+  jobSkills?: string[];
   skills: {
     all: string[];
     matched: string[];
