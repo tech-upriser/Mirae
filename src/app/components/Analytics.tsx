@@ -64,6 +64,7 @@ type CompanyBreakdownItem = {
 };
 
 export function Analytics() {
+  const [activeCategory, setActiveCategory] = useState<'Jobs' | 'Hackathons' | 'Others'>('Jobs');
   const [overview, setOverview] = useState<OverviewData | null>(null);
   const [skillGap, setSkillGap] = useState<SkillGapItem[]>([]);
   const [matchInsights, setMatchInsights] = useState<MatchInsights | null>(null);
@@ -78,13 +79,13 @@ export function Analytics() {
     const loadAnalytics = async () => {
       try {
         const [overviewData, trendsData, skillGapData, matchInsightsData, funnelRes, responseTimesRes, companyRes] = await Promise.all([
-          getAnalyticsOverview(),
-          getTrends(),
-          getSkillGapAnalysis(),
-          getMatchInsights(),
-          getFunnel(),
-          getResponseTimes(),
-          getCompanyBreakdown()
+          getAnalyticsOverview(activeCategory),
+          getTrends(activeCategory),
+          getSkillGapAnalysis(activeCategory),
+          getMatchInsights(activeCategory),
+          getFunnel(activeCategory),
+          getResponseTimes(activeCategory),
+          getCompanyBreakdown(activeCategory)
         ]);
 
         setOverview(overviewData);
@@ -100,7 +101,7 @@ export function Analytics() {
     };
 
     loadAnalytics();
-  }, []);
+  }, [activeCategory]);
 
   const donutData = useMemo(() => {
     const offers = overview?.offers ?? 0;
@@ -200,19 +201,19 @@ export function Analytics() {
 
     return {
       saved:
-        saved > 0 ? `${formatPercent(saved)} of pipeline saved` : 'No saved jobs yet',
+        saved > 0 ? `${formatPercent(saved)} of pipeline saved` : 'No saved records yet',
       applied:
         interviewing > 0
           ? `${interviewing} in interview stage`
           : applied > 0
-            ? 'Awaiting responses'
-            : 'No active applications',
+            ? (activeCategory === 'Jobs' ? 'Awaiting responses' : 'Registered / Applied')
+            : (activeCategory === 'Jobs' ? 'No active applications' : 'No active registrations'),
       rejected:
         rejected > 0 ? `${formatPercent(rejected)} closed out` : 'No rejections yet',
       offers:
         offers > 0 ? `${formatPercent(offers)} reached offer` : 'No offers yet',
     };
-  }, [overview]);
+  }, [overview, activeCategory]);
 
 
   const rejectedJobs = matchInsights?.rejectedJobs || [];
@@ -231,6 +232,27 @@ export function Analytics() {
           <button className="p-2 hover:bg-[#E5E5E5] rounded transition-colors">
             <MoreVertical className="w-5 h-5 text-[#14213D]" />
           </button>
+        </div>
+        <div className="mt-4 flex gap-6">
+          {(['Jobs', 'Hackathons', 'Others'] as const).map((cat) => (
+            <button
+              key={cat}
+              onClick={() => setActiveCategory(cat)}
+              className={`pb-3 text-sm font-bold transition-all relative ${
+                activeCategory === cat
+                  ? 'text-[#14213D]'
+                  : 'text-[#6b7280] hover:text-[#14213D]'
+              }`}
+            >
+              {cat}
+              {activeCategory === cat && (
+                <motion.div
+                  layoutId="activeTabIndicator"
+                  className="absolute bottom-0 left-0 right-0 h-0.5 bg-[#14213D]"
+                />
+              )}
+            </button>
+          ))}
         </div>
       </div>
 
@@ -313,6 +335,7 @@ export function Analytics() {
           </motion.div>
         </div>
 
+        {activeCategory === 'Jobs' && (
         <div className="grid grid-cols-2 gap-6">
           <div className="space-y-6">
             <motion.div
@@ -420,6 +443,7 @@ export function Analytics() {
             </motion.div>
           </div>
         </div>
+        )}
 
         <div className="mt-6 grid grid-cols-2 gap-6">
           <motion.div
@@ -523,6 +547,7 @@ export function Analytics() {
           </motion.div>
         </div>
 
+        {activeCategory === 'Jobs' && (
         <motion.div
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
@@ -564,8 +589,10 @@ export function Analytics() {
             </div>
           </div>
         </motion.div>
+        )}
 
 
+        {activeCategory === 'Jobs' && (
         <div className="mt-6 grid grid-cols-2 gap-6">
           <motion.div
             initial={{ opacity: 0, y: 10 }}
@@ -648,8 +675,10 @@ export function Analytics() {
             </div>
           </motion.div>
         </div>
+        )}
 
         {/* Career OS New Analytics */}
+        {activeCategory === 'Jobs' && (
         <div className="mt-6 grid grid-cols-3 gap-6">
           <motion.div
             initial={{ opacity: 0, y: 10 }}
@@ -735,6 +764,7 @@ export function Analytics() {
             </div>
           </motion.div>
         </div>
+        )}
       </div>
     </div>
   );

@@ -4,7 +4,8 @@ const mongoose = require('mongoose');
 const getAnalyticsOverview = async (req, res) => {
   try {
     const userId = req.user.id;
-    const jobs = await Job.find({ userId, category: 'Jobs' }).select(
+    const category = req.query.category || 'Jobs';
+    const jobs = await Job.find({ userId, category }).select(
       'status matchScore skills matchedSkills missingSkills company title createdAt'
     );
 
@@ -56,11 +57,12 @@ const getAnalyticsOverview = async (req, res) => {
 const getTrends = async (req, res) => {
   try {
     const userId = new mongoose.Types.ObjectId(req.user.id);
+    const category = req.query.category || 'Jobs';
     const trends = await Job.aggregate([
       {
         $match: {
           userId,
-          category: 'Jobs',
+          category,
           createdAt: { $ne: null },
         },
       },
@@ -120,8 +122,9 @@ const getTrends = async (req, res) => {
 const getSkillGapAnalysis = async (req, res) => {
   try {
     const userId = new mongoose.Types.ObjectId(req.user.id);
+    const category = req.query.category || 'Jobs';
     const skillGapData = await Job.aggregate([
-      { $match: { userId, category: 'Jobs' } },
+      { $match: { userId, category } },
       { $unwind: '$skills.missing' },
       {
         $match: {
@@ -158,11 +161,12 @@ const getSkillGapAnalysis = async (req, res) => {
 const getMatchInsights = async (req, res) => {
   try {
     const userId = new mongoose.Types.ObjectId(req.user.id);
+    const category = req.query.category || 'Jobs';
     const [result] = await Job.aggregate([
       {
         $match: {
           userId,
-          category: 'Jobs',
+          category,
         },
       },
       {
@@ -227,7 +231,8 @@ const getMatchInsights = async (req, res) => {
 const getFunnel = async (req, res) => {
   try {
     const userId = new mongoose.Types.ObjectId(req.user.id);
-    const jobs = await Job.find({ userId, category: 'Jobs' }).select('status');
+    const category = req.query.category || 'Jobs';
+    const jobs = await Job.find({ userId, category }).select('status');
     
     let saved = 0, applied = 0, interviewing = 0, offers = 0, rejected = 0;
     
@@ -270,7 +275,8 @@ const getFunnel = async (req, res) => {
 const getResponseTimes = async (req, res) => {
   try {
     const userId = new mongoose.Types.ObjectId(req.user.id);
-    const jobs = await Job.find({ userId, category: 'Jobs' }).select('history company');
+    const category = req.query.category || 'Jobs';
+    const jobs = await Job.find({ userId, category }).select('history company');
     
     let totalAppliedToInterviewDays = 0;
     let appliedToInterviewCount = 0;
@@ -303,7 +309,8 @@ const getResponseTimes = async (req, res) => {
 const getCompanyBreakdown = async (req, res) => {
   try {
     const userId = new mongoose.Types.ObjectId(req.user.id);
-    const jobs = await Job.find({ userId, category: 'Jobs' }).select('company status');
+    const category = req.query.category || 'Jobs';
+    const jobs = await Job.find({ userId, category }).select('company status');
     
     const companyStats = {};
     
