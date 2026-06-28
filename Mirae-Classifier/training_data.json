@@ -1,0 +1,961 @@
+{
+    "NON_RELEVANT": [
+        "sender: newsletter@medium.com subject: Your weekly digest snippet: Top stories in tech this week including AI breakthroughs",
+        "sender: digest@substack.com subject: 5 must-read articles snippet: Curated reads on productivity and tech trends",
+        "sender: hello@morningbrew.com subject: Daily Brew snippet: Market recap and business news you need to know today",
+        "sender: updates@techcrunch.com subject: TechCrunch Daily snippet: Latest startup funding rounds and product launches",
+        "sender: noreply@nytimes.com subject: Morning Briefing snippet: Today's top headlines from around the world",
+        "sender: winner@lottery-intl.com subject: You won $5,000,000 snippet: Claim your prize now by sending your bank details",
+        "sender: deals@bestpharmacy.biz subject: 90% off medications snippet: Order now and get free overnight shipping on all pills",
+        "sender: prince@royalmail.ng subject: Urgent business proposal snippet: I need your help transferring $12 million",
+        "sender: admin@security-alert.xyz subject: Your account has been compromised snippet: Click here immediately to verify your identity",
+        "sender: offers@crypto-gains.io subject: 10x your investment snippet: Guaranteed returns on our exclusive crypto fund",
+        "sender: deals@amazon.com subject: Flash sale \u2014 60% off electronics snippet: Limited time offer on headphones, tablets, and more",
+        "sender: promo@nike.com subject: New arrivals + free shipping snippet: Check out our latest running shoes collection",
+        "sender: offers@uber.com subject: $10 off your next ride snippet: Use code SAVE10 on your next Uber trip",
+        "sender: noreply@spotify.com subject: Your 2026 Wrapped is here snippet: See your top songs and listening stats",
+        "sender: marketing@apple.com subject: Introducing the new MacBook snippet: Faster chip, longer battery life, preorder today",
+        "sender: mom@gmail.com subject: Don't forget dinner Sunday snippet: Bring the salad. Love you!",
+        "sender: jake.friend@yahoo.com subject: Weekend trip plans snippet: Let's finalize the Airbnb and pack list",
+        "sender: sarah@outlook.com subject: Happy Birthday! snippet: Hope you have an amazing day, enjoy your special day!",
+        "sender: roommate@gmail.com subject: Rent due reminder snippet: Don't forget to Venmo me your share by Friday",
+        "sender: coach@gym.com subject: Your training schedule snippet: Here's your updated workout plan for next week",
+        "sender: noreply@linkedin.com subject: You appeared in 42 searches snippet: See who viewed your profile this week",
+        "sender: notification@twitter.com subject: New followers snippet: 5 people followed you today",
+        "sender: noreply@instagram.com subject: You have new likes snippet: Your recent post got 150 likes",
+        "sender: noreply@facebook.com subject: Event reminder snippet: Your friend's birthday party is tomorrow",
+        "sender: noreply@reddit.com subject: Trending on r/programming snippet: Top posts from your favorite subreddits",
+        "sender: noreply@fedex.com subject: Your package is on the way snippet: Estimated delivery Thursday tracking number 7891234",
+        "sender: orders@amazon.com subject: Order confirmed snippet: Your order of 3 items will arrive by June 30",
+        "sender: shipping@shopify.com subject: Shipment update snippet: Your package has left the warehouse",
+        "sender: support@doordash.com subject: Your order is being prepared snippet: Estimated delivery in 25 minutes",
+        "sender: noreply@ups.com subject: Delivery scheduled snippet: Your package will be delivered between 2-6 PM tomorrow",
+        "sender: noreply@github.com subject: Security alert snippet: We noticed a new sign-in to your account from Chrome on Windows",
+        "sender: billing@netflix.com subject: Payment received snippet: Your monthly subscription has been renewed",
+        "sender: support@dropbox.com subject: Storage almost full snippet: Upgrade to Dropbox Plus for more space",
+        "sender: team@slack.com subject: Workspace summary snippet: 47 messages in 3 channels you missed today",
+        "sender: notifications@venmo.com subject: Payment completed snippet: You paid Jake $25.00 for dinner",
+        "sender: offers@pizza.com subject: 50% off large pizzas snippet: Use code PIZZA50 at checkout.",
+        "sender: noreply@zoom.us subject: Missed meeting snippet: You missed the scheduled meeting with the marketing team.",
+        "sender: updates@youtube.com subject: New upload from your favorite channel snippet: Check out the latest video on tech reviews.",
+        "sender: news@bbc.co.uk subject: Breaking news today snippet: Global markets rally as tech stocks surge.",
+        "sender: security@bank.com subject: Login alert snippet: A new login was detected on your account.",
+        "sender: admin@university.edu subject: Campus closure snippet: Due to heavy snow, campus is closed today.",
+        "sender: friends@group.com subject: Dinner tonight? snippet: Are we still on for dinner at 7?",
+        "sender: promo@travel.com subject: Flight deals snippet: Fly to Europe for under $300 roundtrip.",
+        "sender: no-reply@delivery.com subject: Your order has arrived snippet: Your groceries have been left at the door.",
+        "sender: social@pinterest.com subject: 10 new pins for you snippet: We think you'll love these interior design ideas.",
+        "sender: offers@pizza.com subject: 50% off large pizzas snippet: Use code PIZZA50 at checkout.",
+        "sender: noreply@zoom.us subject: Missed meeting snippet: You missed the scheduled meeting with the marketing team.",
+        "sender: updates@youtube.com subject: New upload from your favorite channel snippet: Check out the latest video on tech reviews.",
+        "sender: news@bbc.co.uk subject: Breaking news today snippet: Global markets rally as tech stocks surge.",
+        "sender: security@bank.com subject: Login alert snippet: A new login was detected on your account.",
+        "sender: admin@university.edu subject: Campus closure snippet: Due to heavy snow, campus is closed today.",
+        "sender: friends@group.com subject: Dinner tonight? snippet: Are we still on for dinner at 7?",
+        "sender: promo@travel.com subject: Flight deals snippet: Fly to Europe for under $300 roundtrip.",
+        "sender: no-reply@delivery.com subject: Your order has arrived snippet: Your groceries have been left at the door.",
+        "sender: social@pinterest.com subject: 10 new pins for you snippet: We think you'll love these interior design ideas.",
+        "sender: offers@pizza.com subject: 50% off large pizzas snippet: Use code PIZZA50 at checkout.",
+        "sender: noreply@zoom.us subject: Missed meeting snippet: You missed the scheduled meeting with the marketing team.",
+        "sender: updates@youtube.com subject: New upload from your favorite channel snippet: Check out the latest video on tech reviews.",
+        "sender: news@bbc.co.uk subject: Breaking news today snippet: Global markets rally as tech stocks surge.",
+        "sender: security@bank.com subject: Login alert snippet: A new login was detected on your account.",
+        "sender: admin@university.edu subject: Campus closure snippet: Due to heavy snow, campus is closed today.",
+        "sender: friends@group.com subject: Dinner tonight? snippet: Are we still on for dinner at 7?",
+        "sender: promo@travel.com subject: Flight deals snippet: Fly to Europe for under $300 roundtrip.",
+        "sender: no-reply@delivery.com subject: Your order has arrived snippet: Your groceries have been left at the door.",
+        "sender: social@pinterest.com subject: 10 new pins for you snippet: We think you'll love these interior design ideas.",
+        "sender: offers@pizza.com subject: 50% off large pizzas snippet: Use code PIZZA50 at checkout.",
+        "sender: noreply@zoom.us subject: Missed meeting snippet: You missed the scheduled meeting with the marketing team.",
+        "sender: updates@youtube.com subject: New upload from your favorite channel snippet: Check out the latest video on tech reviews.",
+        "sender: news@bbc.co.uk subject: Breaking news today snippet: Global markets rally as tech stocks surge.",
+        "sender: security@bank.com subject: Login alert snippet: A new login was detected on your account.",
+        "sender: admin@university.edu subject: Campus closure snippet: Due to heavy snow, campus is closed today.",
+        "sender: friends@group.com subject: Dinner tonight? snippet: Are we still on for dinner at 7?",
+        "sender: promo@travel.com subject: Flight deals snippet: Fly to Europe for under $300 roundtrip.",
+        "sender: no-reply@delivery.com subject: Your order has arrived snippet: Your groceries have been left at the door.",
+        "sender: social@pinterest.com subject: 10 new pins for you snippet: We think you'll love these interior design ideas.",
+        "sender: offers@pizza.com subject: 50% off large pizzas snippet: Use code PIZZA50 at checkout.",
+        "sender: noreply@zoom.us subject: Missed meeting snippet: You missed the scheduled meeting with the marketing team.",
+        "sender: updates@youtube.com subject: New upload from your favorite channel snippet: Check out the latest video on tech reviews.",
+        "sender: news@bbc.co.uk subject: Breaking news today snippet: Global markets rally as tech stocks surge.",
+        "sender: security@bank.com subject: Login alert snippet: A new login was detected on your account.",
+        "sender: admin@university.edu subject: Campus closure snippet: Due to heavy snow, campus is closed today.",
+        "sender: friends@group.com subject: Dinner tonight? snippet: Are we still on for dinner at 7?",
+        "sender: promo@travel.com subject: Flight deals snippet: Fly to Europe for under $300 roundtrip.",
+        "sender: no-reply@delivery.com subject: Your order has arrived snippet: Your groceries have been left at the door.",
+        "sender: social@pinterest.com subject: 10 new pins for you snippet: We think you'll love these interior design ideas.",
+        "sender: offers@pizza.com subject: 50% off large pizzas snippet: Use code PIZZA50 at checkout.",
+        "sender: noreply@zoom.us subject: Missed meeting snippet: You missed the scheduled meeting with the marketing team.",
+        "sender: updates@youtube.com subject: New upload from your favorite channel snippet: Check out the latest video on tech reviews.",
+        "sender: news@bbc.co.uk subject: Breaking news today snippet: Global markets rally as tech stocks surge.",
+        "sender: security@bank.com subject: Login alert snippet: A new login was detected on your account.",
+        "sender: admin@university.edu subject: Campus closure snippet: Due to heavy snow, campus is closed today.",
+        "sender: friends@group.com subject: Dinner tonight? snippet: Are we still on for dinner at 7?",
+        "sender: promo@travel.com subject: Flight deals snippet: Fly to Europe for under $300 roundtrip.",
+        "sender: no-reply@delivery.com subject: Your order has arrived snippet: Your groceries have been left at the door.",
+        "sender: social@pinterest.com subject: 10 new pins for you snippet: We think you'll love these interior design ideas.",
+        "sender: offers@pizza.com subject: 50% off large pizzas snippet: Use code PIZZA50 at checkout.",
+        "sender: noreply@zoom.us subject: Missed meeting snippet: You missed the scheduled meeting with the marketing team.",
+        "sender: updates@youtube.com subject: New upload from your favorite channel snippet: Check out the latest video on tech reviews.",
+        "sender: news@bbc.co.uk subject: Breaking news today snippet: Global markets rally as tech stocks surge.",
+        "sender: security@bank.com subject: Login alert snippet: A new login was detected on your account.",
+        "sender: admin@university.edu subject: Campus closure snippet: Due to heavy snow, campus is closed today.",
+        "sender: friends@group.com subject: Dinner tonight? snippet: Are we still on for dinner at 7?",
+        "sender: promo@travel.com subject: Flight deals snippet: Fly to Europe for under $300 roundtrip.",
+        "sender: no-reply@delivery.com subject: Your order has arrived snippet: Your groceries have been left at the door.",
+        "sender: social@pinterest.com subject: 10 new pins for you snippet: We think you'll love these interior design ideas.",
+        "sender: offers@pizza.com subject: 50% off large pizzas snippet: Use code PIZZA50 at checkout.",
+        "sender: noreply@zoom.us subject: Missed meeting snippet: You missed the scheduled meeting with the marketing team.",
+        "sender: updates@youtube.com subject: New upload from your favorite channel snippet: Check out the latest video on tech reviews.",
+        "sender: news@bbc.co.uk subject: Breaking news today snippet: Global markets rally as tech stocks surge.",
+        "sender: security@bank.com subject: Login alert snippet: A new login was detected on your account.",
+        "sender: admin@university.edu subject: Campus closure snippet: Due to heavy snow, campus is closed today.",
+        "sender: friends@group.com subject: Dinner tonight? snippet: Are we still on for dinner at 7?",
+        "sender: promo@travel.com subject: Flight deals snippet: Fly to Europe for under $300 roundtrip.",
+        "sender: no-reply@delivery.com subject: Your order has arrived snippet: Your groceries have been left at the door.",
+        "sender: social@pinterest.com subject: 10 new pins for you snippet: We think you'll love these interior design ideas.",
+        "sender: offers@pizza.com subject: 50% off large pizzas snippet: Use code PIZZA50 at checkout.",
+        "sender: noreply@zoom.us subject: Missed meeting snippet: You missed the scheduled meeting with the marketing team.",
+        "sender: updates@youtube.com subject: New upload from your favorite channel snippet: Check out the latest video on tech reviews.",
+        "sender: news@bbc.co.uk subject: Breaking news today snippet: Global markets rally as tech stocks surge.",
+        "sender: security@bank.com subject: Login alert snippet: A new login was detected on your account.",
+        "sender: admin@university.edu subject: Campus closure snippet: Due to heavy snow, campus is closed today.",
+        "sender: friends@group.com subject: Dinner tonight? snippet: Are we still on for dinner at 7?",
+        "sender: promo@travel.com subject: Flight deals snippet: Fly to Europe for under $300 roundtrip.",
+        "sender: no-reply@delivery.com subject: Your order has arrived snippet: Your groceries have been left at the door.",
+        "sender: social@pinterest.com subject: 10 new pins for you snippet: We think you'll love these interior design ideas.",
+        "sender: offers@pizza.com subject: 50% off large pizzas snippet: Use code PIZZA50 at checkout.",
+        "sender: noreply@zoom.us subject: Missed meeting snippet: You missed the scheduled meeting with the marketing team.",
+        "sender: updates@youtube.com subject: New upload from your favorite channel snippet: Check out the latest video on tech reviews.",
+        "sender: news@bbc.co.uk subject: Breaking news today snippet: Global markets rally as tech stocks surge.",
+        "sender: security@bank.com subject: Login alert snippet: A new login was detected on your account.",
+        "sender: admin@university.edu subject: Campus closure snippet: Due to heavy snow, campus is closed today.",
+        "sender: friends@group.com subject: Dinner tonight? snippet: Are we still on for dinner at 7?",
+        "sender: promo@travel.com subject: Flight deals snippet: Fly to Europe for under $300 roundtrip.",
+        "sender: no-reply@delivery.com subject: Your order has arrived snippet: Your groceries have been left at the door.",
+        "sender: social@pinterest.com subject: 10 new pins for you snippet: We think you'll love these interior design ideas."
+    ],
+    "JOBS": [
+        [
+            "sender: careers@google.com subject: Application received \u2014 Software Engineer snippet: Thank you for applying to the Software Engineer position at Google. We have received your application and our team will review it.",
+            "Applied"
+        ],
+        [
+            "sender: jobs@microsoft.com subject: Your application for SDE II snippet: We received your resume for the SDE II role in Redmond. You will hear from us within two weeks.",
+            "Applied"
+        ],
+        [
+            "sender: noreply@amazon.jobs subject: Application submitted \u2014 Backend Developer snippet: Your application for Backend Developer at Amazon has been submitted successfully.",
+            "Applied"
+        ],
+        [
+            "sender: recruiting@meta.com subject: Application confirmation \u2014 ML Engineer snippet: Thanks for your interest in the ML Engineer role at Meta. We'll review your qualifications shortly.",
+            "Applied"
+        ],
+        [
+            "sender: talent@stripe.com subject: We got your application snippet: Your application for the Full Stack Engineer internship at Stripe has been received.",
+            "Applied"
+        ],
+        [
+            "sender: careers@apple.com subject: Application received for iOS Developer snippet: Thank you for applying. We will be reviewing applications on a rolling basis.",
+            "Applied"
+        ],
+        [
+            "sender: hr@netflix.com subject: Your application \u2014 Data Scientist snippet: We've received your application for the Data Scientist position at Netflix.",
+            "Applied"
+        ],
+        [
+            "sender: hiring@airbnb.com subject: Application submitted snippet: Thanks for applying to the Software Engineer role at Airbnb. Our recruiting team will be in touch.",
+            "Applied"
+        ],
+        [
+            "sender: assessment@hackerrank.com subject: Online Assessment \u2014 Google SWE snippet: Please complete this coding assessment within 72 hours. The test contains 2 algorithmic problems.",
+            "Online Assessment"
+        ],
+        [
+            "sender: noreply@codility.com subject: Amazon OA Invitation snippet: You have been invited to take an online assessment for the SDE role at Amazon. Deadline: July 5.",
+            "Online Assessment"
+        ],
+        [
+            "sender: recruiting@meta.com subject: Technical screen \u2014 coding challenge snippet: As the next step, please complete this 90-minute online coding challenge on CoderPad.",
+            "Online Assessment"
+        ],
+        [
+            "sender: oa@microsoft.com subject: Complete your assessment snippet: Hi, please complete this online assessment for the SDE intern position by end of week.",
+            "Online Assessment"
+        ],
+        [
+            "sender: noreply@hackerrank.com subject: Coding test for Uber SWE snippet: Uber has invited you to take a HackerRank coding test consisting of 3 problems in 75 minutes.",
+            "Online Assessment"
+        ],
+        [
+            "sender: assessments@karat.com subject: Karat interview for Roblox snippet: You've been invited to complete a technical assessment through Karat for the Roblox SWE role.",
+            "Online Assessment"
+        ],
+        [
+            "sender: talent@databricks.com subject: Take-home coding assignment snippet: Please complete the attached take-home assignment and submit within 5 days.",
+            "Online Assessment"
+        ],
+        [
+            "sender: noreply@codesignal.com subject: General Coding Assessment snippet: Complete your CodeSignal General Coding Assessment to proceed with your application at Capital One.",
+            "Online Assessment"
+        ],
+        [
+            "sender: recruiter@google.com subject: Interview scheduled \u2014 Virtual Onsite snippet: Your onsite interview for Software Engineer is scheduled for July 8 at 11 AM PST with the hiring manager.",
+            "Interviewing"
+        ],
+        [
+            "sender: scheduling@amazon.jobs subject: Loop interview confirmation snippet: Your virtual loop interview is confirmed for July 10. You'll have 4 rounds of 45 minutes each.",
+            "Interviewing"
+        ],
+        [
+            "sender: hr@meta.com subject: System design interview snippet: Your system design interview is scheduled for July 12 at 2 PM PST via Zoom https://zoom.us/j/123456.",
+            "Interviewing"
+        ],
+        [
+            "sender: talent@stripe.com subject: Final round interview snippet: We'd like to invite you to a final round interview with the engineering team on July 15.",
+            "Interviewing"
+        ],
+        [
+            "sender: recruiter@apple.com subject: Phone screen scheduled snippet: Your phone interview for the iOS Developer role is set for July 3 at 10 AM PT.",
+            "Interviewing"
+        ],
+        [
+            "sender: interviews@bloomberg.com subject: On-site interview invitation snippet: We are pleased to invite you for an on-site interview at our NYC office on July 20.",
+            "Interviewing"
+        ],
+        [
+            "sender: hiring@coinbase.com subject: Behavioral interview snippet: Your behavioral interview with the hiring manager is on July 9 at 3:30 PM EST via Google Meet https://meet.google.com/abc-defg-hij.",
+            "Interviewing"
+        ],
+        [
+            "sender: recruiter@nvidia.com subject: Technical interview \u2014 GPU team snippet: Please join the technical interview on July 14 at 1 PM PST. Interview with Dr. Smith.",
+            "Interviewing"
+        ],
+        [
+            "sender: hr@google.com subject: Offer letter \u2014 Software Engineer L4 snippet: Congratulations! We are delighted to extend an offer for the Software Engineer L4 position. Base salary $185,000.",
+            "Offer"
+        ],
+        [
+            "sender: offers@microsoft.com subject: Your offer from Microsoft snippet: We're thrilled to offer you the SDE II role with a total compensation of $195,000. Please respond by July 20.",
+            "Offer"
+        ],
+        [
+            "sender: talent@stripe.com subject: Congratulations \u2014 Offer extended snippet: We'd love for you to join Stripe as a Full Stack Engineer. Your offer details are attached. Salary $160,000.",
+            "Offer"
+        ],
+        [
+            "sender: hr@meta.com subject: Welcome to Meta \u2014 Offer details snippet: We are excited to offer you the ML Engineer position. Sign-on bonus of $50,000 included.",
+            "Offer"
+        ],
+        [
+            "sender: careers@amazon.jobs subject: Job offer \u2014 SDE I snippet: Amazon is pleased to extend an offer for SDE I. Base pay $150,000 plus RSUs. Accept by July 25.",
+            "Offer"
+        ],
+        [
+            "sender: recruiting@apple.com subject: Offer for iOS Developer snippet: Congratulations! Please review your offer letter. Total comp $175K. Deadline to accept: July 22.",
+            "Offer"
+        ],
+        [
+            "sender: noreply@google.com subject: Update on your application snippet: After careful consideration, we have decided not to move forward with your application at this time.",
+            "Rejected"
+        ],
+        [
+            "sender: careers@amazon.jobs subject: Application status update snippet: Unfortunately, we will not be proceeding with your candidacy for the Backend Developer role.",
+            "Rejected"
+        ],
+        [
+            "sender: recruiting@meta.com subject: Your application \u2014 ML Engineer snippet: We regret to inform you that we won't be moving forward. We encourage you to apply again in the future.",
+            "Rejected"
+        ],
+        [
+            "sender: hr@microsoft.com subject: Application update snippet: Thank you for interviewing with us. After careful review, we have decided to pursue other candidates.",
+            "Rejected"
+        ],
+        [
+            "sender: talent@stripe.com subject: Regarding your application snippet: We appreciate your interest in Stripe. Unfortunately, we've chosen to move forward with other applicants.",
+            "Rejected"
+        ],
+        [
+            "sender: noreply@netflix.com subject: Application decision snippet: We reviewed your profile carefully but decided not to proceed at this time. Best of luck in your search.",
+            "Rejected"
+        ],
+        [
+            "sender: careers@amazon.com subject: Amazon Interview Scheduled snippet: Your interview for the Software Engineer role is scheduled for tomorrow.",
+            "Interviewing"
+        ],
+        [
+            "sender: jobs@netflix.com subject: Offer Letter snippet: Congratulations! We are thrilled to offer you the position of Senior Data Engineer.",
+            "Offer"
+        ],
+        [
+            "sender: hr@apple.com subject: Update on your application snippet: Unfortunately, we will not be moving forward with your application.",
+            "Rejected"
+        ],
+        [
+            "sender: recruiting@google.com subject: Action required: Online Assessment snippet: Please complete this coding test within 48 hours.",
+            "Online Assessment"
+        ],
+        [
+            "sender: talent@startup.io subject: Thanks for applying snippet: We have received your resume for the Frontend Developer role.",
+            "Applied"
+        ],
+        [
+            "sender: careers@amazon.com subject: Amazon Interview Scheduled snippet: Your interview for the Software Engineer role is scheduled for tomorrow.",
+            "Interviewing"
+        ],
+        [
+            "sender: jobs@netflix.com subject: Offer Letter snippet: Congratulations! We are thrilled to offer you the position of Senior Data Engineer.",
+            "Offer"
+        ],
+        [
+            "sender: hr@apple.com subject: Update on your application snippet: Unfortunately, we will not be moving forward with your application.",
+            "Rejected"
+        ],
+        [
+            "sender: recruiting@google.com subject: Action required: Online Assessment snippet: Please complete this coding test within 48 hours.",
+            "Online Assessment"
+        ],
+        [
+            "sender: talent@startup.io subject: Thanks for applying snippet: We have received your resume for the Frontend Developer role.",
+            "Applied"
+        ],
+        [
+            "sender: careers@amazon.com subject: Amazon Interview Scheduled snippet: Your interview for the Software Engineer role is scheduled for tomorrow.",
+            "Interviewing"
+        ],
+        [
+            "sender: jobs@netflix.com subject: Offer Letter snippet: Congratulations! We are thrilled to offer you the position of Senior Data Engineer.",
+            "Offer"
+        ],
+        [
+            "sender: hr@apple.com subject: Update on your application snippet: Unfortunately, we will not be moving forward with your application.",
+            "Rejected"
+        ],
+        [
+            "sender: recruiting@google.com subject: Action required: Online Assessment snippet: Please complete this coding test within 48 hours.",
+            "Online Assessment"
+        ],
+        [
+            "sender: talent@startup.io subject: Thanks for applying snippet: We have received your resume for the Frontend Developer role.",
+            "Applied"
+        ],
+        [
+            "sender: careers@amazon.com subject: Amazon Interview Scheduled snippet: Your interview for the Software Engineer role is scheduled for tomorrow.",
+            "Interviewing"
+        ],
+        [
+            "sender: jobs@netflix.com subject: Offer Letter snippet: Congratulations! We are thrilled to offer you the position of Senior Data Engineer.",
+            "Offer"
+        ],
+        [
+            "sender: hr@apple.com subject: Update on your application snippet: Unfortunately, we will not be moving forward with your application.",
+            "Rejected"
+        ],
+        [
+            "sender: recruiting@google.com subject: Action required: Online Assessment snippet: Please complete this coding test within 48 hours.",
+            "Online Assessment"
+        ],
+        [
+            "sender: talent@startup.io subject: Thanks for applying snippet: We have received your resume for the Frontend Developer role.",
+            "Applied"
+        ],
+        [
+            "sender: careers@amazon.com subject: Amazon Interview Scheduled snippet: Your interview for the Software Engineer role is scheduled for tomorrow.",
+            "Interviewing"
+        ],
+        [
+            "sender: jobs@netflix.com subject: Offer Letter snippet: Congratulations! We are thrilled to offer you the position of Senior Data Engineer.",
+            "Offer"
+        ],
+        [
+            "sender: hr@apple.com subject: Update on your application snippet: Unfortunately, we will not be moving forward with your application.",
+            "Rejected"
+        ],
+        [
+            "sender: recruiting@google.com subject: Action required: Online Assessment snippet: Please complete this coding test within 48 hours.",
+            "Online Assessment"
+        ],
+        [
+            "sender: talent@startup.io subject: Thanks for applying snippet: We have received your resume for the Frontend Developer role.",
+            "Applied"
+        ],
+        [
+            "sender: careers@amazon.com subject: Amazon Interview Scheduled snippet: Your interview for the Software Engineer role is scheduled for tomorrow.",
+            "Interviewing"
+        ],
+        [
+            "sender: jobs@netflix.com subject: Offer Letter snippet: Congratulations! We are thrilled to offer you the position of Senior Data Engineer.",
+            "Offer"
+        ],
+        [
+            "sender: hr@apple.com subject: Update on your application snippet: Unfortunately, we will not be moving forward with your application.",
+            "Rejected"
+        ],
+        [
+            "sender: recruiting@google.com subject: Action required: Online Assessment snippet: Please complete this coding test within 48 hours.",
+            "Online Assessment"
+        ],
+        [
+            "sender: talent@startup.io subject: Thanks for applying snippet: We have received your resume for the Frontend Developer role.",
+            "Applied"
+        ],
+        [
+            "sender: careers@amazon.com subject: Amazon Interview Scheduled snippet: Your interview for the Software Engineer role is scheduled for tomorrow.",
+            "Interviewing"
+        ],
+        [
+            "sender: jobs@netflix.com subject: Offer Letter snippet: Congratulations! We are thrilled to offer you the position of Senior Data Engineer.",
+            "Offer"
+        ],
+        [
+            "sender: hr@apple.com subject: Update on your application snippet: Unfortunately, we will not be moving forward with your application.",
+            "Rejected"
+        ],
+        [
+            "sender: recruiting@google.com subject: Action required: Online Assessment snippet: Please complete this coding test within 48 hours.",
+            "Online Assessment"
+        ],
+        [
+            "sender: talent@startup.io subject: Thanks for applying snippet: We have received your resume for the Frontend Developer role.",
+            "Applied"
+        ],
+        [
+            "sender: careers@amazon.com subject: Amazon Interview Scheduled snippet: Your interview for the Software Engineer role is scheduled for tomorrow.",
+            "Interviewing"
+        ],
+        [
+            "sender: jobs@netflix.com subject: Offer Letter snippet: Congratulations! We are thrilled to offer you the position of Senior Data Engineer.",
+            "Offer"
+        ],
+        [
+            "sender: hr@apple.com subject: Update on your application snippet: Unfortunately, we will not be moving forward with your application.",
+            "Rejected"
+        ],
+        [
+            "sender: recruiting@google.com subject: Action required: Online Assessment snippet: Please complete this coding test within 48 hours.",
+            "Online Assessment"
+        ],
+        [
+            "sender: talent@startup.io subject: Thanks for applying snippet: We have received your resume for the Frontend Developer role.",
+            "Applied"
+        ],
+        [
+            "sender: careers@amazon.com subject: Amazon Interview Scheduled snippet: Your interview for the Software Engineer role is scheduled for tomorrow.",
+            "Interviewing"
+        ],
+        [
+            "sender: jobs@netflix.com subject: Offer Letter snippet: Congratulations! We are thrilled to offer you the position of Senior Data Engineer.",
+            "Offer"
+        ],
+        [
+            "sender: hr@apple.com subject: Update on your application snippet: Unfortunately, we will not be moving forward with your application.",
+            "Rejected"
+        ],
+        [
+            "sender: recruiting@google.com subject: Action required: Online Assessment snippet: Please complete this coding test within 48 hours.",
+            "Online Assessment"
+        ],
+        [
+            "sender: talent@startup.io subject: Thanks for applying snippet: We have received your resume for the Frontend Developer role.",
+            "Applied"
+        ],
+        [
+            "sender: careers@amazon.com subject: Amazon Interview Scheduled snippet: Your interview for the Software Engineer role is scheduled for tomorrow.",
+            "Interviewing"
+        ],
+        [
+            "sender: jobs@netflix.com subject: Offer Letter snippet: Congratulations! We are thrilled to offer you the position of Senior Data Engineer.",
+            "Offer"
+        ],
+        [
+            "sender: hr@apple.com subject: Update on your application snippet: Unfortunately, we will not be moving forward with your application.",
+            "Rejected"
+        ],
+        [
+            "sender: recruiting@google.com subject: Action required: Online Assessment snippet: Please complete this coding test within 48 hours.",
+            "Online Assessment"
+        ],
+        [
+            "sender: talent@startup.io subject: Thanks for applying snippet: We have received your resume for the Frontend Developer role.",
+            "Applied"
+        ]
+    ],
+    "HACKATHONS": [
+        [
+            "sender: noreply@devpost.com subject: Registration confirmed \u2014 HackMIT 2026 snippet: You're registered for HackMIT 2026! Team of 4 max. Submissions due August 15.",
+            "Registered"
+        ],
+        [
+            "sender: hello@unstop.com subject: You're in \u2014 Smart India Hackathon snippet: Registration successful for SIH 2026. Check the problem statements on the portal.",
+            "Registered"
+        ],
+        [
+            "sender: community@mlh.io subject: Welcome to HackNYU snippet: You have successfully registered for HackNYU. Join the Discord for team formation.",
+            "Registered"
+        ],
+        [
+            "sender: noreply@hackerearth.com subject: Registration confirmed \u2014 CodeStorm snippet: You are now registered for CodeStorm 2026. The hackathon begins July 20.",
+            "Registered"
+        ],
+        [
+            "sender: noreply@devpost.com subject: TreeHacks registration snippet: Welcome to TreeHacks 2026 at Stanford. Max team size: 4 members. Prize pool $50,000.",
+            "Registered"
+        ],
+        [
+            "sender: hello@unstop.com subject: Registered for Flipkart GRiD snippet: Congrats! You've registered for Flipkart GRiD 6.0. Round 1 starts July 10.",
+            "Registered"
+        ],
+        [
+            "sender: events@devfolio.co subject: ETHIndia registration confirmed snippet: You're all set for ETHIndia 2026. Hackathon dates: August 5-7. Prize pool $100,000.",
+            "Registered"
+        ],
+        [
+            "sender: community@mlh.io subject: PennApps registration snippet: Welcome to PennApps XXVI! Join the Slack workspace and find teammates.",
+            "Registered"
+        ],
+        [
+            "sender: hello@unstop.com subject: Shortlisted \u2014 Smart India Hackathon snippet: Your team has been shortlisted for the grand finale of SIH 2026. Congratulations!",
+            "Shortlisted"
+        ],
+        [
+            "sender: noreply@devpost.com subject: You've been selected \u2014 HackMIT snippet: Great news! Your submission has been shortlisted for the next round.",
+            "Shortlisted"
+        ],
+        [
+            "sender: community@mlh.io subject: HackNYU \u2014 Shortlisted teams snippet: Your team made it to the shortlist! Please confirm your participation by July 5.",
+            "Shortlisted"
+        ],
+        [
+            "sender: noreply@hackerearth.com subject: CodeStorm Round 2 snippet: Congratulations! You've cleared Round 1 and are shortlisted for the final round.",
+            "Shortlisted"
+        ],
+        [
+            "sender: hello@unstop.com subject: Flipkart GRiD \u2014 Round 2 cleared snippet: Your team has been shortlisted for Round 3 of Flipkart GRiD 6.0.",
+            "Shortlisted"
+        ],
+        [
+            "sender: events@devfolio.co subject: ETHIndia shortlist snippet: Your project proposal has been shortlisted. Please submit your final project by the deadline.",
+            "Shortlisted"
+        ],
+        [
+            "sender: noreply@devpost.com subject: Finalist \u2014 HackMIT 2026 snippet: Your project is a top-10 finalist! Prepare for demo day on August 18.",
+            "Finalist"
+        ],
+        [
+            "sender: hello@unstop.com subject: Grand Finale \u2014 SIH 2026 snippet: You are one of the top 5 finalists at SIH 2026 grand finale. Present your solution on Aug 20.",
+            "Finalist"
+        ],
+        [
+            "sender: community@mlh.io subject: HackNYU Finalist snippet: Congrats! Your team is a finalist. Demo presentations start at 2 PM on Saturday.",
+            "Finalist"
+        ],
+        [
+            "sender: noreply@hackerearth.com subject: CodeStorm Finalist snippet: You've made it to the finals! Top 8 teams will present to the judges on July 28.",
+            "Finalist"
+        ],
+        [
+            "sender: events@devfolio.co subject: ETHIndia Finals snippet: Your project is in the top 15 finalists! Prepare your 5-minute pitch for the judges.",
+            "Finalist"
+        ],
+        [
+            "sender: hello@unstop.com subject: Flipkart GRiD Finalist snippet: Your team is a finalist in Flipkart GRiD 6.0! National finale on August 1.",
+            "Finalist"
+        ],
+        [
+            "sender: noreply@devpost.com subject: Congratulations \u2014 HackMIT Winner snippet: Your team won Best Overall Hack at HackMIT 2026! Prize: $10,000.",
+            "Winner"
+        ],
+        [
+            "sender: hello@unstop.com subject: Winner \u2014 SIH 2026 snippet: Congratulations! Your team won first place at Smart India Hackathon 2026. Prize money \u20b9100,000.",
+            "Winner"
+        ],
+        [
+            "sender: community@mlh.io subject: HackNYU \u2014 You won! snippet: Amazing work! Your team won the Best Use of AI category. Prizes will be shipped shortly.",
+            "Winner"
+        ],
+        [
+            "sender: noreply@hackerearth.com subject: CodeStorm Winner snippet: You are the winner of CodeStorm 2026! Grand prize: $5,000 and internship opportunity.",
+            "Winner"
+        ],
+        [
+            "sender: noreply@devpost.com subject: HackMIT results snippet: Thank you for participating. Unfortunately your submission was not selected for the finals this year.",
+            "Rejected"
+        ],
+        [
+            "sender: hello@unstop.com subject: SIH 2026 \u2014 Update snippet: We regret to inform you that your team was not shortlisted for the next round of SIH 2026.",
+            "Rejected"
+        ],
+        [
+            "sender: community@mlh.io subject: HackNYU results snippet: Unfortunately your project did not advance to the finalist round. Thanks for participating!",
+            "Rejected"
+        ],
+        [
+            "sender: noreply@hackerearth.com subject: CodeStorm update snippet: After evaluation, your submission did not qualify for the next round. Better luck next time!",
+            "Rejected"
+        ],
+        [
+            "sender: team@hackmit.org subject: Welcome to HackMIT snippet: You are successfully registered for the event.",
+            "Registered"
+        ],
+        [
+            "sender: noreply@devpost.com subject: Hackathon finalist snippet: Your project has been selected for the final round.",
+            "Finalist"
+        ],
+        [
+            "sender: admin@mlh.io subject: Application update snippet: We are sorry, but we cannot accommodate you this year.",
+            "Rejected"
+        ],
+        [
+            "sender: team@hackmit.org subject: Welcome to HackMIT snippet: You are successfully registered for the event.",
+            "Registered"
+        ],
+        [
+            "sender: noreply@devpost.com subject: Hackathon finalist snippet: Your project has been selected for the final round.",
+            "Finalist"
+        ],
+        [
+            "sender: admin@mlh.io subject: Application update snippet: We are sorry, but we cannot accommodate you this year.",
+            "Rejected"
+        ],
+        [
+            "sender: team@hackmit.org subject: Welcome to HackMIT snippet: You are successfully registered for the event.",
+            "Registered"
+        ],
+        [
+            "sender: noreply@devpost.com subject: Hackathon finalist snippet: Your project has been selected for the final round.",
+            "Finalist"
+        ],
+        [
+            "sender: admin@mlh.io subject: Application update snippet: We are sorry, but we cannot accommodate you this year.",
+            "Rejected"
+        ],
+        [
+            "sender: team@hackmit.org subject: Welcome to HackMIT snippet: You are successfully registered for the event.",
+            "Registered"
+        ],
+        [
+            "sender: noreply@devpost.com subject: Hackathon finalist snippet: Your project has been selected for the final round.",
+            "Finalist"
+        ],
+        [
+            "sender: admin@mlh.io subject: Application update snippet: We are sorry, but we cannot accommodate you this year.",
+            "Rejected"
+        ],
+        [
+            "sender: team@hackmit.org subject: Welcome to HackMIT snippet: You are successfully registered for the event.",
+            "Registered"
+        ],
+        [
+            "sender: noreply@devpost.com subject: Hackathon finalist snippet: Your project has been selected for the final round.",
+            "Finalist"
+        ],
+        [
+            "sender: admin@mlh.io subject: Application update snippet: We are sorry, but we cannot accommodate you this year.",
+            "Rejected"
+        ],
+        [
+            "sender: team@hackmit.org subject: Welcome to HackMIT snippet: You are successfully registered for the event.",
+            "Registered"
+        ],
+        [
+            "sender: noreply@devpost.com subject: Hackathon finalist snippet: Your project has been selected for the final round.",
+            "Finalist"
+        ],
+        [
+            "sender: admin@mlh.io subject: Application update snippet: We are sorry, but we cannot accommodate you this year.",
+            "Rejected"
+        ],
+        [
+            "sender: team@hackmit.org subject: Welcome to HackMIT snippet: You are successfully registered for the event.",
+            "Registered"
+        ],
+        [
+            "sender: noreply@devpost.com subject: Hackathon finalist snippet: Your project has been selected for the final round.",
+            "Finalist"
+        ],
+        [
+            "sender: admin@mlh.io subject: Application update snippet: We are sorry, but we cannot accommodate you this year.",
+            "Rejected"
+        ],
+        [
+            "sender: team@hackmit.org subject: Welcome to HackMIT snippet: You are successfully registered for the event.",
+            "Registered"
+        ],
+        [
+            "sender: noreply@devpost.com subject: Hackathon finalist snippet: Your project has been selected for the final round.",
+            "Finalist"
+        ],
+        [
+            "sender: admin@mlh.io subject: Application update snippet: We are sorry, but we cannot accommodate you this year.",
+            "Rejected"
+        ],
+        [
+            "sender: team@hackmit.org subject: Welcome to HackMIT snippet: You are successfully registered for the event.",
+            "Registered"
+        ],
+        [
+            "sender: noreply@devpost.com subject: Hackathon finalist snippet: Your project has been selected for the final round.",
+            "Finalist"
+        ],
+        [
+            "sender: admin@mlh.io subject: Application update snippet: We are sorry, but we cannot accommodate you this year.",
+            "Rejected"
+        ],
+        [
+            "sender: team@hackmit.org subject: Welcome to HackMIT snippet: You are successfully registered for the event.",
+            "Registered"
+        ],
+        [
+            "sender: noreply@devpost.com subject: Hackathon finalist snippet: Your project has been selected for the final round.",
+            "Finalist"
+        ],
+        [
+            "sender: admin@mlh.io subject: Application update snippet: We are sorry, but we cannot accommodate you this year.",
+            "Rejected"
+        ]
+    ],
+    "OTHERS": [
+        [
+            "sender: gsoc-noreply@google.com subject: GSoC 2026 proposal submitted snippet: Your proposal for Google Summer of Code 2026 has been received. Mentors will review it shortly.",
+            "Applied"
+        ],
+        [
+            "sender: noreply@lfx.linuxfoundation.org subject: LFX Mentorship application received snippet: Thank you for applying to the LFX Mentorship program for the Kubernetes project.",
+            "Applied"
+        ],
+        [
+            "sender: fellowships@github.com subject: Application received \u2014 GitHub Externship snippet: We've received your application for the GitHub Externship 2026 program.",
+            "Applied"
+        ],
+        [
+            "sender: awards@acm.org subject: ACM Research Fellowship application snippet: Your application for the ACM Undergraduate Research Fellowship has been submitted.",
+            "Applied"
+        ],
+        [
+            "sender: outreachy@sfconservancy.org subject: Outreachy application submitted snippet: Your initial application for the Outreachy December 2026 cohort has been submitted.",
+            "Applied"
+        ],
+        [
+            "sender: scholarships@ghc.anitab.org subject: GHC Scholarship application snippet: Thank you for applying to the Grace Hopper Celebration scholarship program 2026.",
+            "Applied"
+        ],
+        [
+            "sender: research@mit.edu subject: UROP application received snippet: Your application for the MIT Undergraduate Research Opportunity Program has been received.",
+            "Applied"
+        ],
+        [
+            "sender: programs@mozilla.org subject: Mozilla Fellowship application snippet: We received your application for the Mozilla Technology Fellowship. Review period: 4 weeks.",
+            "Applied"
+        ],
+        [
+            "sender: gsoc-noreply@google.com subject: GSoC proposal under review snippet: Your proposal is being reviewed by the mentoring organization. Results announced May 27.",
+            "Under Review"
+        ],
+        [
+            "sender: noreply@lfx.linuxfoundation.org subject: LFX application status snippet: Your application is currently under review by the project mentors. Duration: 3 months, stipend $6,000.",
+            "Under Review"
+        ],
+        [
+            "sender: fellowships@github.com subject: Application update snippet: Your GitHub Externship application is under review. We will notify you by July 15.",
+            "Under Review"
+        ],
+        [
+            "sender: awards@acm.org subject: Fellowship review in progress snippet: Your research fellowship application is being evaluated. Duration 12 weeks, stipend $5,000.",
+            "Under Review"
+        ],
+        [
+            "sender: outreachy@sfconservancy.org subject: Outreachy update snippet: Your application is under review. The internship is 3 months with a $7,000 stipend.",
+            "Under Review"
+        ],
+        [
+            "sender: research@stanford.edu subject: Research position review snippet: Your application for the summer research internship is being reviewed by Professor Johnson.",
+            "Under Review"
+        ],
+        [
+            "sender: programs@linux.org subject: Open source mentorship review snippet: Your Linux kernel mentorship application is being evaluated. Program duration: 6 months.",
+            "Under Review"
+        ],
+        [
+            "sender: hr@cern.ch subject: CERN Openlab review snippet: Your application for the CERN Openlab summer student programme is under review. Start date: July 1.",
+            "Under Review"
+        ],
+        [
+            "sender: gsoc-noreply@google.com subject: Congratulations \u2014 GSoC 2026 snippet: Your proposal has been accepted for Google Summer of Code 2026! Stipend $3,000. Coding starts June 1.",
+            "Accepted"
+        ],
+        [
+            "sender: noreply@lfx.linuxfoundation.org subject: LFX Mentorship \u2014 Accepted snippet: Congratulations! You have been accepted into the LFX Mentorship program. Stipend $6,000 for 3 months.",
+            "Accepted"
+        ],
+        [
+            "sender: fellowships@github.com subject: Welcome to GitHub Externship snippet: We're thrilled to accept you into the 2026 GitHub Externship cohort! Program starts August 1.",
+            "Accepted"
+        ],
+        [
+            "sender: outreachy@sfconservancy.org subject: Outreachy acceptance snippet: Congratulations! You've been selected as an Outreachy intern. Stipend $7,000 for 3 months.",
+            "Accepted"
+        ],
+        [
+            "sender: scholarships@ghc.anitab.org subject: GHC Scholarship awarded snippet: You have been awarded a scholarship to attend the Grace Hopper Celebration 2026!",
+            "Accepted"
+        ],
+        [
+            "sender: research@mit.edu subject: UROP acceptance snippet: Congratulations! You've been accepted into MIT UROP for Summer 2026. Stipend $5,000 for 10 weeks.",
+            "Accepted"
+        ],
+        [
+            "sender: programs@mozilla.org subject: Mozilla Fellowship \u2014 Accepted snippet: Welcome! You have been selected as a 2026 Mozilla Technology Fellow. Duration: 10 months.",
+            "Accepted"
+        ],
+        [
+            "sender: hr@cern.ch subject: CERN Openlab \u2014 Accepted snippet: We are pleased to inform you that you have been accepted into CERN Openlab. Start date July 1, duration 8 weeks.",
+            "Accepted"
+        ],
+        [
+            "sender: gsoc-noreply@google.com subject: GSoC 2026 results snippet: Unfortunately your proposal was not selected for Google Summer of Code 2026. We encourage you to apply next year.",
+            "Rejected"
+        ],
+        [
+            "sender: noreply@lfx.linuxfoundation.org subject: LFX Mentorship update snippet: We regret to inform you that your application was not selected for this cycle.",
+            "Rejected"
+        ],
+        [
+            "sender: outreachy@sfconservancy.org subject: Outreachy decision snippet: We're sorry to let you know your application was not selected for this round.",
+            "Rejected"
+        ],
+        [
+            "sender: awards@acm.org subject: Fellowship decision snippet: After careful review, we are unable to offer you the fellowship at this time.",
+            "Rejected"
+        ],
+        [
+            "sender: research@stanford.edu subject: Research internship decision snippet: We had many strong applicants and unfortunately cannot offer you a position this summer.",
+            "Rejected"
+        ],
+        [
+            "sender: programs@mozilla.org subject: Mozilla Fellowship results snippet: Thank you for your interest. Unfortunately we are not able to extend an offer at this time.",
+            "Rejected"
+        ],
+        [
+            "sender: apply@opensource.org subject: GSoC Application snippet: Your proposal has been submitted.",
+            "Applied"
+        ],
+        [
+            "sender: mentors@program.org subject: Welcome to the fellowship snippet: Congratulations, you have been accepted into the program.",
+            "Accepted"
+        ],
+        [
+            "sender: reject@scholarship.org subject: Scholarship update snippet: We regret to inform you that you were not selected.",
+            "Rejected"
+        ],
+        [
+            "sender: apply@opensource.org subject: GSoC Application snippet: Your proposal has been submitted.",
+            "Applied"
+        ],
+        [
+            "sender: mentors@program.org subject: Welcome to the fellowship snippet: Congratulations, you have been accepted into the program.",
+            "Accepted"
+        ],
+        [
+            "sender: reject@scholarship.org subject: Scholarship update snippet: We regret to inform you that you were not selected.",
+            "Rejected"
+        ],
+        [
+            "sender: apply@opensource.org subject: GSoC Application snippet: Your proposal has been submitted.",
+            "Applied"
+        ],
+        [
+            "sender: mentors@program.org subject: Welcome to the fellowship snippet: Congratulations, you have been accepted into the program.",
+            "Accepted"
+        ],
+        [
+            "sender: reject@scholarship.org subject: Scholarship update snippet: We regret to inform you that you were not selected.",
+            "Rejected"
+        ],
+        [
+            "sender: apply@opensource.org subject: GSoC Application snippet: Your proposal has been submitted.",
+            "Applied"
+        ],
+        [
+            "sender: mentors@program.org subject: Welcome to the fellowship snippet: Congratulations, you have been accepted into the program.",
+            "Accepted"
+        ],
+        [
+            "sender: reject@scholarship.org subject: Scholarship update snippet: We regret to inform you that you were not selected.",
+            "Rejected"
+        ],
+        [
+            "sender: apply@opensource.org subject: GSoC Application snippet: Your proposal has been submitted.",
+            "Applied"
+        ],
+        [
+            "sender: mentors@program.org subject: Welcome to the fellowship snippet: Congratulations, you have been accepted into the program.",
+            "Accepted"
+        ],
+        [
+            "sender: reject@scholarship.org subject: Scholarship update snippet: We regret to inform you that you were not selected.",
+            "Rejected"
+        ],
+        [
+            "sender: apply@opensource.org subject: GSoC Application snippet: Your proposal has been submitted.",
+            "Applied"
+        ],
+        [
+            "sender: mentors@program.org subject: Welcome to the fellowship snippet: Congratulations, you have been accepted into the program.",
+            "Accepted"
+        ],
+        [
+            "sender: reject@scholarship.org subject: Scholarship update snippet: We regret to inform you that you were not selected.",
+            "Rejected"
+        ],
+        [
+            "sender: apply@opensource.org subject: GSoC Application snippet: Your proposal has been submitted.",
+            "Applied"
+        ],
+        [
+            "sender: mentors@program.org subject: Welcome to the fellowship snippet: Congratulations, you have been accepted into the program.",
+            "Accepted"
+        ],
+        [
+            "sender: reject@scholarship.org subject: Scholarship update snippet: We regret to inform you that you were not selected.",
+            "Rejected"
+        ],
+        [
+            "sender: apply@opensource.org subject: GSoC Application snippet: Your proposal has been submitted.",
+            "Applied"
+        ],
+        [
+            "sender: mentors@program.org subject: Welcome to the fellowship snippet: Congratulations, you have been accepted into the program.",
+            "Accepted"
+        ],
+        [
+            "sender: reject@scholarship.org subject: Scholarship update snippet: We regret to inform you that you were not selected.",
+            "Rejected"
+        ],
+        [
+            "sender: apply@opensource.org subject: GSoC Application snippet: Your proposal has been submitted.",
+            "Applied"
+        ],
+        [
+            "sender: mentors@program.org subject: Welcome to the fellowship snippet: Congratulations, you have been accepted into the program.",
+            "Accepted"
+        ],
+        [
+            "sender: reject@scholarship.org subject: Scholarship update snippet: We regret to inform you that you were not selected.",
+            "Rejected"
+        ],
+        [
+            "sender: apply@opensource.org subject: GSoC Application snippet: Your proposal has been submitted.",
+            "Applied"
+        ],
+        [
+            "sender: mentors@program.org subject: Welcome to the fellowship snippet: Congratulations, you have been accepted into the program.",
+            "Accepted"
+        ],
+        [
+            "sender: reject@scholarship.org subject: Scholarship update snippet: We regret to inform you that you were not selected.",
+            "Rejected"
+        ]
+    ]
+}

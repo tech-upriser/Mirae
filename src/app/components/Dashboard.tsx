@@ -17,10 +17,10 @@ import {
   deleteDashboardJob,
   getDashboardSummary,
   getRecentJobs,
-  updateJobStatus,
   updateJobContacts,
   updateJobNotes,
 } from '../services/dashboardService';
+import { useRealtimeUpdates } from '../hooks/useRealtimeUpdates';
 
 type DashboardTab = 'jobs' | 'hackathons' | 'others';
 type SortOption = 'newest' | 'matchScore';
@@ -166,28 +166,33 @@ export function Dashboard() {
   const [deletingId, setDeletingId] = useState<string | null>(null);
   const navigate = useNavigate();
 
+  const loadDashboard = async () => {
+    try {
+      const [, recentJobs] = await Promise.all([
+        getDashboardSummary(),
+        getRecentJobs(sortBy, searchQuery),
+      ]);
+
+      setApplications((recentJobs || []).map(mapJobToApplication));
+    } catch (error) {
+      console.error('[Dashboard] Fetch error:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useRealtimeUpdates(() => {
+    // When a socket event fires, re-fetch the dashboard
+    void loadDashboard();
+  });
+
   useEffect(() => {
-    const loadDashboard = async () => {
-      try {
-        const [, recentJobs] = await Promise.all([
-          getDashboardSummary(),
-          getRecentJobs(sortBy, searchQuery),
-        ]);
-
-        setApplications((recentJobs || []).map(mapJobToApplication));
-      } catch (error) {
-        console.error('[Dashboard] Fetch error:', error);
-      } finally {
-        setLoading(false);
-      }
-    };
-
     const token = localStorage.getItem('token');
     if (token) {
       window.postMessage({ type: 'MIRAE_SYNC_TOKEN', token }, '*');
     }
 
-    loadDashboard();
+    void loadDashboard();
   }, [sortBy, searchQuery]);
 
   useEffect(() => {

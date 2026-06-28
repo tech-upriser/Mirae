@@ -2,6 +2,7 @@ import { BrowserRouter, Routes, Route, useLocation } from 'react-router';
 import { Sidebar } from './components/Sidebar';
 import { Dashboard } from './components/Dashboard';
 import { Analytics } from './components/Analytics';
+import { Contacts } from './components/Contacts';
 import { CalendarView } from './components/CalendarView';
 import { ExtensionPopup } from './components/ExtensionPopup';
 import { Settings } from './components/Settings';
@@ -71,6 +72,14 @@ function AppContent() {
             element={(
               <ProtectedRoute>
                 <Settings />
+              </ProtectedRoute>
+            )}
+          />
+          <Route
+            path="/contacts"
+            element={(
+              <ProtectedRoute>
+                <Contacts />
               </ProtectedRoute>
             )}
           />

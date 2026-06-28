@@ -57,3 +57,27 @@ export async function getMatchInsights() {
 
   return response.json();
 }
+
+export async function getFunnel() {
+  const response = await fetch(`${API_BASE}/analytics/funnel`, {
+    headers: getAuthHeaders()
+  });
+  if (!response.ok) throw new Error('Failed to fetch funnel');
+  return response.json();
+}
+
+export async function getResponseTimes() {
+  const response = await fetch(`${API_BASE}/analytics/response-times`, {
+    headers: getAuthHeaders()
+  });
+  if (!response.ok) throw new Error('Failed to fetch response times');
+  return response.json();
+}
+
+export async function getCompanyBreakdown() {
+  const response = await fetch(`${API_BASE}/analytics/company-breakdown`, {
+    headers: getAuthHeaders()
+  });
+  if (!response.ok) throw new Error('Failed to fetch company breakdown');
+  return response.json();
+}

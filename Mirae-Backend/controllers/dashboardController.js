@@ -2,7 +2,7 @@ const Job = require('../models/Job');
 
 const getDashboardSummary = async (req, res) => {
   try {
-    console.log('[Dashboard API] Summary requested for userId:', req.user.id);
+    // console.log('[Dashboard API] Summary requested for userId:', req.user.id);
     const [
       totalJobs,
       saved,
@@ -18,8 +18,6 @@ const getDashboardSummary = async (req, res) => {
       Job.countDocuments({ userId: req.user.id, status: 'Offer' }),
       Job.countDocuments({ userId: req.user.id, status: 'Rejected' }),
     ]);
-
-    console.log('[Dashboard API] Summary result:', { totalJobs, saved, applied, interviewing, offers, rejected });
 
     res.status(200).json({
       totalJobs,

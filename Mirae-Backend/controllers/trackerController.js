@@ -411,7 +411,7 @@ ${rawText.substring(0, 6000)}`;
       });
 
       const aiText = chatCompletion.choices[0].message.content;
-      console.log("🤖 Groq raw response:", aiText.substring(0, 300));
+      // console.log("🤖 Groq raw response:", aiText.substring(0, 300));
       aiResult = JSON.parse(aiText);
 
       // Enforce null match score if no resume
@@ -541,18 +541,6 @@ ${rawText.substring(0, 6000)}`;
       createdAt,
       updatedAt: createdAt
     };
-
-    console.log("💾 Saving job:", {
-      title: finalData.title,
-      company: finalData.company,
-      matchScore: finalData.matchScore,
-      skillsCount: finalData.skills?.all?.length,
-      matchedCount: finalData.skills?.matched?.length,
-      missingCount: finalData.skills?.missing?.length,
-      category: finalData.category,
-      status: finalData.status,
-      deadline: finalData.deadline
-    });
 
     const existingJob = await Job.findOne({
       userId: req.user.id,

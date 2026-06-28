@@ -7,6 +7,9 @@ import {
   getTrends,
   getSkillGapAnalysis,
   getMatchInsights,
+  getFunnel,
+  getResponseTimes,
+  getCompanyBreakdown
 } from '../services/analyticsService';
 
 type OverviewData = {
@@ -36,26 +39,61 @@ type TrendItem = {
   count: number;
 };
 
+type FunnelData = {
+  funnel: { stage: string; count: number }[];
+  conversionRates: {
+    savedToApplied: string;
+    appliedToInterview: string;
+    interviewToOffer: string;
+    overallOfferRate: string;
+  };
+};
+
+type ResponseTimeData = {
+  avgResponseTime: number;
+  totalResponsesMeasured: number;
+};
+
+type CompanyBreakdownItem = {
+  company: string;
+  total: number;
+  interviewing: number;
+  offers: number;
+  rejected: number;
+  interviewRate: string;
+};
+
 export function Analytics() {
   const [overview, setOverview] = useState<OverviewData | null>(null);
   const [skillGap, setSkillGap] = useState<SkillGapItem[]>([]);
   const [matchInsights, setMatchInsights] = useState<MatchInsights | null>(null);
   const [trends, setTrends] = useState<TrendItem[]>([]);
+  
+  // New Career OS Analytics state
+  const [funnelData, setFunnelData] = useState<FunnelData | null>(null);
+  const [responseTimes, setResponseTimes] = useState<ResponseTimeData | null>(null);
+  const [companyBreakdown, setCompanyBreakdown] = useState<CompanyBreakdownItem[]>([]);
 
   useEffect(() => {
     const loadAnalytics = async () => {
       try {
-        const [overviewData, trendsData, skillGapData, matchInsightsData] = await Promise.all([
+        const [overviewData, trendsData, skillGapData, matchInsightsData, funnelRes, responseTimesRes, companyRes] = await Promise.all([
           getAnalyticsOverview(),
           getTrends(),
           getSkillGapAnalysis(),
           getMatchInsights(),
+          getFunnel(),
+          getResponseTimes(),
+          getCompanyBreakdown()
         ]);
 
         setOverview(overviewData);
         setTrends(trendsData || []);
         setSkillGap(skillGapData || []);
         setMatchInsights(matchInsightsData || null);
+        setFunnelData(funnelRes || null);
+        setResponseTimes(responseTimesRes || null);
+        setCompanyBreakdown(companyRes || []);
       } catch (error) {
         console.error('Analytics fetch error:', error);
       }
@@ -106,6 +144,22 @@ export function Analytics() {
   }, [skillGap]);
 
   const funnelSteps = useMemo(() => {
+    if (funnelData?.funnel) {
+      const colors = {
+        'Saved': '#6b7280',
+        'Applied': '#14213D',
+        'Interviewing': '#FCA311',
+        'Offer': '#067647'
+      };
+      const total = funnelData.funnel[0]?.count || 1;
+      return funnelData.funnel.map(step => ({
+        label: step.stage,
+        value: step.count,
+        percent: Math.round((step.count / total) * 100),
+        color: colors[step.stage as keyof typeof colors] || '#000'
+      }));
+    }
+    // Fallback if API fails
     const total = overview?.totalJobs ?? 0;
     const calcPercent = (value: number) =>
       total > 0 ? Math.round((value / total) * 100) : 0;
@@ -129,14 +183,8 @@ export function Analytics() {
         percent: calcPercent(overview?.offers ?? 0),
         color: '#067647',
       },
-      {
-        label: 'Rejected',
-        value: overview?.rejected ?? 0,
-        percent: calcPercent(overview?.rejected ?? 0),
-        color: '#B42318',
-      },
     ];
-  }, [overview]);
+  }, [overview, funnelData]);
 
 
   const summaryPills = useMemo(() => {
@@ -597,6 +645,93 @@ export function Analytics() {
 
             <div className="mt-5 border-t border-[#F1F3F5] pt-4 text-sm text-[#6b7280]">
               Interview → Offer rate: 25% • Avg. time: 3 weeks
+            </div>
+          </motion.div>
+        </div>
+
+        {/* Career OS New Analytics */}
+        <div className="mt-6 grid grid-cols-3 gap-6">
+          <motion.div
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.3, delay: 0.5 }}
+            className="col-span-1 bg-white rounded-lg p-6 border border-[#E5E5E5] shadow-sm"
+          >
+            <h3 className="text-lg font-bold text-[#000000] mb-4">
+              Pipeline Velocity
+            </h3>
+            
+            <div className="flex flex-col items-center justify-center py-6">
+              <div className="text-6xl font-black text-[#14213D] mb-2 tracking-tighter">
+                {responseTimes?.avgResponseTime || 0}
+              </div>
+              <div className="text-sm font-semibold uppercase tracking-widest text-[#6b7280]">
+                Days Average
+              </div>
+              <p className="mt-4 text-center text-sm text-[#6b7280]">
+                From application submitted to interview scheduled across {responseTimes?.totalResponsesMeasured || 0} tracked responses.
+              </p>
+            </div>
+            
+            <div className="mt-4 rounded-lg bg-[#F8FAFC] p-4 text-center border border-[#E5E5E5]">
+              <div className="text-xs font-semibold uppercase text-[#14213D]">
+                Interview → Offer Rate
+              </div>
+              <div className="mt-1 text-2xl font-bold text-[#067647]">
+                {funnelData?.conversionRates?.interviewToOffer || '0'}%
+              </div>
+            </div>
+          </motion.div>
+
+          <motion.div
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.3, delay: 0.55 }}
+            className="col-span-2 bg-white rounded-lg p-6 border border-[#E5E5E5] shadow-sm"
+          >
+            <div className="mb-5 flex items-center justify-between">
+              <h3 className="text-lg font-bold text-[#000000]">
+                Top Companies by Volume
+              </h3>
+            </div>
+
+            <div className="overflow-x-auto">
+              <table className="w-full text-left text-sm">
+                <thead className="border-b border-[#E5E5E5] bg-[#F8FAFC] text-xs uppercase text-[#6b7280]">
+                  <tr>
+                    <th className="px-4 py-3 font-semibold rounded-tl-lg">Company</th>
+                    <th className="px-4 py-3 font-semibold text-center">Total Apps</th>
+                    <th className="px-4 py-3 font-semibold text-center">Interviewing</th>
+                    <th className="px-4 py-3 font-semibold text-center">Offers</th>
+                    <th className="px-4 py-3 font-semibold text-right rounded-tr-lg">Success Rate</th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-[#F1F3F5]">
+                  {companyBreakdown.length === 0 ? (
+                    <tr>
+                      <td colSpan={5} className="px-4 py-8 text-center text-[#6b7280]">
+                        No company data available yet.
+                      </td>
+                    </tr>
+                  ) : (
+                    companyBreakdown.map((comp, idx) => (
+                      <tr key={comp.company} className="hover:bg-[#F8FAFC] transition-colors">
+                        <td className="px-4 py-3 font-semibold text-[#14213D]">{comp.company}</td>
+                        <td className="px-4 py-3 text-center text-[#6b7280]">{comp.total}</td>
+                        <td className="px-4 py-3 text-center text-[#FCA311] font-medium">{comp.interviewing > 0 ? comp.interviewing : '-'}</td>
+                        <td className="px-4 py-3 text-center text-[#067647] font-medium">{comp.offers > 0 ? comp.offers : '-'}</td>
+                        <td className="px-4 py-3 text-right">
+                          <span className={`inline-flex items-center px-2 py-1 rounded-md text-xs font-bold ${
+                            Number(comp.interviewRate) > 0 ? 'bg-[#DDF7EA] text-[#067647]' : 'bg-[#F1F3F5] text-[#6b7280]'
+                          }`}>
+                            {comp.interviewRate}%
+                          </span>
+                        </td>
+                      </tr>
+                    ))
+                  )}
+                </tbody>
+              </table>
             </div>
           </motion.div>
         </div>

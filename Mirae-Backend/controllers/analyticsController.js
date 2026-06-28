@@ -224,10 +224,122 @@ const getMatchInsights = async (req, res) => {
   }
 };
 
+const getFunnel = async (req, res) => {
+  try {
+    const userId = new mongoose.Types.ObjectId(req.user.id);
+    const jobs = await Job.find({ userId, category: 'Jobs' }).select('status');
+    
+    let saved = 0, applied = 0, interviewing = 0, offers = 0, rejected = 0;
+    
+    // In a funnel, everyone who applied was also saved. 
+    // Everyone who is interviewing was also applied.
+    // So we count cumulative progression.
+    jobs.forEach(job => {
+      // Basic counts
+      if (job.status === 'Saved') saved++;
+      else if (job.status === 'Applied') applied++;
+      else if (job.status === 'Interviewing') interviewing++;
+      else if (job.status === 'Offer') offers++;
+      else if (job.status === 'Rejected') rejected++;
+    });
+
+    const totalOffers = offers;
+    const totalInterviewing = totalOffers + interviewing;
+    const totalApplied = totalInterviewing + rejected + applied;
+    const totalSaved = totalApplied + saved;
+
+    res.status(200).json({
+      funnel: [
+        { stage: 'Saved', count: totalSaved },
+        { stage: 'Applied', count: totalApplied },
+        { stage: 'Interviewing', count: totalInterviewing },
+        { stage: 'Offer', count: totalOffers }
+      ],
+      conversionRates: {
+        savedToApplied: totalSaved ? ((totalApplied / totalSaved) * 100).toFixed(1) : 0,
+        appliedToInterview: totalApplied ? ((totalInterviewing / totalApplied) * 100).toFixed(1) : 0,
+        interviewToOffer: totalInterviewing ? ((totalOffers / totalInterviewing) * 100).toFixed(1) : 0,
+        overallOfferRate: totalApplied ? ((totalOffers / totalApplied) * 100).toFixed(1) : 0
+      }
+    });
+  } catch (error) {
+    res.status(500).json({ error: 'Failed to fetch funnel' });
+  }
+};
+
+const getResponseTimes = async (req, res) => {
+  try {
+    const userId = new mongoose.Types.ObjectId(req.user.id);
+    const jobs = await Job.find({ userId, category: 'Jobs' }).select('history company');
+    
+    let totalAppliedToInterviewDays = 0;
+    let appliedToInterviewCount = 0;
+
+    jobs.forEach(job => {
+      if (!job.history || job.history.length < 2) return;
+      
+      const appliedEvent = job.history.find(h => h.status === 'Applied');
+      const interviewEvent = job.history.find(h => h.status === 'Interviewing');
+      
+      if (appliedEvent && interviewEvent) {
+        const diffTime = Math.abs(new Date(interviewEvent.date) - new Date(appliedEvent.date));
+        const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+        totalAppliedToInterviewDays += diffDays;
+        appliedToInterviewCount++;
+      }
+    });
+
+    const avgResponseTime = appliedToInterviewCount ? Math.round(totalAppliedToInterviewDays / appliedToInterviewCount) : 0;
+    
+    res.status(200).json({
+      avgResponseTime,
+      totalResponsesMeasured: appliedToInterviewCount
+    });
+  } catch (error) {
+    res.status(500).json({ error: 'Failed to fetch response times' });
+  }
+};
+
+const getCompanyBreakdown = async (req, res) => {
+  try {
+    const userId = new mongoose.Types.ObjectId(req.user.id);
+    const jobs = await Job.find({ userId, category: 'Jobs' }).select('company status');
+    
+    const companyStats = {};
+    
+    jobs.forEach(job => {
+      const company = job.company;
+      if (!companyStats[company]) {
+        companyStats[company] = { total: 0, interviewing: 0, offers: 0, rejected: 0 };
+      }
+      companyStats[company].total++;
+      if (job.status === 'Interviewing') companyStats[company].interviewing++;
+      if (job.status === 'Offer') companyStats[company].offers++;
+      if (job.status === 'Rejected') companyStats[company].rejected++;
+    });
+
+    const breakdown = Object.entries(companyStats)
+      .map(([company, stats]) => ({
+        company,
+        ...stats,
+        interviewRate: stats.total ? ((stats.interviewing + stats.offers) / stats.total * 100).toFixed(1) : 0
+      }))
+      .sort((a, b) => b.total - a.total)
+      .slice(0, 10); // Top 10 companies
+
+    res.status(200).json(breakdown);
+  } catch (error) {
+    res.status(500).json({ error: 'Failed to fetch company breakdown' });
+  }
+};
+
 module.exports = {
   getAnalyticsOverview,
   getTrends,
   getSkillGapAnalysis,
   getMatchInsights,
+  getFunnel,
+  getResponseTimes,
+  getCompanyBreakdown
 };
 
