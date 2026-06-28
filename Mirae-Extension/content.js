@@ -24,7 +24,8 @@ const scrapeAndSendToMirae = () => {
   // without footer/nav junk overwhelming it
   const jobData = {
     url: window.location.href,
-    rawText: rawText.substring(0, 8000)
+    rawText: rawText.substring(0, 8000),
+    tabTitle: document.title || ''
   };
 
   if (jobData.rawText.length < 100) {

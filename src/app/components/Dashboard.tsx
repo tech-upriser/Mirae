@@ -31,6 +31,11 @@ interface Application {
   company: string;
   role: string;
   matchScore: number | null;
+  matchPercentage?: number | null;
+  matchedSkills?: string[];
+  missingSkills?: string[];
+  jobSkills?: string[];
+  resumeSkills?: string[];
   appliedDate: string;
   stage: string;
   category: string;
@@ -113,7 +118,12 @@ const mapJobToApplication = (job: any): Application => ({
   id: job._id,
   company: job.company || 'Unknown Company',
   role: job.title || 'Untitled Role',
-  matchScore: job.matchScore ?? null,
+  matchScore: job.matchPercentage !== undefined && job.matchPercentage !== null ? job.matchPercentage : (job.matchScore ?? null),
+  matchPercentage: job.matchPercentage !== undefined && job.matchPercentage !== null ? job.matchPercentage : (job.matchScore ?? null),
+  matchedSkills: job.matchedSkills || job.skills?.matched || [],
+  missingSkills: job.missingSkills || job.skills?.missing || [],
+  jobSkills: job.jobSkills || job.skills?.all || [],
+  resumeSkills: job.resumeSkills || [],
   appliedDate: formatDate(job.appliedDate || job.createdAt),
   stage: job.status || 'Saved',
   category: normalizeDashboardCategory(job.category),
@@ -127,8 +137,8 @@ const mapJobToApplication = (job: any): Application => ({
   salaryRange: job.salary || job.salaryRange || '',
   skills: {
     all: job.skills?.all || [],
-    matched: job.skills?.matched || job.matchedSkills || [],
-    missing: job.skills?.missing || job.missingSkills || []
+    matched: job.matchedSkills || job.skills?.matched || [],
+    missing: job.missingSkills || job.skills?.missing || []
   },
   history: Array.isArray(job.history)
     ? job.history
