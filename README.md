@@ -126,45 +126,39 @@ Mirae doesn't just store your saved jobs — it **understands** them. Using Groq
 
 ## 🔄 How It Works
 
-```
-┌─────────────────┐     ┌──────────────────┐     ┌─────────────────┐
-│  Chrome Extension│────▶│   Express API    │────▶│   MongoDB Atlas  │
-│  (Page Scraper)  │     │   + Groq AI      │     │   (Persistence)  │
-└─────────────────┘     └──────────────────┘     └─────────────────┘
-                              │                          │
-                              ▼                          │
-                        ┌──────────┐                     │
-                        │ Llama 3.3│                     │
-                        │  (70B)   │                     │
-                        └──────────┘                     │
-                                                         │
-┌─────────────────────────────────────────────────────────┘
-│
-▼
-┌───────────────────────────────────────────────────────┐
-│               React Dashboard (Vite + TS)             │
-│  ┌──────────┐ ┌──────────┐ ┌────────┐ ┌───────────┐  │
-│  │ Dashboard │ │ Analytics│ │Calendar│ │ Settings  │  │
-│  └──────────┘ └──────────┘ └────────┘ └───────────┘  │
-└───────────────────────────────────────────────────────┘
+```text
+┌──────────────┐     ┌──────────────┐
+│  Recruiters  │────▶│    Gmail     │
+│   (Emails)   │     │ (Pub/Sub)    │
+└──────────────┘     └──────────────┘
+                            │ (Webhooks)
+                            ▼
+┌─────────────────┐  ┌──────────────┐      ┌─────────────┐
+│ Chrome Extension│─▶│ Node.js API  │◀────▶│ Python ML   │
+│ (Page Scraper)  │  │ (Express)    │      │ Microservice│
+└─────────────────┘  └──────────────┘      └─────────────┘
+                            │                     │
+                            │ (Socket.io)         ▼
+                            │              ┌─────────────┐
+                            ▼              │ Scikit-Learn│
+┌─────────────────────────────────────┐    │ TF-IDF Model│
+│       React Dashboard (Vite)        │    └─────────────┘
+│ ┌─────────┐ ┌─────────┐ ┌─────────┐ │
+│ │ Tracker │ │ Calendar│ │ Contacts│ │
+│ └─────────┘ └─────────┘ └─────────┘ │
+└─────────────────────────────────────┘
 ```
 
-### End-to-End Flow
+### End-to-End Event Flow
 
-1. **User logs in** to the Mirae dashboard (JWT-authenticated)
-2. **JWT syncs** to the Chrome extension via `externally_connectable`
-3. **User right-clicks** on any job/hackathon/opportunity page → "Save to Mirae"
-4. **Content script** scrapes visible page text and sends it to `POST /api/tracker`
-5. **Backend loads** the user's resume text from MongoDB
-6. **Groq AI** (Llama 3.3 70B) analyzes the raw text and extracts structured data:
-   - Title, company, location, salary, posted date, deadline
-   - Category classification (`Jobs` / `Hackathons` / `Others`)
-   - Pipeline status inference (`Saved` / `Applied` / `Offer` / `Rejected`)
-   - Skill extraction with matched/missing breakdown
-   - Personalized match score (0–100)
-7. **Backend normalizes** and validates all extracted fields
-8. **Enriched record** is saved to MongoDB with the user's `userId`
-9. **Dashboard refreshes** and displays the new entry in the appropriate tab and section
+1. **Passive Ingestion (Gmail):** A recruiter emails you. Google Cloud Pub/Sub detects the new message and fires a webhook to the Node.js backend.
+2. **Active Ingestion (Extension):** You right-click a job posting and hit "Save to Mirae".
+3. **ML Classification:** The Node.js backend forwards the raw text to the **Python FastAPI Microservice**.
+4. **Data Extraction & Scoring:**
+   - The custom **Scikit-Learn TF-IDF model** categorizes the opportunity (Job, Hackathon, Other) and infers the pipeline status (e.g., Offer, Rejected, Applied) with 98%+ accuracy.
+   - **Groq Llama 3** extracts specific technical skills and computes a match score against your uploaded resume.
+5. **Real-time UI Sync:** The enriched record is saved to MongoDB. The Node backend emits a **Socket.io** event, which instantly renders the new job/email on your React dashboard without you needing to refresh the page.
+6. **Autonomous Reminders:** Every hour, a background **Cron Job** scans your pipeline. If it detects you haven't followed up with a recruiter in 7 days, it creates a reminder event in your Calendar.
 
 ---
 
@@ -424,7 +418,7 @@ PORT=5000
 
 > **Important:** The `GROQ_API_KEY` is required for the AI-powered tracker analysis pipeline. Without it, saved opportunities will fall back to URL-based metadata only.
 
-### 3. Install Dependencies
+### 3. Install Dependencies & Set up ML Service
 
 ```bash
 # Frontend dependencies
@@ -434,9 +428,17 @@ npm install
 cd Mirae-Backend
 npm install
 cd ..
+
+# Python ML Microservice
+cd Mirae-Classifier
+python -m venv venv
+.\venv\Scripts\activate   # On Windows
+# source venv/bin/activate # On Mac/Linux
+pip install -r requirements.txt
+cd ..
 ```
 
-### 4. Start the Backend Server
+### 4. Start the Node.js Backend Server
 
 ```bash
 cd Mirae-Backend
@@ -450,7 +452,18 @@ curl http://localhost:5000/health
 # → {"message":"Mirae Backend is running perfectly! 🚀"}
 ```
 
-### 5. Start the Frontend Dev Server
+### 5. Start the Python ML Microservice
+
+Open a new terminal window:
+```bash
+cd Mirae-Classifier
+.\venv\Scripts\activate   # On Windows
+uvicorn main:app --host 0.0.0.0 --port 8000
+```
+
+The ML classification service will start on `http://localhost:8000`.
+
+### 6. Start the Frontend Dev Server
 
 ```bash
 # From the project root
@@ -459,7 +472,7 @@ npm run dev
 
 The frontend will be available at `http://localhost:5173`.
 
-### 6. Load the Chrome Extension
+### 7. Load the Chrome Extension
 
 1. Open `chrome://extensions` in Google Chrome
 2. Enable **Developer Mode** (toggle in the top-right corner)
