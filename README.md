@@ -12,10 +12,11 @@
 <p align="center">
   <img src="https://img.shields.io/badge/Frontend-React%20+%20Vite-61DAFB?style=for-the-badge&logo=react&logoColor=white" />
   <img src="https://img.shields.io/badge/Backend-Node.js%20+%20Express-339933?style=for-the-badge&logo=node.js&logoColor=white" />
+  <img src="https://img.shields.io/badge/Microservice-Python%20FastAPI-009688?style=for-the-badge&logo=fastapi&logoColor=white" />
+  <img src="https://img.shields.io/badge/Realtime-Socket.io-010101?style=for-the-badge&logo=socket.io&logoColor=white" />
   <img src="https://img.shields.io/badge/Database-MongoDB%20Atlas-47A248?style=for-the-badge&logo=mongodb&logoColor=white" />
-  <img src="https://img.shields.io/badge/AI-Groq%20Llama%203.3-FF6B35?style=for-the-badge" />
+  <img src="https://img.shields.io/badge/ML-Scikit--Learn%20+%20Groq-FF6B35?style=for-the-badge" />
   <img src="https://img.shields.io/badge/Extension-Chrome%20MV3-4285F4?style=for-the-badge&logo=googlechrome&logoColor=white" />
-  <img src="https://img.shields.io/badge/Language-TypeScript-3178C6?style=for-the-badge&logo=typescript&logoColor=white" />
 </p>
 
 <p align="center">
@@ -51,15 +52,16 @@ Mirae doesn't just store your saved jobs — it **understands** them. Using Groq
 | **Manual Entry** | Add opportunities manually with a structured form when not using the extension |
 | **Card-Level Actions** | Delete records directly from the UI with instant MongoDB sync |
 
-### 🤖 AI-Powered Analysis
+### 🤖 Autonomous Event-Driven Architecture
 
 | Capability | Description |
 |---|---|
-| **Intelligent Extraction** | Automatically extracts title, company, location, salary, deadline, and description from raw page text |
-| **Smart Categorization** | Routes opportunities into `Jobs`, `Hackathons`, or `Others` using keyword intelligence and context analysis |
-| **Skill Matching** | Compares required skills against your uploaded resume using a comprehensive 40+ skill library |
-| **Match Scoring** | Generates a personalized 0–100 match score based on your resume profile |
-| **Pipeline Status Inference** | Detects whether you've already applied, been rejected, received an offer, or are still browsing |
+| **Gmail Pub/Sub Webhooks** | Automatically ingests recruiter emails in real-time via Google Cloud Pub/Sub, eliminating the need for slow API polling |
+| **Local ML Microservice** | A standalone Python FastAPI service running a custom Scikit-Learn TF-IDF model for classification, ensuring high performance and 100% data privacy (no sending emails to third-party LLMs) |
+| **Real-time State Sync** | Uses Socket.io WebSockets to instantly push database mutations and new applications from the backend directly to the React dashboard without refreshing |
+| **Background Cron Jobs** | Node-cron service autonomously scans the database to detect stale applications, provision calendar reminders, and manage your pipeline in the background |
+| **Intelligent Extraction** | Automatically extracts title, company, location, salary, deadline, and description from raw page text or emails |
+| **Skill Matching** | Compares required skills against your uploaded resume using a comprehensive 40+ skill library (Powered by Groq Llama 3) |
 
 ### 📊 Analytics & Insights
 
