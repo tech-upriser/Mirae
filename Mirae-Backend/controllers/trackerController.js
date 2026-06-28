@@ -633,18 +633,6 @@ exports.createJob = async (req, res) => {
       updatedAt: createdAt
     };
 
-    console.log("💾 Saving job:", {
-      title: finalData.title,
-      company: finalData.company,
-      matchScore: finalData.matchScore,
-      skillsCount: finalData.skills?.all?.length,
-      matchedCount: finalData.skills?.matched?.length,
-      missingCount: finalData.skills?.missing?.length,
-      category: finalData.category,
-      status: finalData.status,
-      deadline: finalData.deadline
-    });
-
     const existingJob = await Job.findOne({
       userId: req.user.id,
       url: finalData.url,
