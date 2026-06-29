@@ -588,19 +588,19 @@ export function CalendarView() {
   };
 
   return (
-    <div className="ml-60 min-h-screen bg-[#E5E5E5]">
-      <div className="bg-white border-b border-[#E5E5E5] sticky top-0 z-20 shadow-sm">
+    <div className="ml-60 min-h-screen bg-background">
+      <div className="bg-card border-b border-border sticky top-0 z-20 shadow-sm">
         <div className="px-8 pt-6 pb-6">
           <div className="flex items-center justify-between">
             <div className="flex min-w-0 flex-1 items-center gap-6">
               <div className="min-w-0">
                 <h1
-                  className="text-3xl font-bold text-[#000000]"
+                  className="text-3xl font-bold text-foreground"
                   style={{ fontFamily: 'var(--font-display)' }}
                 >
                   Calendar & Reminders
                 </h1>
-                <p className="text-sm text-[#14213D] opacity-70">
+                <p className="text-sm text-card-foreground opacity-70">
                   Add reminders only for today or upcoming dates. Your upcoming events and past history update automatically.
                 </p>
               </div>
@@ -609,7 +609,7 @@ export function CalendarView() {
             <div className="ml-6 flex items-center gap-3">
               <button
                 onClick={() => openAddEventModal(undefined, false)}
-                className="flex items-center gap-2 rounded-md bg-[#FCA311] px-6 py-3 font-semibold text-[#000000] shadow-md transition-all hover:bg-[#fdb748] hover:shadow-lg"
+                className="flex items-center gap-2 rounded-md bg-[#FCA311] px-6 py-3 font-semibold text-foreground shadow-md transition-all hover:bg-[#fdb748] hover:shadow-lg"
               >
                 {addEventButtonLabel}
               </button>
@@ -630,18 +630,18 @@ export function CalendarView() {
             initial={{ opacity: 0, x: -20 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.4, delay: 0.1 }}
-            className="bg-white rounded-xl p-8 shadow-sm border border-[#E5E5E5]"
+            className="bg-card rounded-xl p-8 shadow-sm border border-border"
           >
             <div className="flex items-center justify-between mb-8">
               <div className="relative">
                 <button
                   onClick={() => setShowMonthYearPicker(!showMonthYearPicker)}
-                  className="flex items-center gap-2 px-4 py-2 hover:bg-[#E5E5E5] rounded-lg transition-colors"
+                  className="flex items-center gap-2 px-4 py-2 hover:bg-background rounded-lg transition-colors"
                 >
-                  <h2 className="text-2xl font-bold text-[#14213D]" style={{ fontFamily: 'var(--font-display)' }}>
+                  <h2 className="text-2xl font-bold text-card-foreground" style={{ fontFamily: 'var(--font-display)' }}>
                     {monthNames[currentMonth]} {currentYear}
                   </h2>
-                  <ChevronDown className="w-5 h-5 text-[#14213D]" />
+                  <ChevronDown className="w-5 h-5 text-card-foreground" />
                 </button>
 
                 <AnimatePresence>
@@ -655,27 +655,27 @@ export function CalendarView() {
                         initial={{ opacity: 0, y: -10 }}
                         animate={{ opacity: 1, y: 0 }}
                         exit={{ opacity: 0, y: -10 }}
-                        className="absolute top-full left-0 mt-2 bg-white rounded-lg shadow-lg border border-[#E5E5E5] p-4 z-30 w-80"
+                        className="absolute top-full left-0 mt-2 bg-card rounded-lg shadow-lg border border-border p-4 z-30 w-80"
                       >
                         <div className="mb-4 flex items-center justify-between">
                           <button
                             onClick={() => setCurrentYear((year) => year - 1)}
-                            className="rounded-lg p-1 text-[#14213D] hover:bg-[#E5E5E5]"
+                            className="rounded-lg p-1 text-card-foreground hover:bg-background"
                             aria-label="Previous year"
                           >
                             <ChevronLeft className="h-4 w-4" />
                           </button>
-                          <span className="text-sm font-semibold text-[#14213D]">{currentYear}</span>
+                          <span className="text-sm font-semibold text-card-foreground">{currentYear}</span>
                           <button
                             onClick={() => setCurrentYear((year) => year + 1)}
-                            className="rounded-lg p-1 text-[#14213D] hover:bg-[#E5E5E5]"
+                            className="rounded-lg p-1 text-card-foreground hover:bg-background"
                             aria-label="Next year"
                           >
                             <ChevronRight className="h-4 w-4" />
                           </button>
                         </div>
                         <div>
-                          <label className="text-xs font-semibold text-[#14213D] mb-3 block">Select Month</label>
+                          <label className="text-xs font-semibold text-card-foreground mb-3 block">Select Month</label>
                           <div className="grid grid-cols-3 gap-2">
                             {monthNames.map((month, index) => (
                               <button
@@ -686,8 +686,8 @@ export function CalendarView() {
                                 }}
                                 className={`px-3 py-2 rounded-lg text-sm font-medium transition-colors ${
                                   currentMonth === index
-                                    ? 'bg-[#FCA311] text-[#000000]'
-                                    : 'bg-[#E5E5E5] text-[#14213D] hover:bg-[#FCA311] hover:bg-opacity-20'
+                                    ? 'bg-[#FCA311] text-foreground'
+                                    : 'bg-background text-card-foreground hover:bg-[#FCA311] hover:bg-opacity-20'
                                 }`}
                               >
                                 {month.slice(0, 3)}
@@ -705,7 +705,7 @@ export function CalendarView() {
 
             <div className="grid grid-cols-7 gap-2">
               {daysOfWeek.map((day) => (
-                <div key={day} className="text-center text-sm font-semibold text-[#14213D] pb-3">
+                <div key={day} className="text-center text-sm font-semibold text-card-foreground pb-3">
                   {day}
                 </div>
               ))}
@@ -737,18 +737,18 @@ export function CalendarView() {
                       }}
                       className={`
                         aspect-square border rounded-xl p-3 relative transition-all cursor-pointer
-                        ${!isToday && !isClash && !isSelected && !isPast ? 'bg-white border-[#E5E5E5] hover:border-[#FCA311] hover:shadow-sm' : ''}
-                        ${isToday ? 'bg-[#E0F2FE] border-[#E5E5E5] shadow-sm relative' : ''}
+                        ${!isToday && !isClash && !isSelected && !isPast ? 'bg-card border-border hover:border-[#FCA311] hover:shadow-sm' : ''}
+                        ${isToday ? 'bg-[#E0F2FE] border-border shadow-sm relative' : ''}
                         ${isClash && !isToday ? 'bg-[#FEF2F2] border-[#B42318] border-2 shadow-[0_0_0_3px_rgba(180,35,24,0.16)]' : ''}
-                        ${isSelected && !isToday ? 'bg-white border-[#14213D] border-2 shadow-lg' : ''}
+                        ${isSelected && !isToday ? 'bg-card border-[#14213D] border-2 shadow-lg' : ''}
                         ${isClash ? 'ring-4 ring-[#B42318]/20' : ''}
-                        ${isPast ? 'bg-[#F3F4F6] border-[#D0D5DD] opacity-65 grayscale' : ''}
+                        ${isPast ? 'bg-[#F3F4F6] border-border opacity-65 grayscale' : ''}
                       `}
                     >
                       {isToday && (
                         <div className="absolute top-2 left-2 h-7 w-7 rounded-full bg-[#378ADD] -z-0"></div>
                       )}
-                      <span className={`relative z-10 text-sm font-semibold ${isToday ? 'text-white' : 'text-[#14213D]'}`}>
+                      <span className={`relative z-10 text-sm font-semibold ${isToday ? 'text-white' : 'text-card-foreground'}`}>
                         {date.getDate()}
                       </span>
 
@@ -765,7 +765,7 @@ export function CalendarView() {
                             );
                           })}
                           {dayEvents.length > 3 && (
-                            <span className="text-[8px] text-[#6b7280] font-medium">+{dayEvents.length - 3}</span>
+                            <span className="text-[8px] text-muted-foreground font-medium">+{dayEvents.length - 3}</span>
                           )}
                         </div>
                       )}
@@ -775,10 +775,10 @@ export function CalendarView() {
               )}
             </div>
 
-            <div className="mt-6 pt-6 border-t border-[#E5E5E5] space-y-4">
+            <div className="mt-6 pt-6 border-t border-border space-y-4">
 
               {calendarMessage && (
-                <div className="rounded-lg border border-[#D0D5DD] bg-white px-3 py-2 text-sm font-medium text-[#14213D]">
+                <div className="rounded-lg border border-border bg-card px-3 py-2 text-sm font-medium text-card-foreground">
                   {calendarMessage}
                 </div>
               )}
@@ -786,23 +786,23 @@ export function CalendarView() {
               <div className="flex items-center gap-6">
                 <div className="flex items-center gap-2">
                   <div className="w-4 h-4 bg-[#378ADD] rounded-full"></div>
-                  <span className="text-sm text-[#14213D]">Today</span>
+                  <span className="text-sm text-card-foreground">Today</span>
                 </div>
                 <div className="flex items-center gap-2">
                   <div className="w-4 h-4 rounded border-2 border-[#B42318] shadow-[0_0_0_3px_rgba(180,35,24,0.16)]"></div>
-                  <span className="text-sm text-[#14213D]">Time Clash</span>
+                  <span className="text-sm text-card-foreground">Time Clash</span>
                 </div>
                 <div className="flex items-center gap-2">
                   <div className="w-3 h-3 bg-[#B42318] rounded-full"></div>
-                  <span className="text-xs text-[#14213D]">Deadline</span>
+                  <span className="text-xs text-card-foreground">Deadline</span>
                 </div>
                 <div className="flex items-center gap-2">
                   <div className="w-3 h-3 bg-[#067647] rounded-full"></div>
-                  <span className="text-xs text-[#14213D]">Interview</span>
+                  <span className="text-xs text-card-foreground">Interview</span>
                 </div>
                 <div className="flex items-center gap-2">
                   <div className="w-3 h-3 bg-[#1E40AF] rounded-full"></div>
-                  <span className="text-xs text-[#14213D]">Follow-up</span>
+                  <span className="text-xs text-card-foreground">Follow-up</span>
                 </div>
               </div>
             </div>
@@ -815,7 +815,7 @@ export function CalendarView() {
                 animate={{ opacity: 1, scale: 1 }}
                 exit={{ opacity: 0, scale: 0.95 }}
                 transition={{ duration: 0.2 }}
-                className="fixed inset-0 z-[99999] flex items-center justify-center bg-white/20 p-8"
+                className="fixed inset-0 z-[99999] flex items-center justify-center bg-card/20 p-8"
                 style={{ backdropFilter: 'blur(12px)', WebkitBackdropFilter: 'blur(12px)' }}
                 onClick={() => {
                   setSelectedDate(null);
@@ -824,14 +824,14 @@ export function CalendarView() {
               >
                 <motion.div
                   onClick={(event) => event.stopPropagation()}
-                  className="bg-white rounded-xl p-6 shadow-2xl border border-[#E5E5E5] max-w-md w-full max-h-[80vh] overflow-y-auto"
+                  className="bg-card rounded-xl p-6 shadow-2xl border border-border max-w-md w-full max-h-[80vh] overflow-y-auto"
                 >
                   <div className="flex items-center justify-between mb-5">
                     <div>
-                      <h3 className="text-xl font-bold text-[#14213D]" style={{ fontFamily: 'var(--font-display)' }}>
+                      <h3 className="text-xl font-bold text-card-foreground" style={{ fontFamily: 'var(--font-display)' }}>
                         {selectedDetailEvent ? 'Event Details' : `${monthNames[selectedDate.getMonth()]} ${selectedDate.getDate()}, ${selectedDate.getFullYear()}`}
                       </h3>
-                      <p className="text-sm text-[#6b7280] mt-1">
+                      <p className="text-sm text-muted-foreground mt-1">
                         {selectedDetailEvent
                           ? formatDateLabel(selectedDetailEvent.date)
                           : selectedDateEvents.length === 0
@@ -844,25 +844,25 @@ export function CalendarView() {
                         setSelectedDate(null);
                         setSelectedDetailEventId(null);
                       }}
-                      className="p-2 hover:bg-[#E5E5E5] rounded-lg transition-colors"
+                      className="p-2 hover:bg-background rounded-lg transition-colors"
                     >
-                      <X className="w-5 h-5 text-[#14213D]" />
+                      <X className="w-5 h-5 text-card-foreground" />
                     </button>
                   </div>
 
                   {selectedDateEvents.length === 0 ? (
                     <div className="text-center py-12">
-                      <div className="w-16 h-16 bg-[#E5E5E5] rounded-full flex items-center justify-center mx-auto mb-4">
-                        <CalendarIcon className="w-8 h-8 text-[#14213D] opacity-40" />
+                      <div className="w-16 h-16 bg-background rounded-full flex items-center justify-center mx-auto mb-4">
+                        <CalendarIcon className="w-8 h-8 text-card-foreground opacity-40" />
                       </div>
                       {isPastDate(selectedDate) ? (
-                        <p className="text-[#6b7280] mb-4">You can&apos;t add events on this day.</p>
+                        <p className="text-muted-foreground mb-4">You can&apos;t add events on this day.</p>
                       ) : (
                         <>
-                          <p className="text-[#6b7280] mb-4">No reminders for this day</p>
+                          <p className="text-muted-foreground mb-4">No reminders for this day</p>
                           <button
                             onClick={() => openAddEventModal(selectedDate, true)}
-                            className="px-4 py-2 bg-[#FCA311] text-[#000000] rounded-lg font-semibold hover:bg-[#fdb748] transition-all text-sm"
+                            className="px-4 py-2 bg-[#FCA311] text-foreground rounded-lg font-semibold hover:bg-[#fdb748] transition-all text-sm"
                           >
                             + Add Event
                           </button>
@@ -876,12 +876,12 @@ export function CalendarView() {
                         return (
                           <div
                             key={event.id}
-                            className="rounded-lg border border-[#E5E5E5] p-4 transition-colors hover:border-[#FCA311]"
+                            className="rounded-lg border border-border p-4 transition-colors hover:border-[#FCA311]"
                           >
                             <div className="flex items-start justify-between mb-3">
                               <div className="flex-1">
-                                <div className="font-bold text-base text-[#14213D] mb-1">{event.title}</div>
-                                <div className="text-sm text-[#6b7280]">
+                                <div className="font-bold text-base text-card-foreground mb-1">{event.title}</div>
+                                <div className="text-sm text-muted-foreground">
                                   {event.type === 'interview' ? (
                                     <>
                                       {getEventDisplayTime(event)} <span className="text-xs">({event.duration})</span>
@@ -890,25 +890,25 @@ export function CalendarView() {
                                     getEventDisplayTime(event)
                                   )}
                                 </div>
-                                <div className="mt-1 text-xs font-semibold text-[#98A2B3]">
+                                <div className="mt-1 text-xs font-semibold text-muted-foreground">
                                   Status: {getModalStatusLabel(event)}
                                 </div>
                                 {selectedDetailEvent && (
-                                  <div className="mt-4 grid gap-3 text-sm text-[#14213D]">
+                                  <div className="mt-4 grid gap-3 text-sm text-card-foreground">
                                     <div>
-                                      <div className="text-xs font-semibold uppercase tracking-wide text-[#98A2B3]">Date</div>
+                                      <div className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">Date</div>
                                       <div>{formatDateLabel(event.date)}</div>
                                     </div>
                                     <div>
-                                      <div className="text-xs font-semibold uppercase tracking-wide text-[#98A2B3]">Title</div>
+                                      <div className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">Title</div>
                                       <div>{event.title}</div>
                                     </div>
                                     <div>
-                                      <div className="text-xs font-semibold uppercase tracking-wide text-[#98A2B3]">Type</div>
+                                      <div className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">Type</div>
                                       <div>{event.type === 'interview' ? 'Interview' : event.type === 'deadline' ? 'Deadline' : 'Follow-up'}</div>
                                     </div>
                                     <div>
-                                      <div className="text-xs font-semibold uppercase tracking-wide text-[#98A2B3]">Time</div>
+                                      <div className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">Time</div>
                                       <div>
                                         {event.type === 'interview'
                                           ? `${getEventDisplayTime(event)} (${event.duration})`
@@ -916,11 +916,11 @@ export function CalendarView() {
                                       </div>
                                     </div>
                                     <div>
-                                      <div className="text-xs font-semibold uppercase tracking-wide text-[#98A2B3]">Location</div>
+                                      <div className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">Location</div>
                                       <div>{event.location || 'Not specified'}</div>
                                     </div>
                                     <div>
-                                      <div className="text-xs font-semibold uppercase tracking-wide text-[#98A2B3]">{getLinkLabel(event.type)}</div>
+                                      <div className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">{getLinkLabel(event.type)}</div>
                                       {event.applyLink ? (
                                         <a
                                           href={event.applyLink}
@@ -936,7 +936,7 @@ export function CalendarView() {
                                       )}
                                     </div>
                                     <div>
-                                      <div className="text-xs font-semibold uppercase tracking-wide text-[#98A2B3]">Description</div>
+                                      <div className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">Description</div>
                                       <div className="whitespace-pre-wrap">{event.description || 'No description added.'}</div>
                                     </div>
                                   </div>
@@ -964,10 +964,10 @@ export function CalendarView() {
                               <button
                                 type="button"
                                 onClick={() => openEditEventModal(event)}
-                                className="p-2 hover:bg-[#E5E5E5] rounded-lg transition-colors"
+                                className="p-2 hover:bg-background rounded-lg transition-colors"
                                 title="Edit"
                               >
-                                <Edit2 className="w-4 h-4 text-[#14213D]" />
+                                <Edit2 className="w-4 h-4 text-card-foreground" />
                               </button>
                               <button
                                 type="button"
@@ -984,7 +984,7 @@ export function CalendarView() {
                       {!isPastDate(selectedDate) && !selectedDetailEvent && (
                         <button
                           onClick={() => openAddEventModal(selectedDate, true)}
-                          className="w-full rounded-lg border border-dashed border-[#FCA311] px-4 py-3 text-sm font-semibold text-[#14213D] transition-colors hover:bg-[#FFF5E8]"
+                          className="w-full rounded-lg border border-dashed border-[#FCA311] px-4 py-3 text-sm font-semibold text-card-foreground transition-colors hover:bg-[#FFF5E8]"
                         >
                           + Add another event on {formatDateLabel(selectedDate)}
                         </button>
@@ -1001,32 +1001,32 @@ export function CalendarView() {
               initial={{ opacity: 0, x: 20 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.4, delay: 0.2 }}
-              className="bg-white rounded-xl p-6 shadow-sm border border-[#E5E5E5]"
+              className="bg-card rounded-xl p-6 shadow-sm border border-border"
             >
               <div className="flex items-center justify-between mb-5">
-                <h2 className="text-lg font-bold text-[#14213D]" style={{ fontFamily: 'var(--font-display)' }}>
+                <h2 className="text-lg font-bold text-card-foreground" style={{ fontFamily: 'var(--font-display)' }}>
                   Weekly Summary
                 </h2>
-                <span className="text-xs font-semibold uppercase tracking-wide text-[#667085]">
+                <span className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">
                   {formatDateLabel(weekStart)} - {formatDateLabel(weekEnd)}
                 </span>
               </div>
 
               <div className="space-y-3">
-                <div className="flex items-center justify-between py-2 border-b border-[#E5E5E5]">
-                  <span className="text-sm text-[#14213D]">Total Events</span>
+                <div className="flex items-center justify-between py-2 border-b border-border">
+                  <span className="text-sm text-card-foreground">Total Events</span>
                   <span className="text-xl font-bold text-[#FCA311]">{weekStats.total}</span>
                 </div>
-                <div className="flex items-center justify-between py-2 border-b border-[#E5E5E5]">
-                  <span className="text-sm text-[#14213D]">Interviews</span>
+                <div className="flex items-center justify-between py-2 border-b border-border">
+                  <span className="text-sm text-card-foreground">Interviews</span>
                   <span className="text-lg font-bold text-[#067647]">{weekStats.interviews}</span>
                 </div>
-                <div className="flex items-center justify-between py-2 border-b border-[#E5E5E5]">
-                  <span className="text-sm text-[#14213D]">Deadlines</span>
+                <div className="flex items-center justify-between py-2 border-b border-border">
+                  <span className="text-sm text-card-foreground">Deadlines</span>
                   <span className="text-lg font-bold text-[#B42318]">{weekStats.deadlines}</span>
                 </div>
-                <div className="flex items-center justify-between py-2 border-b border-[#E5E5E5]">
-                  <span className="text-sm text-[#14213D]">Follow-ups</span>
+                <div className="flex items-center justify-between py-2 border-b border-border">
+                  <span className="text-sm text-card-foreground">Follow-ups</span>
                   <span className="text-lg font-bold text-[#1E40AF]">{weekStats.followups}</span>
                 </div>
               </div>
@@ -1036,19 +1036,19 @@ export function CalendarView() {
               initial={{ opacity: 0, x: 20 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.4, delay: 0.25 }}
-              className="bg-white rounded-xl p-6 shadow-sm border border-[#E5E5E5]"
+              className="bg-card rounded-xl p-6 shadow-sm border border-border"
             >
               <div className="mb-5">
-                <h2 className="text-lg font-bold text-[#14213D]" style={{ fontFamily: 'var(--font-display)' }}>
+                <h2 className="text-lg font-bold text-card-foreground" style={{ fontFamily: 'var(--font-display)' }}>
                   Upcoming Agenda
                 </h2>
               </div>
 
               <div className="max-h-[460px] space-y-4 overflow-y-auto pr-1">
                 <div className="space-y-3">
-                  <div className="text-xs font-semibold uppercase tracking-wide text-[#667085]">Upcoming Events</div>
+                  <div className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">Upcoming Events</div>
                   {futureAgenda.length === 0 ? (
-                    <div className="rounded-xl border border-dashed border-[#D0D5DD] px-4 py-5 text-sm text-[#667085]">
+                    <div className="rounded-xl border border-dashed border-border px-4 py-5 text-sm text-muted-foreground">
                       No upcoming events yet.
                     </div>
                   ) : (
@@ -1061,7 +1061,7 @@ export function CalendarView() {
                           initial={{ opacity: 0, y: 10 }}
                           animate={{ opacity: 1, y: 0 }}
                           transition={{ duration: 0.3, delay: 0.3 + index * 0.05 }}
-                          className="border rounded-xl p-4 transition-all border-[#E5E5E5] bg-white hover:border-[#FCA311] hover:shadow-sm cursor-pointer"
+                          className="border rounded-xl p-4 transition-all border-border bg-card hover:border-[#FCA311] hover:shadow-sm cursor-pointer"
                         >
                           <div className="flex items-start justify-between mb-3">
                             <div className="flex-1">
@@ -1070,8 +1070,8 @@ export function CalendarView() {
                                   {task.relativeLabel}
                                 </div>
                               </div>
-                              <div className="text-sm font-semibold text-[#14213D]">{task.task}</div>
-                              <div className="mt-1 text-xs text-[#667085]">
+                              <div className="text-sm font-semibold text-card-foreground">{task.task}</div>
+                              <div className="mt-1 text-xs text-muted-foreground">
                                 {task.dateLabel} • {task.timeLabel}
                               </div>
                             </div>
@@ -1088,7 +1088,7 @@ export function CalendarView() {
                               setSelectedDetailEventId(task.id);
                               setSelectedDate(startOfDay(task.date));
                             }}
-                            className="w-full px-3 py-2.5 rounded-lg text-xs font-bold transition-all flex items-center justify-center gap-2 bg-[#FCA311] text-[#000000] hover:bg-[#fdb748] shadow-sm hover:shadow-md"
+                            className="w-full px-3 py-2.5 rounded-lg text-xs font-bold transition-all flex items-center justify-center gap-2 bg-[#FCA311] text-foreground hover:bg-[#fdb748] shadow-sm hover:shadow-md"
                           >
                             <ExternalLink className="w-4 h-4" />
                             {task.action}
@@ -1100,9 +1100,9 @@ export function CalendarView() {
                 </div>
 
                 <div className="space-y-3">
-                  <div className="text-xs font-semibold uppercase tracking-wide text-[#667085]">Past activity</div>
+                  <div className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">Past activity</div>
                   {pastAgenda.length === 0 ? (
-                    <div className="rounded-xl border border-dashed border-[#D0D5DD] px-4 py-5 text-sm text-[#667085]">
+                    <div className="rounded-xl border border-dashed border-border px-4 py-5 text-sm text-muted-foreground">
                       No past events yet.
                     </div>
                   ) : (
@@ -1116,7 +1116,7 @@ export function CalendarView() {
                           initial={{ opacity: 0, y: 10 }}
                           animate={{ opacity: 1, y: 0 }}
                           transition={{ duration: 0.3, delay: 0.3 + index * 0.05 }}
-                          className="border rounded-xl p-4 transition-all border-[#E5E5E5] bg-[#f9fafb] opacity-60"
+                          className="border rounded-xl p-4 transition-all border-border bg-[#f9fafb] opacity-60"
                         >
                           <div className="flex items-start justify-between mb-3">
                             <div className="flex-1">
@@ -1138,7 +1138,7 @@ export function CalendarView() {
                                 )}
                               </div>
                               <div className="text-sm font-semibold text-[#9ca3af]">{task.task}</div>
-                              <div className="mt-1 text-xs text-[#98A2B3]">
+                              <div className="mt-1 text-xs text-muted-foreground">
                                 {task.dateLabel} • {task.timeLabel}
                               </div>
                             </div>
@@ -1147,7 +1147,7 @@ export function CalendarView() {
                             </span>
                           </div>
                           <button
-                            className="w-full px-3 py-2.5 rounded-lg text-xs font-bold transition-all flex items-center justify-center gap-2 bg-[#E5E5E5] text-[#9ca3af] cursor-not-allowed"
+                            className="w-full px-3 py-2.5 rounded-lg text-xs font-bold transition-all flex items-center justify-center gap-2 bg-background text-[#9ca3af] cursor-not-allowed"
                             disabled
                           >
                             {isCompleted ? <Check className="w-4 h-4" /> : <X className="w-4 h-4" />}
@@ -1171,7 +1171,7 @@ export function CalendarView() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 z-[100000] flex items-center justify-center overflow-y-auto bg-white/20 p-6"
+            className="fixed inset-0 z-[100000] flex items-center justify-center overflow-y-auto bg-card/20 p-6"
             style={{ backdropFilter: 'blur(12px)', WebkitBackdropFilter: 'blur(12px)' }}
             onClick={() => setShowAddEventModal(false)}
           >
@@ -1180,51 +1180,51 @@ export function CalendarView() {
               initial={{ scale: 0.97, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
               exit={{ scale: 0.97, opacity: 0 }}
-              className="bg-white rounded-xl shadow-2xl border border-[#E5E5E5] max-w-2xl w-full max-h-[85vh] overflow-y-auto p-6"
+              className="bg-card rounded-xl shadow-2xl border border-border max-w-2xl w-full max-h-[85vh] overflow-y-auto p-6"
             >
               <div className="flex items-center justify-between mb-5">
                 <div>
-                  <h3 className="text-xl font-bold text-[#14213D]" style={{ fontFamily: 'var(--font-display)' }}>
+                  <h3 className="text-xl font-bold text-card-foreground" style={{ fontFamily: 'var(--font-display)' }}>
                     {editingEventId ? 'Edit Event' : 'Add Event'}
                   </h3>
-                  <p className="text-sm text-[#6b7280]">
+                  <p className="text-sm text-muted-foreground">
                     {editingEventId ? 'Update the date, time, or details for this event.' : 'Choose the date, time, and details before saving.'}
                   </p>
                 </div>
                 <button
                   onClick={() => setShowAddEventModal(false)}
-                  className="p-2 rounded-lg hover:bg-[#E5E5E5] transition-colors"
+                  className="p-2 rounded-lg hover:bg-background transition-colors"
                 >
-                  <X className="w-5 h-5 text-[#14213D]" />
+                  <X className="w-5 h-5 text-card-foreground" />
                 </button>
               </div>
 
               <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
                 <div className="space-y-3">
-                  <label className="text-sm font-semibold text-[#14213D]">Date</label>
+                  <label className="text-sm font-semibold text-card-foreground">Date</label>
                   <input
                     type="date"
                     value={newEventDate}
                     min={formatDateInputValue(today)}
                     disabled={lockNewEventDate}
                     onChange={(event) => setNewEventDate(event.target.value)}
-                    className="w-full rounded-xl border border-[#E5E5E5] px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-[#FCA311] disabled:bg-[#F8FAFC] disabled:text-[#667085]"
+                    className="w-full rounded-xl border border-border px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-[#FCA311] disabled:bg-[#F8FAFC] disabled:text-muted-foreground"
                   />
                   {lockNewEventDate && (
-                    <p className="text-xs text-[#667085]">Using the date you selected on the calendar.</p>
+                    <p className="text-xs text-muted-foreground">Using the date you selected on the calendar.</p>
                   )}
                 </div>
                 <div className="space-y-3">
-                  <label className="text-sm font-semibold text-[#14213D]">Title</label>
+                  <label className="text-sm font-semibold text-card-foreground">Title</label>
                   <input
                     value={newEventTitle}
                     onChange={(event) => setNewEventTitle(event.target.value)}
-                    className="w-full rounded-xl border border-[#E5E5E5] px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-[#FCA311]"
+                    className="w-full rounded-xl border border-border px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-[#FCA311]"
                     placeholder="Event title"
                   />
                 </div>
                 <div className="space-y-3">
-                  <label className="text-sm font-semibold text-[#14213D]">Type</label>
+                  <label className="text-sm font-semibold text-card-foreground">Type</label>
                   <select
                     value={newEventType}
                     onChange={(event) => {
@@ -1241,7 +1241,7 @@ export function CalendarView() {
                         setNewEventEnd('11:59 PM');
                       }
                     }}
-                    className="w-full rounded-xl border border-[#E5E5E5] px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-[#FCA311]"
+                    className="w-full rounded-xl border border-border px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-[#FCA311]"
                   >
                     <option value="deadline">Deadline</option>
                     <option value="interview">Interview</option>
@@ -1252,39 +1252,39 @@ export function CalendarView() {
                 {newEventType === 'interview' ? (
                   <>
                     <div className="space-y-3">
-                      <label className="text-sm font-semibold text-[#14213D]">Start Time</label>
+                      <label className="text-sm font-semibold text-card-foreground">Start Time</label>
                       <input
                         value={newEventStart}
                         onChange={(event) => setNewEventStart(event.target.value)}
-                        className="w-full rounded-xl border border-[#E5E5E5] px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-[#FCA311]"
+                        className="w-full rounded-xl border border-border px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-[#FCA311]"
                         placeholder="09:00 AM"
                       />
                     </div>
                     <div className="space-y-3">
-                      <label className="text-sm font-semibold text-[#14213D]">End Time</label>
+                      <label className="text-sm font-semibold text-card-foreground">End Time</label>
                       <input
                         value={newEventEnd}
                         onChange={(event) => setNewEventEnd(event.target.value)}
-                        className="w-full rounded-xl border border-[#E5E5E5] px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-[#FCA311]"
+                        className="w-full rounded-xl border border-border px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-[#FCA311]"
                         placeholder="10:00 AM"
                       />
                     </div>
                   </>
                 ) : newEventType === 'deadline' ? (
                   <div className="space-y-3 md:col-span-2">
-                    <label className="text-sm font-semibold text-[#14213D]">Due Time</label>
+                    <label className="text-sm font-semibold text-card-foreground">Due Time</label>
                     <input
                       value={newEventEnd}
                       onChange={(event) => setNewEventEnd(event.target.value)}
-                      className="w-full rounded-xl border border-[#E5E5E5] px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-[#FCA311]"
+                      className="w-full rounded-xl border border-border px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-[#FCA311]"
                       placeholder="11:59 PM"
                     />
-                    <p className="text-xs text-[#667085]">
+                    <p className="text-xs text-muted-foreground">
                       Dashboard deadlines can fill this automatically, but manual deadlines need a due time.
                     </p>
                   </div>
                 ) : (
-                  <div className="rounded-xl border border-[#FCA311]/30 bg-[#FFF7E8] px-4 py-3 text-sm text-[#14213D] md:col-span-2">
+                  <div className="rounded-xl border border-[#FCA311]/30 bg-[#FFF7E8] px-4 py-3 text-sm text-card-foreground md:col-span-2">
                     Follow-ups are saved as date reminders due by 11:59 PM.
                   </div>
                 )}
@@ -1292,29 +1292,29 @@ export function CalendarView() {
 
               <div className="space-y-4 mt-4">
                 <div>
-                  <label className="text-sm font-semibold text-[#14213D]">Location</label>
+                  <label className="text-sm font-semibold text-card-foreground">Location</label>
                   <input
                     value={newEventLocation}
                     onChange={(event) => setNewEventLocation(event.target.value)}
-                    className="w-full rounded-xl border border-[#E5E5E5] px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-[#FCA311]"
+                    className="w-full rounded-xl border border-border px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-[#FCA311]"
                     placeholder="Location (optional)"
                   />
                 </div>
                 <div>
-                  <label className="text-sm font-semibold text-[#14213D]">{getLinkLabel(newEventType)}</label>
+                  <label className="text-sm font-semibold text-card-foreground">{getLinkLabel(newEventType)}</label>
                   <input
                     value={newEventApplyLink}
                     onChange={(event) => setNewEventApplyLink(event.target.value)}
-                    className="w-full rounded-xl border border-[#E5E5E5] px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-[#FCA311]"
+                    className="w-full rounded-xl border border-border px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-[#FCA311]"
                     placeholder={newEventType === 'deadline' ? 'https://example.com/apply' : 'https://company.com'}
                   />
                 </div>
                 <div>
-                  <label className="text-sm font-semibold text-[#14213D]">Description</label>
+                  <label className="text-sm font-semibold text-card-foreground">Description</label>
                   <textarea
                     value={newEventDescription}
                     onChange={(event) => setNewEventDescription(event.target.value)}
-                    className="w-full min-h-[120px] rounded-xl border border-[#E5E5E5] px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-[#FCA311]"
+                    className="w-full min-h-[120px] rounded-xl border border-border px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-[#FCA311]"
                     placeholder="Add more context here..."
                   />
                 </div>
@@ -1323,14 +1323,14 @@ export function CalendarView() {
               <div className="mt-6 flex items-center justify-end gap-3">
                 <button
                   onClick={() => setShowAddEventModal(false)}
-                  className="px-4 py-2 rounded-xl border border-[#E5E5E5] text-sm font-semibold text-[#14213D] hover:bg-[#F8FAFC] transition-colors"
+                  className="px-4 py-2 rounded-xl border border-border text-sm font-semibold text-card-foreground hover:bg-[#F8FAFC] transition-colors"
                 >
                   Cancel
                 </button>
                 <button
                   onClick={handleSaveEvent}
                   disabled={addingEvent}
-                  className="px-5 py-2 rounded-xl bg-[#FCA311] text-sm font-semibold text-[#000000] hover:bg-[#fdb748] transition-colors disabled:opacity-60"
+                  className="px-5 py-2 rounded-xl bg-[#FCA311] text-sm font-semibold text-foreground hover:bg-[#fdb748] transition-colors disabled:opacity-60"
                 >
                   {addingEvent ? 'Saving...' : editingEventId ? 'Save Changes' : 'Add Event'}
                 </button>
@@ -1346,7 +1346,7 @@ export function CalendarView() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 z-[100001] flex items-center justify-center bg-white/25 p-6"
+            className="fixed inset-0 z-[100001] flex items-center justify-center bg-card/25 p-6"
             style={{ backdropFilter: 'blur(12px)', WebkitBackdropFilter: 'blur(12px)' }}
             onClick={() => setEventPendingDelete(null)}
           >
@@ -1355,28 +1355,28 @@ export function CalendarView() {
               initial={{ scale: 0.97, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
               exit={{ scale: 0.97, opacity: 0 }}
-              className="w-full max-w-md rounded-2xl border border-[#E5E5E5] bg-white p-6 shadow-2xl"
+              className="w-full max-w-md rounded-2xl border border-border bg-card p-6 shadow-2xl"
             >
               <div className="mb-5 flex items-start justify-between gap-4">
                 <div>
-                  <h3 className="text-xl font-bold text-[#14213D]" style={{ fontFamily: 'var(--font-display)' }}>
+                  <h3 className="text-xl font-bold text-card-foreground" style={{ fontFamily: 'var(--font-display)' }}>
                     Delete this event?
                   </h3>
-                  <p className="mt-2 text-sm text-[#667085]">
+                  <p className="mt-2 text-sm text-muted-foreground">
                     Do you want to delete “{eventPendingDelete.title}” from your calendar?
                   </p>
                 </div>
                 <button
                   onClick={() => setEventPendingDelete(null)}
-                  className="rounded-lg p-2 transition-colors hover:bg-[#E5E5E5]"
+                  className="rounded-lg p-2 transition-colors hover:bg-background"
                 >
-                  <X className="h-5 w-5 text-[#14213D]" />
+                  <X className="h-5 w-5 text-card-foreground" />
                 </button>
               </div>
               <div className="flex justify-end gap-3">
                 <button
                   onClick={() => setEventPendingDelete(null)}
-                  className="rounded-xl border border-[#E5E5E5] px-4 py-2 text-sm font-semibold text-[#14213D] transition-colors hover:bg-[#F8FAFC]"
+                  className="rounded-xl border border-border px-4 py-2 text-sm font-semibold text-card-foreground transition-colors hover:bg-[#F8FAFC]"
                 >
                   Cancel
                 </button>

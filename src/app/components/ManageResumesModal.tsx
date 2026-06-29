@@ -127,10 +127,10 @@ export function ManageResumesModal({ onClose }: Props) {
           animate={{ scale: 1, opacity: 1, y: 0 }}
           exit={{ scale: 0.95, opacity: 0, y: 20 }}
           onClick={(e) => e.stopPropagation()}
-          className="relative z-10 flex max-h-[85vh] w-full max-w-[700px] flex-col overflow-hidden rounded-md border border-[#D4AF37] bg-white shadow-[0_20px_60px_rgba(0,0,0,0.4)]"
+          className="relative z-10 flex max-h-[85vh] w-full max-w-[700px] flex-col overflow-hidden rounded-md border border-[#D4AF37] bg-card shadow-[0_20px_60px_rgba(0,0,0,0.4)]"
         >
-          <div className="flex items-center justify-between border-b border-[#E5E5E5] p-6">
-            <h2 className="text-2xl font-bold text-[#000000]">Manage Resumes</h2>
+          <div className="flex items-center justify-between border-b border-border p-6">
+            <h2 className="text-2xl font-bold text-foreground">Manage Resumes</h2>
             <button onClick={onClose} className="p-1 text-[#FCA311] hover:text-[#fdb748]">
               <X className="h-6 w-6" />
             </button>
@@ -142,9 +142,9 @@ export function ManageResumesModal({ onClose }: Props) {
               <div 
                 onClick={() => !isUploading && fileInputRef.current?.click()}
                 className={`cursor-pointer rounded-md border-2 border-dashed p-8 text-center transition-colors 
-                  ${isUploading ? 'border-gray-300 bg-gray-50' : 'border-[#E5E5E5] hover:border-[#FCA311]'}`}
+                  ${isUploading ? 'border-gray-300 bg-gray-50' : 'border-border hover:border-[#FCA311]'}`}
               >
-                <Upload className={`mx-auto mb-3 h-8 w-8 ${isUploading ? 'animate-bounce text-gray-400' : 'text-[#14213D]'}`} />
+                <Upload className={`mx-auto mb-3 h-8 w-8 ${isUploading ? 'animate-bounce text-gray-400' : 'text-card-foreground'}`} />
                 
                 {/* Hidden File Input */}
                 <input 
@@ -155,7 +155,7 @@ export function ManageResumesModal({ onClose }: Props) {
                   onChange={handleFileChange}
                 />
 
-                <button className="mb-2 rounded bg-[#FCA311] px-6 py-2 font-semibold text-[#000000] transition-all hover:bg-[#fdb748]">
+                <button className="mb-2 rounded bg-[#FCA311] px-6 py-2 font-semibold text-foreground transition-all hover:bg-[#fdb748]">
                   {isUploading ? 'Parsing & Uploading...' : 'Upload Resume'}
                 </button>
                 <p className="text-xs text-[#73766A]">
@@ -173,7 +173,7 @@ export function ManageResumesModal({ onClose }: Props) {
 
             {/* Resume List */}
             <div className="space-y-3">
-              <h3 className="mb-3 text-sm font-semibold text-[#14213D]">Your Resume</h3>
+              <h3 className="mb-3 text-sm font-semibold text-card-foreground">Your Resume</h3>
               
               {loading ? (
                 <div className="py-8 text-center text-sm text-gray-400">Loading...</div>
@@ -182,18 +182,18 @@ export function ManageResumesModal({ onClose }: Props) {
                   initial={{ opacity: 0, y: 10 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.3 }}
-                  className="rounded-md border border-[#E5E5E5] p-4 hover:border-[#FCA311]"
+                  className="rounded-md border border-border p-4 hover:border-[#FCA311]"
                 >
                   <div className="flex items-center gap-4">
                     <div className="flex h-10 w-10 items-center justify-center rounded bg-[#FFF3D6]">
                       {resumeInfo.fileName.endsWith('.pdf') ? (
                         <FileText className="h-5 w-5 text-[#FCA311]" />
                       ) : (
-                        <File className="h-5 w-5 text-[#14213D]" />
+                        <File className="h-5 w-5 text-card-foreground" />
                       )}
                     </div>
                     <div className="min-w-0 flex-1">
-                      <div className="mb-1 truncate font-semibold text-[#000000]">{resumeInfo.fileName}</div>
+                      <div className="mb-1 truncate font-semibold text-foreground">{resumeInfo.fileName}</div>
                       <div className="flex items-center gap-2">
                         <span className="rounded bg-[#14213D] px-2 py-1 text-xs text-white">
                           Scoring Active
@@ -205,14 +205,14 @@ export function ManageResumesModal({ onClose }: Props) {
                     </div>
                     <div className="flex items-center gap-2">
                       <CheckCircle className="h-4 w-4 fill-green-500 text-white" />
-                      <button onClick={handleDelete} className="rounded p-2 hover:bg-[#E5E5E5]">
+                      <button onClick={handleDelete} className="rounded p-2 hover:bg-background">
                         <Trash2 className="h-4 w-4 text-[#E11D48]" />
                       </button>
                     </div>
                   </div>
                 </motion.div>
               ) : (
-                <div className="rounded-md border border-dashed border-[#E5E5E5] py-8 text-center">
+                <div className="rounded-md border border-dashed border-border py-8 text-center">
                   <FileText className="mx-auto mb-2 h-8 w-8 text-gray-300" />
                   <p className="text-sm text-gray-400">No resume uploaded yet.</p>
                   <p className="text-xs text-gray-400 mt-1">Upload a resume to enable Match Scoring on saved jobs.</p>

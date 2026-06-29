@@ -66,7 +66,7 @@ export function ExtensionPopup({ onClose, onJobSaved }: Props) {
         initial={{ scale: 0.9, opacity: 0 }}
         animate={{ scale: 1, opacity: 1 }}
         transition={{ type: 'spring', damping: 25, stiffness: 300 }}
-        className="w-[360px] bg-white rounded-md shadow-2xl overflow-hidden border border-[#E5E5E5]"
+        className="w-[360px] bg-card rounded-md shadow-2xl overflow-hidden border border-border"
       >
         {/* Header (Unchanged) */}
         <div className="bg-[#14213D] p-4 flex items-center justify-between">
@@ -85,34 +85,34 @@ export function ExtensionPopup({ onClose, onJobSaved }: Props) {
         {/* Form Elements (Unchanged) */}
         <div className="p-6 space-y-4">
           <div>
-            <label className="block text-sm font-semibold text-[#14213D] mb-2">Role Title</label>
+            <label className="block text-sm font-semibold text-card-foreground mb-2">Role Title</label>
             <input
               type="text"
               value={role}
               onChange={(e) => setRole(e.target.value)}
-              className="w-full px-4 py-3 border border-[#E5E5E5] rounded-md focus:outline-none focus:ring-2 focus:ring-[#FCA311] bg-white text-[#000000] font-bold text-lg"
+              className="w-full px-4 py-3 border border-border rounded-md focus:outline-none focus:ring-2 focus:ring-[#FCA311] bg-card text-foreground font-bold text-lg"
             />
           </div>
 
           <div>
-            <label className="block text-sm font-semibold text-[#14213D] mb-2">Company Name</label>
+            <label className="block text-sm font-semibold text-card-foreground mb-2">Company Name</label>
             <input
               type="text"
               value={company}
               onChange={(e) => setCompany(e.target.value)}
-              className="w-full px-4 py-3 border border-[#E5E5E5] rounded-md focus:outline-none focus:ring-2 focus:ring-[#FCA311] bg-white text-[#14213D]"
+              className="w-full px-4 py-3 border border-border rounded-md focus:outline-none focus:ring-2 focus:ring-[#FCA311] bg-card text-card-foreground"
             />
           </div>
 
           <div>
-            <label className="block text-sm font-semibold text-[#14213D] mb-2">Application Type</label>
-            <div className="flex gap-2 bg-[#E5E5E5] p-1 rounded-md">
+            <label className="block text-sm font-semibold text-card-foreground mb-2">Application Type</label>
+            <div className="flex gap-2 bg-background p-1 rounded-md">
               {(['job', 'hackathon', 'contest'] as const).map((type) => (
                 <button
                   key={type}
                   onClick={() => setSelectedType(type)}
                   className={`flex-1 py-2 px-3 rounded-md text-sm font-semibold transition-all ${
-                    selectedType === type ? 'bg-white text-[#000000] shadow-md' : 'text-[#14213D] hover:text-[#000000]'
+                    selectedType === type ? 'bg-card text-foreground shadow-md' : 'text-card-foreground hover:text-foreground'
                   }`}
                 >
                   {type.charAt(0).toUpperCase() + type.slice(1)}
@@ -126,9 +126,9 @@ export function ExtensionPopup({ onClose, onJobSaved }: Props) {
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.4, delay: 0.2 }}
-            className="bg-[#E5E5E5] bg-opacity-50 rounded-md p-4"
+            className="bg-background bg-opacity-50 rounded-md p-4"
           >
-            <h3 className="text-sm font-semibold text-[#14213D] mb-3">Detected Insights</h3>
+            <h3 className="text-sm font-semibold text-card-foreground mb-3">Detected Insights</h3>
             <div className="flex items-center justify-center mb-4">
               <div className="relative w-24 h-24">
                 <svg className="w-full h-full transform -rotate-90">
@@ -137,7 +137,7 @@ export function ExtensionPopup({ onClose, onJobSaved }: Props) {
                 </svg>
                 <div className="absolute inset-0 flex flex-col items-center justify-center">
                   <span className="text-2xl font-bold text-[#FCA311]" style={{ fontFamily: 'var(--font-display)' }}>92%</span>
-                  <span className="text-[10px] text-[#14213D]">Match</span>
+                  <span className="text-[10px] text-card-foreground">Match</span>
                 </div>
               </div>
             </div>
@@ -158,12 +158,12 @@ export function ExtensionPopup({ onClose, onJobSaved }: Props) {
             onClick={handleSave}
             disabled={isSaving}
             className={`w-full py-3 rounded-md font-bold text-base transition-all shadow-md 
-              ${isSaving ? 'bg-slate-300 text-slate-500 cursor-not-allowed' : 'bg-[#FCA311] text-[#000000] hover:bg-[#fdb748] hover:shadow-lg'}`}
+              ${isSaving ? 'bg-slate-300 text-slate-500 cursor-not-allowed' : 'bg-[#FCA311] text-foreground hover:bg-[#fdb748] hover:shadow-lg'}`}
           >
             {isSaving ? 'Saving...' : 'Save to Dashboard'}
           </button>
           
-          <button onClick={onClose} className="w-full text-sm text-[#14213D] hover:text-[#FCA311] transition-colors font-medium">
+          <button onClick={onClose} className="w-full text-sm text-card-foreground hover:text-[#FCA311] transition-colors font-medium">
             Cancel
           </button>
         </div>

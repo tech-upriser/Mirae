@@ -92,13 +92,13 @@ export function AddManualModal({ onClose, onSuccess }: Props) {
           exit={{ scale: 0.95, opacity: 0, y: 20 }}
           transition={{ type: 'spring', damping: 25, stiffness: 300 }}
           onClick={(e) => e.stopPropagation()}
-          className="relative z-10 flex max-h-[85vh] w-full max-w-[500px] flex-col overflow-hidden rounded-xl border border-[#D4AF37] bg-white shadow-[0_20px_60px_rgba(0,0,0,0.4)]"
+          className="relative z-10 flex max-h-[85vh] w-full max-w-[500px] flex-col overflow-hidden rounded-xl border border-[#D4AF37] bg-card shadow-[0_20px_60px_rgba(0,0,0,0.4)]"
         >
           {/* Header */}
-          <div className="p-6 border-b border-[#E5E5E5] flex-shrink-0">
+          <div className="p-6 border-b border-border flex-shrink-0">
             <div className="flex items-start justify-between">
               <div>
-                <h2 id="add-opportunity-modal-title" className="text-2xl font-bold text-[#000000] mb-1" style={{ fontFamily: 'var(--font-display)' }}>
+                <h2 id="add-opportunity-modal-title" className="text-2xl font-bold text-foreground mb-1" style={{ fontFamily: 'var(--font-display)' }}>
                   Add New Opportunity
                 </h2>
                 <p className="text-sm text-[#73766A]">Manually enter details for your tracking pipeline</p>
@@ -117,7 +117,7 @@ export function AddManualModal({ onClose, onSuccess }: Props) {
             {/* Primary Info Row */}
             <div className="grid grid-cols-2 gap-4">
               <div>
-                <label className="block text-sm font-semibold text-[#000000] mb-2">
+                <label className="block text-sm font-semibold text-foreground mb-2">
                   Job/Opportunity Title
                 </label>
                 <input
@@ -125,11 +125,11 @@ export function AddManualModal({ onClose, onSuccess }: Props) {
                   value={title}
                   onChange={(e) => setTitle(e.target.value)}
                   placeholder="e.g., Senior Frontend Engineer"
-                  className="w-full px-4 py-3 bg-white border border-[#E5E5E5] rounded focus:outline-none focus:border-[#FCA311] focus:ring-2 focus:ring-[#FCA311] focus:ring-opacity-20 transition-all text-[#000000]"
+                  className="w-full px-4 py-3 bg-card border border-border rounded focus:outline-none focus:border-[#FCA311] focus:ring-2 focus:ring-[#FCA311] focus:ring-opacity-20 transition-all text-foreground"
                 />
               </div>
               <div>
-                <label className="block text-sm font-semibold text-[#000000] mb-2">
+                <label className="block text-sm font-semibold text-foreground mb-2">
                   Company/Organization
                 </label>
                 <input
@@ -137,14 +137,14 @@ export function AddManualModal({ onClose, onSuccess }: Props) {
                   value={company}
                   onChange={(e) => setCompany(e.target.value)}
                   placeholder="e.g., GitHub"
-                  className="w-full px-4 py-3 bg-white border border-[#E5E5E5] rounded focus:outline-none focus:border-[#FCA311] focus:ring-2 focus:ring-[#FCA311] focus:ring-opacity-20 transition-all text-[#000000]"
+                  className="w-full px-4 py-3 bg-card border border-border rounded focus:outline-none focus:border-[#FCA311] focus:ring-2 focus:ring-[#FCA311] focus:ring-opacity-20 transition-all text-foreground"
                 />
               </div>
             </div>
 
             {/* Category Selector */}
             <div>
-              <label className="block text-sm font-semibold text-[#000000] mb-2">
+              <label className="block text-sm font-semibold text-foreground mb-2">
                 Category
               </label>
               <div className="flex gap-3">
@@ -155,8 +155,8 @@ export function AddManualModal({ onClose, onSuccess }: Props) {
                     className={`
                       px-6 py-2 rounded-full border-2 transition-all font-semibold
                       ${selectedCategory === category
-                        ? 'bg-[#FCA311] border-[#FCA311] text-[#000000]'
-                        : 'bg-white border-[#FCA311] text-[#FCA311] hover:bg-[#FCA311] hover:bg-opacity-10'
+                        ? 'bg-[#FCA311] border-[#FCA311] text-foreground'
+                        : 'bg-card border-[#FCA311] text-[#FCA311] hover:bg-[#FCA311] hover:bg-opacity-10'
                       }
                     `}
                   >
@@ -169,7 +169,7 @@ export function AddManualModal({ onClose, onSuccess }: Props) {
             {/* Links & Location */}
             <div className="space-y-4">
               <div>
-                <label className="block text-sm font-semibold text-[#000000] mb-2">
+                <label className="block text-sm font-semibold text-foreground mb-2">
                   Application URL
                 </label>
                 <input
@@ -177,12 +177,12 @@ export function AddManualModal({ onClose, onSuccess }: Props) {
                   value={url}
                   onChange={(e) => setUrl(e.target.value)}
                   placeholder="https://company.com/careers/job-id"
-                  className="w-full px-4 py-3 bg-white border border-[#E5E5E5] rounded focus:outline-none focus:border-[#FCA311] focus:ring-2 focus:ring-[#FCA311] focus:ring-opacity-20 transition-all text-[#000000]"
+                  className="w-full px-4 py-3 bg-card border border-border rounded focus:outline-none focus:border-[#FCA311] focus:ring-2 focus:ring-[#FCA311] focus:ring-opacity-20 transition-all text-foreground"
                 />
               </div>
               <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-sm font-semibold text-[#000000] mb-2">
+                  <label className="block text-sm font-semibold text-foreground mb-2">
                     Location
                   </label>
                   <input
@@ -190,7 +190,7 @@ export function AddManualModal({ onClose, onSuccess }: Props) {
                     value={location}
                     onChange={(e) => setLocation(e.target.value)}
                     placeholder="Remote / San Francisco"
-                    className="w-full px-4 py-3 bg-white border border-[#E5E5E5] rounded focus:outline-none focus:border-[#FCA311] focus:ring-2 focus:ring-[#FCA311] focus:ring-opacity-20 transition-all text-[#000000]"
+                    className="w-full px-4 py-3 bg-card border border-border rounded focus:outline-none focus:border-[#FCA311] focus:ring-2 focus:ring-[#FCA311] focus:ring-opacity-20 transition-all text-foreground"
                   />
                 </div>
                 <div></div>
@@ -200,18 +200,18 @@ export function AddManualModal({ onClose, onSuccess }: Props) {
             {/* Timeline & Compensation */}
             <div className="grid grid-cols-2 gap-4">
               <div>
-                <label className="block text-sm font-semibold text-[#000000] mb-2">
+                <label className="block text-sm font-semibold text-foreground mb-2">
                   Deadline Date
                 </label>
                 <input
                   type="date"
                   value={deadline}
                   onChange={(e) => setDeadline(e.target.value)}
-                  className="w-full px-4 py-3 bg-white border border-[#E5E5E5] rounded focus:outline-none focus:border-[#FCA311] focus:ring-2 focus:ring-[#FCA311] focus:ring-opacity-20 transition-all text-[#000000]"
+                  className="w-full px-4 py-3 bg-card border border-border rounded focus:outline-none focus:border-[#FCA311] focus:ring-2 focus:ring-[#FCA311] focus:ring-opacity-20 transition-all text-foreground"
                 />
               </div>
               <div>
-                <label className="block text-sm font-semibold text-[#000000] mb-2">
+                <label className="block text-sm font-semibold text-foreground mb-2">
                   Salary/Prize Range
                 </label>
                 <input
@@ -219,14 +219,14 @@ export function AddManualModal({ onClose, onSuccess }: Props) {
                   value={salary}
                   onChange={(e) => setSalary(e.target.value)}
                   placeholder="$120k - $180k"
-                  className="w-full px-4 py-3 bg-white border border-[#E5E5E5] rounded focus:outline-none focus:border-[#FCA311] focus:ring-2 focus:ring-[#FCA311] focus:ring-opacity-20 transition-all text-[#000000]"
+                  className="w-full px-4 py-3 bg-card border border-border rounded focus:outline-none focus:border-[#FCA311] focus:ring-2 focus:ring-[#FCA311] focus:ring-opacity-20 transition-all text-foreground"
                 />
               </div>
             </div>
 
             {/* Skill Tags Input */}
             <div>
-              <label className="block text-sm font-semibold text-[#000000] mb-2">
+              <label className="block text-sm font-semibold text-foreground mb-2">
                 Required Skills
               </label>
               <textarea
@@ -234,7 +234,7 @@ export function AddManualModal({ onClose, onSuccess }: Props) {
                 onChange={(e) => setSkills(e.target.value)}
                 placeholder="Type skills separated by commas (e.g., React, TypeScript, Node.js)"
                 rows={3}
-                className="w-full px-4 py-3 bg-white border border-[#E5E5E5] rounded focus:outline-none focus:border-[#FCA311] focus:ring-2 focus:ring-[#FCA311] focus:ring-opacity-20 transition-all text-[#000000] resize-none"
+                className="w-full px-4 py-3 bg-card border border-border rounded focus:outline-none focus:border-[#FCA311] focus:ring-2 focus:ring-[#FCA311] focus:ring-opacity-20 transition-all text-foreground resize-none"
               />
               <div className="mt-3 flex flex-wrap gap-2">
                 <span className="text-xs text-[#73766A]">Suggestions:</span>
@@ -247,7 +247,7 @@ export function AddManualModal({ onClose, onSuccess }: Props) {
                         setSkills(skills ? `${skills}, ${skill}` : skill);
                       }
                     }}
-                    className="px-3 py-1 bg-[#E5E5E5] text-[#14213D] rounded text-xs font-medium hover:bg-[#FCA311] hover:text-[#000000] transition-all"
+                    className="px-3 py-1 bg-background text-card-foreground rounded text-xs font-medium hover:bg-[#FCA311] hover:text-foreground transition-all"
                   >
                     {skill}
                   </button>
@@ -257,16 +257,16 @@ export function AddManualModal({ onClose, onSuccess }: Props) {
           </div>
 
           {/* Footer */}
-          <div className="p-6 border-t border-[#E5E5E5] flex items-center justify-between flex-shrink-0">
+          <div className="p-6 border-t border-border flex items-center justify-between flex-shrink-0">
             <button
               onClick={onClose}
-              className="px-6 py-3 text-[#14213D] font-semibold hover:text-[#FCA311] transition-colors"
+              className="px-6 py-3 text-card-foreground font-semibold hover:text-[#FCA311] transition-colors"
             >
               Cancel
             </button>
             <button
               onClick={handleSubmit}
-              className="px-6 py-3 bg-[#FCA311] text-[#000000] rounded font-bold hover:bg-[#fdb748] transition-all shadow-md hover:shadow-lg"
+              className="px-6 py-3 bg-[#FCA311] text-foreground rounded font-bold hover:bg-[#fdb748] transition-all shadow-md hover:shadow-lg"
             >
               Add to Pipeline
             </button>

@@ -111,19 +111,19 @@ export function SocialPortfolioModal({ onClose }: Props) {
           exit={{ scale: 0.95, opacity: 0, y: 20 }}
           transition={{ type: 'spring', damping: 25, stiffness: 300 }}
           onClick={(e) => e.stopPropagation()}
-          className="relative z-10 flex max-h-[85vh] w-full max-w-[700px] flex-col overflow-hidden rounded-md border border-[#D4AF37] bg-white shadow-[0_20px_60px_rgba(0,0,0,0.4)]"
+          className="relative z-10 flex max-h-[85vh] w-full max-w-[700px] flex-col overflow-hidden rounded-md border border-[#D4AF37] bg-card shadow-[0_20px_60px_rgba(0,0,0,0.4)]"
         >
           {/* Header */}
-          <div className="p-6 border-b border-[#E5E5E5] flex items-center justify-between flex-shrink-0">
+          <div className="p-6 border-b border-border flex items-center justify-between flex-shrink-0">
             <div>
               <h2
                 id="social-portfolio-modal-title"
-                className="text-3xl font-bold text-[#14213D] mb-1"
+                className="text-3xl font-bold text-card-foreground mb-1"
                 style={{ fontFamily: 'Playfair Display, serif' }}
               >
                 Your Online Portfolio
               </h2>
-              <p className="text-sm text-[#14213D]/50" style={{ fontFamily: 'Outfit' }}>
+              <p className="text-sm text-card-foreground/50" style={{ fontFamily: 'Outfit' }}>
                 Showcase your professional presence across platforms
               </p>
             </div>
@@ -139,7 +139,7 @@ export function SocialPortfolioModal({ onClose }: Props) {
           <div className="p-6 overflow-y-auto flex-1">
             {isLoading ? (
               <div className="flex justify-center p-8">
-                <div className="w-8 h-8 rounded-full border-4 border-[#E5E5E5] border-t-[#FCA311] animate-spin"></div>
+                <div className="w-8 h-8 rounded-full border-4 border-border border-t-[#FCA311] animate-spin"></div>
               </div>
             ) : (
               <>
@@ -153,7 +153,7 @@ export function SocialPortfolioModal({ onClose }: Props) {
                     initial={{ opacity: 0, y: 10 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.3, delay: index * 0.1 }}
-                    className="group relative bg-white border border-[#E5E5E5] rounded-lg p-5 hover:border-[#FCA311] hover:shadow-lg transition-all duration-300"
+                    className="group relative bg-card border border-border rounded-lg p-5 hover:border-[#FCA311] hover:shadow-lg transition-all duration-300"
                     style={{
                       background: 'linear-gradient(135deg, rgba(252, 163, 17, 0.02) 0%, rgba(255, 255, 255, 1) 100%)',
                     }}
@@ -167,7 +167,7 @@ export function SocialPortfolioModal({ onClose }: Props) {
                       {/* Link Info */}
                       <div className="flex-1 min-w-0">
                         <div className="flex items-center gap-2 mb-1">
-                          <span className="font-semibold text-[#14213D]" style={{ fontFamily: 'Outfit' }}>
+                          <span className="font-semibold text-card-foreground" style={{ fontFamily: 'Outfit' }}>
                             {link.platform}
                           </span>
                           <span className="text-xs px-2 py-0.5 bg-[#FCA311]/10 text-[#FCA311] rounded-full font-medium">
@@ -178,7 +178,7 @@ export function SocialPortfolioModal({ onClose }: Props) {
                           href={link.url}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="text-sm text-[#14213D]/60 hover:text-[#FCA311] transition-colors flex items-center gap-1 truncate"
+                          className="text-sm text-card-foreground/60 hover:text-[#FCA311] transition-colors flex items-center gap-1 truncate"
                           style={{ fontFamily: 'Outfit' }}
                         >
                           {link.url}
@@ -192,7 +192,7 @@ export function SocialPortfolioModal({ onClose }: Props) {
                           className="p-2 hover:bg-[#FCA311]/10 rounded-lg transition-colors"
                           title="Edit"
                         >
-                          <Edit2 className="w-4 h-4 text-[#14213D]" />
+                          <Edit2 className="w-4 h-4 text-card-foreground" />
                         </button>
                         <button
                           onClick={() => handleDeleteLink(link.id)}
@@ -232,12 +232,12 @@ export function SocialPortfolioModal({ onClose }: Props) {
                   transition={{ type: 'spring', damping: 25, stiffness: 300 }}
                   className="border-2 border-[#3B82F6] rounded-lg p-5 bg-[#3B82F6]/5 overflow-hidden"
                 >
-                  <h3 className="text-lg font-semibold text-[#14213D] mb-4" style={{ fontFamily: 'Outfit' }}>
+                  <h3 className="text-lg font-semibold text-card-foreground mb-4" style={{ fontFamily: 'Outfit' }}>
                     Add New Link
                   </h3>
                   <div className="space-y-4">
                     <div>
-                      <label className="block text-sm font-medium text-[#14213D] mb-2" style={{ fontFamily: 'Outfit' }}>
+                      <label className="block text-sm font-medium text-card-foreground mb-2" style={{ fontFamily: 'Outfit' }}>
                         Platform / Title
                       </label>
                       <input
@@ -245,12 +245,12 @@ export function SocialPortfolioModal({ onClose }: Props) {
                         value={newPlatform}
                         onChange={(e) => setNewPlatform(e.target.value)}
                         placeholder="e.g., LinkedIn, GitHub, Behance"
-                        className="w-full px-4 py-3 bg-white border border-[#E5E5E5] rounded-lg focus:outline-none focus:border-[#3B82F6] focus:ring-2 focus:ring-[#3B82F6]/20 transition-all text-[#14213D]"
+                        className="w-full px-4 py-3 bg-card border border-border rounded-lg focus:outline-none focus:border-[#3B82F6] focus:ring-2 focus:ring-[#3B82F6]/20 transition-all text-card-foreground"
                         style={{ fontFamily: 'Outfit' }}
                       />
                     </div>
                     <div>
-                      <label className="block text-sm font-medium text-[#14213D] mb-2" style={{ fontFamily: 'Outfit' }}>
+                      <label className="block text-sm font-medium text-card-foreground mb-2" style={{ fontFamily: 'Outfit' }}>
                         Link URL
                       </label>
                       <input
@@ -258,7 +258,7 @@ export function SocialPortfolioModal({ onClose }: Props) {
                         value={newUrl}
                         onChange={(e) => setNewUrl(e.target.value)}
                         placeholder="https://..."
-                        className="w-full px-4 py-3 bg-white border border-[#E5E5E5] rounded-lg focus:outline-none focus:border-[#3B82F6] focus:ring-2 focus:ring-[#3B82F6]/20 transition-all text-[#14213D]"
+                        className="w-full px-4 py-3 bg-card border border-border rounded-lg focus:outline-none focus:border-[#3B82F6] focus:ring-2 focus:ring-[#3B82F6]/20 transition-all text-card-foreground"
                         style={{ fontFamily: 'Outfit' }}
                       />
                     </div>
@@ -280,7 +280,7 @@ export function SocialPortfolioModal({ onClose }: Props) {
                           setNewPlatform('');
                           setNewUrl('');
                         }}
-                        className="px-6 py-3 border-2 border-[#E5E5E5] text-[#14213D] rounded-lg hover:bg-[#E5E5E5] transition-all font-semibold"
+                        className="px-6 py-3 border-2 border-border text-card-foreground rounded-lg hover:bg-background transition-all font-semibold"
                         style={{ fontFamily: 'Outfit' }}
                       >
                         Cancel

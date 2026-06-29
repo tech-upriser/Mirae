@@ -44,11 +44,11 @@ export function ProfilePopover({ onClose, onManageResumes, onSocialPortfolio, on
         animate={{ opacity: 1, y: 0, scale: 1 }}
         exit={{ opacity: 0, y: 10, scale: 0.95 }}
         transition={{ duration: 0.2 }}
-        className="absolute left-64 bottom-24 z-[2147483646] w-[280px] rounded-md border border-[#E5E5E5] bg-[#FFFFFF] shadow-[0_10px_20px_rgba(0,0,0,0.15)]"
+        className="absolute left-64 bottom-24 z-[2147483646] w-[280px] rounded-md border border-border bg-[#FFFFFF] shadow-[0_10px_20px_rgba(0,0,0,0.15)]"
         style={{ position: 'absolute' }}
       >
         {/* Header Section */}
-        <div className="p-4 border-b border-[#E5E5E5]">
+        <div className="p-4 border-b border-border">
           <div className="flex items-center gap-3">
             {/* Avatar with Profile Photo or Initials */}
             <div
@@ -56,7 +56,7 @@ export function ProfilePopover({ onClose, onManageResumes, onSocialPortfolio, on
               onMouseEnter={() => setIsHoveringAvatar(true)}
               onMouseLeave={() => setIsHoveringAvatar(false)}
             >
-              <div className="w-12 h-12 rounded-full bg-[#FCA311] flex items-center justify-center text-[#000000] font-bold text-lg relative overflow-hidden cursor-pointer">
+              <div className="w-12 h-12 rounded-full bg-[#FCA311] flex items-center justify-center text-foreground font-bold text-lg relative overflow-hidden cursor-pointer">
                 {user?.profilePhoto ? (
                   <img
                     src={user.profilePhoto}
@@ -95,7 +95,7 @@ export function ProfilePopover({ onClose, onManageResumes, onSocialPortfolio, on
 
             {/* User Info */}
             <div className="flex-1">
-              <div className="font-bold text-[#000000]">
+              <div className="font-bold text-foreground">
                 {user?.name || 'Mirae User'}
               </div>
               <div className="text-xs text-[#73766A]">Job Seeker</div>
@@ -111,10 +111,10 @@ export function ProfilePopover({ onClose, onManageResumes, onSocialPortfolio, on
               <button
                 key={item.label}
                 onClick={item.onClick}
-                className="w-full px-4 py-3 flex items-center gap-3 hover:bg-[#E5E5E5] hover:bg-opacity-50 transition-colors text-left"
+                className="w-full px-4 py-3 flex items-center gap-3 hover:bg-background hover:bg-opacity-50 transition-colors text-left"
               >
-                <Icon className="w-4 h-4 text-[#14213D]" />
-                <span className="flex-1 text-sm text-[#14213D] font-medium">{item.label}</span>
+                <Icon className="w-4 h-4 text-card-foreground" />
+                <span className="flex-1 text-sm text-card-foreground font-medium">{item.label}</span>
                 {item.hasToggle && (
                   <div
                     onClick={(e) => {
@@ -122,13 +122,13 @@ export function ProfilePopover({ onClose, onManageResumes, onSocialPortfolio, on
                       toggleTheme();
                     }}
                     className={`w-10 h-5 rounded-full transition-all cursor-pointer ${
-                      isDarkMode ? 'bg-[#FCA311]' : 'bg-[#E5E5E5]'
+                      isDarkMode ? 'bg-[#FCA311]' : 'bg-background'
                     }`}
                   >
                     <motion.div
                       animate={{ x: isDarkMode ? 20 : 2 }}
                       transition={{ type: 'spring', stiffness: 500, damping: 30 }}
-                      className="w-4 h-4 bg-white rounded-full mt-0.5 shadow-md"
+                      className="w-4 h-4 bg-card rounded-full mt-0.5 shadow-md"
                     />
                   </div>
                 )}
@@ -137,12 +137,12 @@ export function ProfilePopover({ onClose, onManageResumes, onSocialPortfolio, on
           })}
 
           {/* Divider */}
-          <div className="my-2 border-t border-[#E5E5E5]"></div>
+          <div className="my-2 border-t border-border"></div>
 
           {/* Logout */}
           <button
             onClick={onLogout}
-            className="w-full px-4 py-3 flex items-center gap-3 hover:bg-[#E5E5E5] hover:bg-opacity-50 transition-colors text-left"
+            className="w-full px-4 py-3 flex items-center gap-3 hover:bg-background hover:bg-opacity-50 transition-colors text-left"
           >
             <LogOut className="w-4 h-4 text-[#E11D48]" />
             <span className="flex-1 text-sm text-[#E11D48] font-medium">Logout</span>

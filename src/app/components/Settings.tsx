@@ -97,7 +97,7 @@ function ToggleRow({
 }) {
   return (
     <div className="flex items-center justify-between gap-4 py-2.5">
-      <span className="text-[#14213D]" style={{ fontFamily: "Outfit" }}>
+      <span className="text-card-foreground" style={{ fontFamily: "Outfit" }}>
         {label}
       </span>
       <Switch.Root
@@ -106,7 +106,7 @@ function ToggleRow({
         onCheckedChange={onCheckedChange}
         className="relative h-6 w-11 cursor-pointer rounded-full bg-gray-300 transition-all data-[state=checked]:bg-[#FCA311] disabled:cursor-not-allowed disabled:opacity-60"
       >
-        <Switch.Thumb className="block h-5 w-5 translate-x-0.5 rounded-full bg-white shadow transition-transform data-[state=checked]:translate-x-[22px]" />
+        <Switch.Thumb className="block h-5 w-5 translate-x-0.5 rounded-full bg-card shadow transition-transform data-[state=checked]:translate-x-[22px]" />
       </Switch.Root>
     </div>
   );
@@ -131,7 +131,7 @@ function SectionCard({
     <motion.section
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
-      className={`app-card rounded-xl bg-white p-6 shadow-md ${danger ? "border-2 border-[#DC6B6B] bg-red-50/20" : ""}`}
+      className={`app-card rounded-xl bg-card p-6 shadow-md ${danger ? "border-2 border-[#DC6B6B] bg-red-50/20" : ""}`}
     >
       <div className="mb-5">
         <div className="mb-2 flex items-center gap-3">
@@ -139,14 +139,14 @@ function SectionCard({
             {icon}
           </div>
           <h2
-            className={`text-2xl font-bold ${danger ? "text-[#DC6B6B]" : "text-[#14213D]"}`}
+            className={`text-2xl font-bold ${danger ? "text-[#DC6B6B]" : "text-card-foreground"}`}
             style={{ fontFamily: "var(--font-display)" }}
           >
             {title}
           </h2>
         </div>
         <p
-          className="ml-9 text-sm text-[#14213D]/50"
+          className="ml-9 text-sm text-card-foreground/50"
           style={{ fontFamily: "Outfit" }}
         >
           {subtitle}
@@ -571,19 +571,19 @@ export function Settings({
   };
 
   return (
-    <div className="ml-60 min-h-screen bg-[#E5E5E5]">
-      <div className="bg-white border-b border-[#E5E5E5] sticky top-0 z-20 shadow-sm">
+    <div className="ml-60 min-h-screen bg-background">
+      <div className="bg-card border-b border-border sticky top-0 z-20 shadow-sm">
         <div className="px-8 pt-6 pb-6">
           <div className="flex items-center justify-between">
             <div className="flex min-w-0 flex-1 items-center gap-6">
               <div className="min-w-0">
                 <h1
-                  className="text-3xl font-bold text-[#000000]"
+                  className="text-3xl font-bold text-foreground"
                   style={{ fontFamily: 'var(--font-display)' }}
                 >
                   Settings
                 </h1>
-                <p className="text-sm text-[#14213D] opacity-70">
+                <p className="text-sm text-card-foreground opacity-70">
                   Manage your account, reminders, and security controls.
                 </p>
               </div>
@@ -596,7 +596,7 @@ export function Settings({
 
       {loading && (
         <div
-          className="mb-8 rounded-xl bg-white p-5 text-[#14213D]/70 shadow-sm"
+          className="mb-8 rounded-xl bg-card p-5 text-card-foreground/70 shadow-sm"
           style={{ fontFamily: "Outfit" }}
         >
           Loading your saved settings...
@@ -620,7 +620,7 @@ export function Settings({
                     className="h-20 w-20 rounded-full object-cover shadow-md"
                   />
                 ) : (
-                  <div className="flex h-20 w-20 items-center justify-center rounded-full bg-[#FCA311] text-2xl font-bold text-[#14213D]">
+                  <div className="flex h-20 w-20 items-center justify-center rounded-full bg-[#FCA311] text-2xl font-bold text-card-foreground">
                     {initials}
                   </div>
                 )}
@@ -642,19 +642,19 @@ export function Settings({
               <div className="flex flex-1 items-start justify-between">
                 <div>
                   <h3
-                    className="text-lg font-semibold text-[#14213D]"
+                    className="text-lg font-semibold text-card-foreground"
                     style={{ fontFamily: "Outfit" }}
                   >
                     {name}
                   </h3>
-                  <p className="text-sm text-[#14213D]/50">{email}</p>
+                  <p className="text-sm text-card-foreground/50">{email}</p>
                 </div>
                 {!isEditingProfile && (
                   <button
                     type="button"
                     onClick={() => setIsEditingProfile(true)}
                     disabled={saving}
-                    className="rounded-full border border-gray-200 bg-white px-4 py-1.5 text-sm font-medium text-[#14213D] shadow-sm transition-all hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-[#FCA311] disabled:opacity-60"
+                    className="rounded-full border border-gray-200 bg-card px-4 py-1.5 text-sm font-medium text-card-foreground shadow-sm transition-all hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-[#FCA311] disabled:opacity-60"
                   >
                     Edit Profile
                   </button>
@@ -664,14 +664,14 @@ export function Settings({
 
             <div className="space-y-4">
               <div>
-                <label className="mb-2 block text-sm font-medium text-[#14213D]">
+                <label className="mb-2 block text-sm font-medium text-card-foreground">
                   Full Name
                 </label>
                 <input
                   value={draftName}
                   onChange={(event) => setDraftName(event.target.value)}
                   readOnly={!isEditingProfile}
-                  className={`w-full rounded-lg border px-4 py-2.5 text-[#14213D] ${
+                  className={`w-full rounded-lg border px-4 py-2.5 text-card-foreground ${
                     isEditingProfile
                       ? "border-gray-200 focus:border-[#FCA311] focus:outline-none focus:ring-2 focus:ring-[#FCA311]/30"
                       : "cursor-not-allowed border-gray-200 bg-gray-50"
@@ -679,7 +679,7 @@ export function Settings({
                 />
               </div>
               <div>
-                <label className="mb-2 block text-sm font-medium text-[#14213D]">
+                <label className="mb-2 block text-sm font-medium text-card-foreground">
                   Email Address
                 </label>
                 <input
@@ -687,7 +687,7 @@ export function Settings({
                   value={draftEmail}
                   onChange={(event) => setDraftEmail(event.target.value)}
                   readOnly={!isEditingProfile}
-                  className={`w-full rounded-lg border px-4 py-2.5 text-[#14213D] ${
+                  className={`w-full rounded-lg border px-4 py-2.5 text-card-foreground ${
                     isEditingProfile
                       ? "border-gray-200 focus:border-[#FCA311] focus:outline-none focus:ring-2 focus:ring-[#FCA311]/30"
                       : "cursor-not-allowed border-gray-200 bg-gray-50"
@@ -695,7 +695,7 @@ export function Settings({
                 />
               </div>
               <div>
-                <label className="mb-2 block text-sm font-medium text-[#14213D]">
+                <label className="mb-2 block text-sm font-medium text-card-foreground">
                   Tagline (e.g. Job Seeker)
                 </label>
                 <input
@@ -704,7 +704,7 @@ export function Settings({
                   onChange={(event) => setDraftTagline(event.target.value)}
                   readOnly={!isEditingProfile}
                   placeholder="Job Seeker"
-                  className={`w-full rounded-lg border px-4 py-2.5 text-[#14213D] ${
+                  className={`w-full rounded-lg border px-4 py-2.5 text-card-foreground ${
                     isEditingProfile
                       ? "border-gray-200 focus:border-[#FCA311] focus:outline-none focus:ring-2 focus:ring-[#FCA311]/30"
                       : "cursor-not-allowed border-gray-200 bg-gray-50"
@@ -730,7 +730,7 @@ export function Settings({
                       setIsEditingProfile(false);
                     }}
                     disabled={saving}
-                    className="rounded-lg border border-gray-300 px-4 py-3 font-medium text-[#14213D] transition-all hover:bg-gray-100 disabled:opacity-60"
+                    className="rounded-lg border border-gray-300 px-4 py-3 font-medium text-card-foreground transition-all hover:bg-gray-100 disabled:opacity-60"
                   >
                     Cancel
                   </button>
@@ -744,8 +744,8 @@ export function Settings({
                   className="w-full flex items-center justify-between p-3 rounded-lg bg-gray-50 hover:bg-gray-100 transition-colors border border-gray-100 disabled:opacity-50"
                 >
                   <div className="flex items-center gap-3">
-                    <Camera className="w-5 h-5 text-[#14213D]" />
-                    <span className="font-medium text-[#14213D]">
+                    <Camera className="w-5 h-5 text-card-foreground" />
+                    <span className="font-medium text-card-foreground">
                       {isUploadingPhoto ? "Uploading..." : "Upload Profile Picture"}
                     </span>
                   </div>
@@ -756,8 +756,8 @@ export function Settings({
                   className="w-full flex items-center justify-between p-3 rounded-lg bg-gray-50 hover:bg-gray-100 transition-colors border border-gray-100"
                 >
                   <div className="flex items-center gap-3">
-                    <FileText className="w-5 h-5 text-[#14213D]" />
-                    <span className="font-medium text-[#14213D]">Manage Resumes</span>
+                    <FileText className="w-5 h-5 text-card-foreground" />
+                    <span className="font-medium text-card-foreground">Manage Resumes</span>
                   </div>
                 </button>
                 <button
@@ -766,8 +766,8 @@ export function Settings({
                   className="w-full flex items-center justify-between p-3 rounded-lg bg-gray-50 hover:bg-gray-100 transition-colors border border-gray-100"
                 >
                   <div className="flex items-center gap-3">
-                    <Link2 className="w-5 h-5 text-[#14213D]" />
-                    <span className="font-medium text-[#14213D]">Social & Portfolio</span>
+                    <Link2 className="w-5 h-5 text-card-foreground" />
+                    <span className="font-medium text-card-foreground">Social & Portfolio</span>
                   </div>
                 </button>
               </div>
@@ -783,12 +783,12 @@ export function Settings({
               <div className="mb-4 flex items-start justify-between gap-4">
                 <div>
                   <h3
-                    className="font-semibold text-[#14213D]"
+                    className="font-semibold text-card-foreground"
                     style={{ fontFamily: "Outfit" }}
                   >
                     Gmail Auto-Tracking
                   </h3>
-                  <p className="mt-1 text-sm text-[#14213D]/70">
+                  <p className="mt-1 text-sm text-card-foreground/70">
                     Allow Mirae to automatically update your application
                     statuses by securely analyzing new emails. Emails are never
                     stored.
@@ -827,12 +827,12 @@ export function Settings({
               <div className="mb-4 flex items-start justify-between gap-4">
                 <div>
                   <h3
-                    className="font-semibold text-[#14213D]"
+                    className="font-semibold text-card-foreground"
                     style={{ fontFamily: "Outfit" }}
                   >
                     Google Calendar Sync
                   </h3>
-                  <p className="mt-1 text-sm text-[#14213D]/70">
+                  <p className="mt-1 text-sm text-card-foreground/70">
                     Automatically sync your interviews and deadlines to your primary Google Calendar.
                   </p>
                 </div>
@@ -850,7 +850,7 @@ export function Settings({
                     <button
                       type="button"
                       onClick={handleSyncGoogleCalendar}
-                      className="w-full rounded-lg border border-gray-300 bg-white px-4 py-3 font-medium text-[#14213D] transition-all hover:bg-gray-50"
+                      className="w-full rounded-lg border border-gray-300 bg-card px-4 py-3 font-medium text-card-foreground transition-all hover:bg-gray-50"
                     >
                       Sync Now
                     </button>
@@ -886,8 +886,8 @@ export function Settings({
                 className="w-full flex items-center justify-between p-3 rounded-lg bg-gray-50 hover:bg-gray-100 transition-colors border border-gray-100"
               >
                 <div className="flex items-center gap-3">
-                  <Moon className="w-5 h-5 text-[#14213D]" />
-                  <span className="font-medium text-[#14213D]">Theme (Dark/Light)</span>
+                  <Moon className="w-5 h-5 text-card-foreground" />
+                  <span className="font-medium text-card-foreground">Theme (Dark/Light)</span>
                 </div>
                 <div
                   onClick={async (e) => {
@@ -903,13 +903,13 @@ export function Settings({
                     });
                   }}
                   className={`w-10 h-5 rounded-full transition-all cursor-pointer flex items-center px-0.5 ${
-                    isDarkMode ? 'bg-[#FCA311]' : 'bg-[#E5E5E5]'
+                    isDarkMode ? 'bg-[#FCA311]' : 'bg-background'
                   }`}
                 >
                   <motion.div
                     animate={{ x: isDarkMode ? 20 : 0 }}
                     transition={{ type: 'spring', stiffness: 500, damping: 30 }}
-                    className="w-4 h-4 bg-white rounded-full shadow-md"
+                    className="w-4 h-4 bg-card rounded-full shadow-md"
                   />
                 </div>
               </button>
@@ -919,8 +919,8 @@ export function Settings({
                 className="w-full flex items-center justify-between p-3 rounded-lg bg-gray-50 hover:bg-gray-100 transition-colors border border-gray-100"
               >
                 <div className="flex items-center gap-3">
-                  <HelpCircle className="w-5 h-5 text-[#14213D]" />
-                  <span className="font-medium text-[#14213D]">Help & Community</span>
+                  <HelpCircle className="w-5 h-5 text-card-foreground" />
+                  <span className="font-medium text-card-foreground">Help & Community</span>
                 </div>
               </button>
               <button
@@ -1006,12 +1006,12 @@ export function Settings({
                 <button
                   type="button"
                   onClick={handleDisableAllNotifications}
-                  className="w-full rounded-lg border border-[#14213D] px-4 py-3 font-medium text-[#14213D] hover:bg-[#f3f4f6] transition-colors"
+                  className="w-full rounded-lg border border-[#14213D] px-4 py-3 font-medium text-card-foreground hover:bg-[#f3f4f6] transition-colors"
                 >
                   Disable All Notifications
                 </button>
               </div>
-              <p className="text-xs text-[#14213D]/60 pt-2">
+              <p className="text-xs text-card-foreground/60 pt-2">
                 To fully revoke browser permission after enabling, open browser
                 site settings for this app and change Notifications to Block.
               </p>
@@ -1034,7 +1034,7 @@ export function Settings({
               <button
                 type="button"
                 onClick={() => setShowPasswordModal(true)}
-                className="w-full flex items-center justify-between p-3 rounded-lg border border-[#14213D] text-[#14213D] hover:bg-[#14213D] hover:text-white transition-colors"
+                className="w-full flex items-center justify-between p-3 rounded-lg border border-[#14213D] text-card-foreground hover:bg-[#14213D] hover:text-white transition-colors"
               >
                 <div className="flex items-center gap-3">
                   <Lock className="w-5 h-5" />
@@ -1044,7 +1044,7 @@ export function Settings({
               <button
                 type="button"
                 onClick={handleLogoutThisDevice}
-                className="w-full rounded-lg border border-gray-300 px-4 py-3 font-medium text-[#14213D] hover:bg-gray-50 transition-colors"
+                className="w-full rounded-lg border border-gray-300 px-4 py-3 font-medium text-card-foreground hover:bg-gray-50 transition-colors"
               >
                 Logout on this device
               </button>
@@ -1201,14 +1201,14 @@ function ChangePasswordModal({ onClose }: { onClose: () => void }) {
         <button
           onClick={onClose}
           disabled={isSubmitting}
-          className="px-5 py-2.5 font-semibold text-[#14213D] disabled:opacity-60"
+          className="px-5 py-2.5 font-semibold text-card-foreground disabled:opacity-60"
         >
           Cancel
         </button>
         <button
           onClick={handleSubmit}
           disabled={isSubmitting}
-          className="rounded-lg bg-[#FCA311] px-5 py-2.5 font-semibold text-[#000000] disabled:opacity-60"
+          className="rounded-lg bg-[#FCA311] px-5 py-2.5 font-semibold text-foreground disabled:opacity-60"
         >
           {isSubmitting ? "Updating..." : "Update Password"}
         </button>
@@ -1234,17 +1234,17 @@ function ConfirmationModal({
 }) {
   return (
     <ModalFrame title={title} onClose={onClose} danger={danger}>
-      <p className="text-[#14213D]/70">{message}</p>
+      <p className="text-card-foreground/70">{message}</p>
       <div className="mt-5 flex justify-end gap-3">
         <button
           onClick={onClose}
-          className="px-5 py-2.5 font-semibold text-[#14213D]"
+          className="px-5 py-2.5 font-semibold text-card-foreground"
         >
           Cancel
         </button>
         <button
           onClick={onConfirm}
-          className={`rounded-lg px-5 py-2.5 font-semibold ${danger ? "bg-[#DC6B6B] text-white" : "bg-[#FCA311] text-[#000000]"}`}
+          className={`rounded-lg px-5 py-2.5 font-semibold ${danger ? "bg-[#DC6B6B] text-white" : "bg-[#FCA311] text-foreground"}`}
         >
           {confirmText}
         </button>
@@ -1281,11 +1281,11 @@ function ModalFrame({
         animate={{ scale: 1, opacity: 1, y: 0 }}
         exit={{ scale: 0.95, opacity: 0, y: 20 }}
         onClick={(event) => event.stopPropagation()}
-        className="w-full max-w-[480px] rounded-xl bg-white shadow-[0_20px_60px_rgba(0,0,0,0.4)]"
+        className="w-full max-w-[480px] rounded-xl bg-card shadow-[0_20px_60px_rgba(0,0,0,0.4)]"
       >
-        <div className="flex items-center justify-between border-b border-[#E5E5E5] p-6">
+        <div className="flex items-center justify-between border-b border-border p-6">
           <h2
-            className={`text-2xl font-bold ${danger ? "text-[#DC6B6B]" : "text-[#14213D]"}`}
+            className={`text-2xl font-bold ${danger ? "text-[#DC6B6B]" : "text-card-foreground"}`}
             style={{ fontFamily: "var(--font-display)" }}
           >
             {title}

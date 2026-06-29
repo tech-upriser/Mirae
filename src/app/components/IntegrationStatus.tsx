@@ -33,7 +33,7 @@ export function IntegrationStatus({
     <motion.div
       initial={{ opacity: 0, y: 10 }}
       animate={{ opacity: 1, y: 0 }}
-      className="rounded-xl border border-gray-200 bg-white p-5 shadow-sm"
+      className="rounded-xl border border-gray-200 bg-card p-5 shadow-sm"
     >
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-4">
@@ -49,7 +49,7 @@ export function IntegrationStatus({
 
           <div>
             <h3
-              className="text-lg font-bold text-[#14213D]"
+              className="text-lg font-bold text-card-foreground"
               style={{ fontFamily: "Outfit" }}
             >
               Gmail Auto-Tracking
@@ -84,7 +84,7 @@ export function IntegrationStatus({
             <>
               <button
                 onClick={handleRefresh}
-                className="p-2 text-gray-400 hover:text-[#14213D] transition-colors"
+                className="p-2 text-gray-400 hover:text-card-foreground transition-colors"
                 title="Force Sync"
               >
                 <RefreshCw

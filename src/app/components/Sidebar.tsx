@@ -85,7 +85,7 @@ export function Sidebar({
                 className="w-full h-full object-cover"
               />
             ) : (
-              <User className="w-5 h-5 text-[#14213D]" />
+              <User className="w-5 h-5 text-card-foreground" />
             )}
           </div>
           <div className="text-left">

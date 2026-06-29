@@ -188,7 +188,7 @@ export function ApplicationDetail({ application, onClose, onStatusChange, onCont
         animate={{ x: 0 }}
         exit={{ x: '100%' }}
         transition={{ type: 'spring', damping: 30, stiffness: 300 }}
-        className="fixed right-0 top-0 h-screen w-[600px] bg-white shadow-2xl z-50 flex flex-col"
+        className="fixed right-0 top-0 h-screen w-[600px] bg-card shadow-2xl z-50 flex flex-col"
       >
         {/* Header */}
         <div className="bg-[#14213D] p-6 sticky top-0 z-10">
@@ -204,7 +204,7 @@ export function ApplicationDetail({ application, onClose, onStatusChange, onCont
                     href={`https://www.glassdoor.com/Search/results.htm?keyword=${encodeURIComponent(application.company)}`}
                     target="_blank"
                     rel="noreferrer"
-                    className="inline-flex items-center justify-center rounded-md bg-white/10 p-2 text-white/80 transition-colors hover:bg-white/20 hover:text-[#FCA311]"
+                    className="inline-flex items-center justify-center rounded-md bg-card/10 p-2 text-white/80 transition-colors hover:bg-card/20 hover:text-[#FCA311]"
                     title="Search company insights on Glassdoor"
                   >
                     <Search className="h-4 w-4" />
@@ -213,7 +213,7 @@ export function ApplicationDetail({ application, onClose, onStatusChange, onCont
                     href={`https://www.levels.fyi/companies/${application.company.toLowerCase().replace(/[^a-z0-9]/g, '')}/salaries`}
                     target="_blank"
                     rel="noreferrer"
-                    className="inline-flex items-center justify-center rounded-md bg-white/10 p-2 text-white/80 transition-colors hover:bg-white/20 hover:text-[#FCA311]"
+                    className="inline-flex items-center justify-center rounded-md bg-card/10 p-2 text-white/80 transition-colors hover:bg-card/20 hover:text-[#FCA311]"
                     title="Search salary data on Levels.fyi"
                   >
                     <BarChart3 className="h-4 w-4" />
@@ -250,7 +250,7 @@ export function ApplicationDetail({ application, onClose, onStatusChange, onCont
               <select
                 value={status}
                 onChange={handleStatusChange}
-                className="px-4 py-2 bg-[#FCA311] text-[#000000] rounded-md font-semibold hover:bg-[#fdb748] transition-all cursor-pointer outline-none appearance-none pr-8 relative"
+                className="px-4 py-2 bg-[#FCA311] text-foreground rounded-md font-semibold hover:bg-[#fdb748] transition-all cursor-pointer outline-none appearance-none pr-8 relative"
                 style={{ backgroundImage: 'url("data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%23000000%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2012.9l128%20127.9c3.6%203.6%207.8%205.4%2012.8%205.4s9.2-1.8%2012.8-5.4L287%2095c3.5-3.5%205.4-7.8%205.4-12.8%200-5-1.9-9.2-5.5-12.8z%22%2F%3E%3C%2Fsvg%3E")', backgroundRepeat: 'no-repeat', backgroundPosition: 'right .7rem top 50%', backgroundSize: '.65rem auto' }}
               >
                 <option value="Saved">Saved</option>
@@ -290,7 +290,7 @@ export function ApplicationDetail({ application, onClose, onStatusChange, onCont
         </div>
 
         {/* Content */}
-        <div className="flex-1 overflow-y-auto p-6 bg-white">
+        <div className="flex-1 overflow-y-auto p-6 bg-card">
           
           {/* 4. Tab 1: Overview (Dynamic Mapping) */}
           {activeTab === 'overview' && (
@@ -298,10 +298,10 @@ export function ApplicationDetail({ application, onClose, onStatusChange, onCont
               
               <div className="flex items-center justify-between mb-8">
                 <div className="flex-1 mr-8">
-                  <h3 className="text-lg font-bold text-[#000000] mb-3">Skill Gap Analysis</h3>
+                  <h3 className="text-lg font-bold text-foreground mb-3">Skill Gap Analysis</h3>
 
                   {!hasUserResumeSkills ? (
-                    <div className="rounded-lg border border-[#E5E5E5] bg-gray-50 p-4 text-sm text-gray-600">
+                    <div className="rounded-lg border border-border bg-gray-50 p-4 text-sm text-gray-600">
                       <p className="font-semibold text-red-600 mb-1">Please upload your resume to enable skill gap analysis.</p>
                     </div>
                   ) : (
@@ -373,7 +373,7 @@ export function ApplicationDetail({ application, onClose, onStatusChange, onCont
 
               <div>
                 <div className="flex items-center justify-between mb-3">
-                  <h3 className="text-lg font-bold text-[#000000]">Description</h3>
+                  <h3 className="text-lg font-bold text-foreground">Description</h3>
                 </div>
                 <div className="bg-gray-50 border border-gray-200 rounded-lg p-5 text-gray-700 leading-relaxed text-sm whitespace-pre-wrap">
                   {description}
@@ -387,7 +387,7 @@ export function ApplicationDetail({ application, onClose, onStatusChange, onCont
           {/* Timeline & Prep */}
           {activeTab === 'timeline-prep' && (
             <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} className="h-full">
-              <h3 className="text-lg font-bold text-[#000000] mb-6">Application Journey</h3>
+              <h3 className="text-lg font-bold text-foreground mb-6">Application Journey</h3>
 
               <div className="mb-10 ml-2 space-y-6">
                 {timelineEvents.map((event, index) => {
@@ -401,13 +401,13 @@ export function ApplicationDetail({ application, onClose, onStatusChange, onCont
                         {showConnector && (
                           <div className="absolute top-8 bottom-[-1.5rem] w-0.5 bg-[#14213D]" />
                         )}
-                        <div className={`relative z-10 flex h-7 w-7 items-center justify-center rounded-full border-2 ${isNewest ? 'border-[#14213D] bg-[#14213D]' : 'border-[#14213D] bg-white'}`}>
-                          <Clock className={`h-3.5 w-3.5 ${isNewest ? 'text-white' : 'text-[#14213D]'}`} />
+                        <div className={`relative z-10 flex h-7 w-7 items-center justify-center rounded-full border-2 ${isNewest ? 'border-[#14213D] bg-[#14213D]' : 'border-[#14213D] bg-card'}`}>
+                          <Clock className={`h-3.5 w-3.5 ${isNewest ? 'text-white' : 'text-card-foreground'}`} />
                         </div>
                       </div>
 
                       <div className="pb-1">
-                        <p className="font-bold text-[#14213D] leading-tight">
+                        <p className="font-bold text-card-foreground leading-tight">
                           {isFirstRecordedEvent ? 'Saved to Mirae' : `Moved to: ${event.status}`}
                         </p>
                         <p className="mt-1 text-sm text-gray-500">{formatTimelineDate(event.date)}</p>
@@ -423,7 +423,7 @@ export function ApplicationDetail({ application, onClose, onStatusChange, onCont
           {activeTab === 'networking' && (
             <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} className="h-full flex flex-col">
               <div className="mb-5 flex items-center justify-between gap-4">
-                <h3 className="text-lg font-bold text-[#000000]">Networking CRM</h3>
+                <h3 className="text-lg font-bold text-foreground">Networking CRM</h3>
                 <a
                   href={`https://www.linkedin.com/search/results/people/?keywords=${encodeURIComponent((application.company || '') + ' IIT Patna')}`}
                   target="_blank"
@@ -475,7 +475,7 @@ export function ApplicationDetail({ application, onClose, onStatusChange, onCont
           {/* Notes */}
           {activeTab === 'notes' && (
             <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} className="h-full flex flex-col">
-              <h3 className="text-lg font-bold text-[#000000] mb-2 mt-4">Rich Text Scratchpad</h3>
+              <h3 className="text-lg font-bold text-foreground mb-2 mt-4">Rich Text Scratchpad</h3>
               <textarea 
                 value={scratchpadText}
                 onChange={(e) => setScratchpadText(e.target.value)}

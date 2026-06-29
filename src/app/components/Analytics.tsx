@@ -220,50 +220,52 @@ export function Analytics() {
   const offeredJobs = matchInsights?.offeredJobs || [];
 
   return (
-    <div className="ml-60 min-h-screen bg-[#E5E5E5] pb-6">
-      <div className="bg-white px-8 pt-6 pb-2 sticky top-0 z-20">
-        <div className="flex items-center justify-between">
-          <div className="flex min-w-0 flex-1 items-center gap-6">
-            <div className="min-w-0">
-              <h1
-                className="text-3xl font-bold text-[#000000]"
-                style={{ fontFamily: 'var(--font-display)' }}
-              >
-                Analytics & Insights
-              </h1>
-              <p className="text-sm text-[#14213D] opacity-70">
-                {activeCategory === 'Jobs'
-                  ? 'Dive into your job search metrics and conversion rates.'
-                  : activeCategory === 'Hackathons'
-                  ? 'Track your hackathon participation and performance.'
-                  : 'View insights for other opportunities.'}
-              </p>
+    <div className="ml-60 min-h-screen bg-background pb-6">
+      <div className="bg-card border-b border-border sticky top-0 z-20 shadow-sm">
+        <div className="px-8 pt-6 pb-2">
+          <div className="flex items-center justify-between">
+            <div className="flex min-w-0 flex-1 items-center gap-6">
+              <div className="min-w-0">
+                <h1
+                  className="text-3xl font-bold text-foreground"
+                  style={{ fontFamily: 'var(--font-display)' }}
+                >
+                  Analytics & Insights
+                </h1>
+                <p className="text-sm text-card-foreground opacity-70">
+                  {activeCategory === 'Jobs'
+                    ? 'Dive into your job search metrics and conversion rates.'
+                    : activeCategory === 'Hackathons'
+                    ? 'Track your hackathon participation and performance.'
+                    : 'View insights for other opportunities.'}
+                </p>
+              </div>
             </div>
           </div>
         </div>
-      </div>
 
-      <div className="bg-white border-b border-[#E5E5E5] px-8 sticky top-[88px] z-10 shadow-sm">
-        <div className="flex gap-8">
-          {(['Jobs', 'Hackathons', 'Others'] as const).map((cat) => (
-            <button
-              key={cat}
-              onClick={() => setActiveCategory(cat)}
-              className={`py-4 px-2 relative transition-all ${
-                activeCategory === cat
-                  ? 'text-[#000000] font-bold'
-                  : 'text-[#14213D] opacity-60 hover:opacity-100'
-              }`}
-            >
-              {cat === 'Hackathons' ? 'Hackathons/Contests' : cat}
-              {activeCategory === cat && (
-                <motion.div
-                  layoutId="activeTabIndicator"
-                  className="absolute bottom-0 left-0 right-0 h-0.5 bg-[#000000]"
-                />
-              )}
-            </button>
-          ))}
+        <div className="px-8 mt-2">
+          <div className="flex gap-8">
+            {(['Jobs', 'Hackathons', 'Others'] as const).map((cat) => (
+              <button
+                key={cat}
+                onClick={() => setActiveCategory(cat)}
+                className={`py-3 px-2 relative transition-all ${
+                  activeCategory === cat
+                    ? 'text-foreground font-bold'
+                    : 'text-card-foreground opacity-60 hover:opacity-100'
+                }`}
+              >
+                {cat === 'Hackathons' ? 'Hackathons/Contests' : cat}
+                {activeCategory === cat && (
+                  <motion.div
+                    layoutId="activeTabIndicator"
+                    className="absolute bottom-0 left-0 right-0 h-0.5 bg-[#000000]"
+                  />
+                )}
+              </button>
+            ))}
+          </div>
         </div>
       </div>
 
@@ -273,12 +275,12 @@ export function Analytics() {
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.3, delay: 0.05 }}
-            className="bg-white rounded-lg p-5 border border-[#E5E5E5] shadow-sm"
+            className="bg-card rounded-lg p-5 border border-border shadow-sm"
           >
-            <div className="text-xs uppercase tracking-wide text-[#14213D] mb-2 font-semibold opacity-60">
+            <div className="text-xs uppercase tracking-wide text-card-foreground mb-2 font-semibold opacity-60">
               SAVED
             </div>
-            <div className="text-4xl font-bold text-[#000000] mb-3 leading-none">
+            <div className="text-4xl font-bold text-foreground mb-3 leading-none">
               {overview?.saved ?? 0}
             </div>
             <div className="inline-flex items-center px-3 py-1.5 bg-[#DBEAFE] rounded-full">
@@ -292,12 +294,12 @@ export function Analytics() {
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.3, delay: 0.1 }}
-            className="bg-white rounded-lg p-5 border border-[#E5E5E5] shadow-sm"
+            className="bg-card rounded-lg p-5 border border-border shadow-sm"
           >
-            <div className="text-xs uppercase tracking-wide text-[#14213D] mb-2 font-semibold opacity-60">
+            <div className="text-xs uppercase tracking-wide text-card-foreground mb-2 font-semibold opacity-60">
               APPLIED
             </div>
-            <div className="text-4xl font-bold text-[#000000] mb-3 leading-none">
+            <div className="text-4xl font-bold text-foreground mb-3 leading-none">
               {(overview?.applied ?? 0) + (overview?.interviewing ?? 0)}
             </div>
             <div className="inline-flex items-center px-3 py-1.5 bg-[#FEF3C7] rounded-full">
@@ -311,12 +313,12 @@ export function Analytics() {
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.3, delay: 0.15 }}
-            className="bg-white rounded-lg p-5 border border-[#E5E5E5] shadow-sm"
+            className="bg-card rounded-lg p-5 border border-border shadow-sm"
           >
-            <div className="text-xs uppercase tracking-wide text-[#14213D] mb-2 font-semibold opacity-60">
+            <div className="text-xs uppercase tracking-wide text-card-foreground mb-2 font-semibold opacity-60">
               REJECTED
             </div>
-            <div className="text-4xl font-bold text-[#000000] mb-3 leading-none">
+            <div className="text-4xl font-bold text-foreground mb-3 leading-none">
               {overview?.rejected ?? 0}
             </div>
             <div className="inline-flex items-center px-3 py-1.5 bg-[#FDE2E2] rounded-full">
@@ -330,12 +332,12 @@ export function Analytics() {
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.3, delay: 0.2 }}
-            className="bg-white rounded-lg p-5 border border-[#E5E5E5] shadow-sm"
+            className="bg-card rounded-lg p-5 border border-border shadow-sm"
           >
-            <div className="text-xs uppercase tracking-wide text-[#14213D] mb-2 font-semibold opacity-60">
+            <div className="text-xs uppercase tracking-wide text-card-foreground mb-2 font-semibold opacity-60">
               OFFERS
             </div>
-            <div className="text-4xl font-bold text-[#000000] mb-3 leading-none">
+            <div className="text-4xl font-bold text-foreground mb-3 leading-none">
               {overview?.offers ?? 0}
             </div>
             <div className="inline-flex items-center px-3 py-1.5 bg-[#DDF7EA] rounded-full">
@@ -353,9 +355,9 @@ export function Analytics() {
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.3, delay: 0.25 }}
-              className="bg-white rounded-lg p-6 border border-[#E5E5E5] shadow-sm"
+              className="bg-card rounded-lg p-6 border border-border shadow-sm"
             >
-              <h3 className="text-lg font-bold text-[#000000] mb-5">
+              <h3 className="text-lg font-bold text-foreground mb-5">
                 Application Funnel
               </h3>
 
@@ -363,18 +365,18 @@ export function Analytics() {
                 {funnelSteps.map((step, index) => (
                   <div key={step.label}>
                     <div className="flex items-center justify-between mb-2">
-                      <span className="text-sm font-medium text-[#14213D]">
+                      <span className="text-sm font-medium text-card-foreground">
                         {step.label}
                       </span>
-                      <span className="text-sm font-bold text-[#000000]">
+                      <span className="text-sm font-bold text-foreground">
                         {step.value}{' '}
-                        <span className="text-[#6b7280] font-normal">
+                        <span className="text-muted-foreground font-normal">
                           ({step.percent}%)
                         </span>
                       </span>
                     </div>
 
-                    <div className="w-full h-2 bg-[#E5E5E5] rounded-full overflow-hidden">
+                    <div className="w-full h-2 bg-background rounded-full overflow-hidden">
                       <motion.div
                         initial={{ width: 0 }}
                         animate={{ width: `${step.percent}%` }}
@@ -394,13 +396,13 @@ export function Analytics() {
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.3, delay: 0.25 }}
-              className="bg-white rounded-lg p-6 border border-[#E5E5E5] shadow-sm"
+              className="bg-card rounded-lg p-6 border border-border shadow-sm"
             >
               <div className="flex items-center justify-between mb-4">
-                <h3 className="text-lg font-bold text-[#000000]">
+                <h3 className="text-lg font-bold text-foreground">
                   Final Outcomes
                 </h3>
-                <span className="text-sm text-[#6b7280] font-medium">
+                <span className="text-sm text-muted-foreground font-medium">
                   {overview?.totalJobs ?? 0} jobs
                 </span>
               </div>
@@ -426,10 +428,10 @@ export function Analytics() {
                 </PieChart>
 
                 <div className="absolute flex flex-col items-center justify-center pointer-events-none">
-                  <div className="text-3xl font-bold text-[#000000]">
+                  <div className="text-3xl font-bold text-foreground">
                     {overview?.totalJobs ?? 0}
                   </div>
-                  <div className="text-xs text-[#6b7280]">jobs</div>
+                  <div className="text-xs text-muted-foreground">jobs</div>
                 </div>
               </div>
 
@@ -441,10 +443,10 @@ export function Analytics() {
                       style={{ backgroundColor: item.color }}
                     />
                     <div className="text-sm">
-                      <span className="font-semibold text-[#000000]">
+                      <span className="font-semibold text-foreground">
                         {item.name}
                       </span>
-                      <span className="text-[#6b7280] ml-1">
+                      <span className="text-muted-foreground ml-1">
                         ({item.value})
                       </span>
                     </div>
@@ -461,15 +463,15 @@ export function Analytics() {
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.3, delay: 0.3 }}
-            className="bg-white rounded-lg p-6 border border-[#E5E5E5] shadow-sm"
+            className="bg-card rounded-lg p-6 border border-border shadow-sm"
           >
-            <h3 className="text-lg font-bold text-[#000000] mb-4">
+            <h3 className="text-lg font-bold text-foreground mb-4">
               Top Skills
             </h3>
 
             <div className="space-y-3">
               {topSkillBars.length === 0 ? (
-                <p className="text-sm text-[#6b7280]">No skill data yet.</p>
+                <p className="text-sm text-muted-foreground">No skill data yet.</p>
               ) : (
                 topSkillBars.map((skill, index) => {
                   const widthPercent =
@@ -478,15 +480,15 @@ export function Analytics() {
                   return (
                     <div key={skill.skill}>
                       <div className="mb-2 flex items-center justify-between">
-                        <span className="text-sm font-medium text-[#14213D]">
+                        <span className="text-sm font-medium text-card-foreground">
                           {skill.skill}
                         </span>
-                        <span className="text-sm font-bold text-[#000000]">
+                        <span className="text-sm font-bold text-foreground">
                           {skill.count}
                         </span>
                       </div>
 
-                      <div className="h-2 w-full overflow-hidden rounded-full bg-[#E5E5E5]">
+                      <div className="h-2 w-full overflow-hidden rounded-full bg-background">
                         <motion.div
                           initial={{ width: 0 }}
                           animate={{ width: `${widthPercent}%` }}
@@ -511,15 +513,15 @@ export function Analytics() {
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.3, delay: 0.3 }}
-            className="bg-white rounded-lg p-6 border border-[#E5E5E5] shadow-sm"
+            className="bg-card rounded-lg p-6 border border-border shadow-sm"
           >
-            <h3 className="text-lg font-bold text-[#000000] mb-4">
+            <h3 className="text-lg font-bold text-foreground mb-4">
               Top Missing Skills
             </h3>
 
             <div className="space-y-3">
               {skillGapBars.length === 0 ? (
-                <p className="text-sm text-[#6b7280]">No missing-skill data yet.</p>
+                <p className="text-sm text-muted-foreground">No missing-skill data yet.</p>
               ) : (
                 skillGapBars.map((skill, index) => {
                   const widthPercent =
@@ -528,10 +530,10 @@ export function Analytics() {
                   return (
                     <div key={skill.skill}>
                       <div className="mb-2 flex items-center justify-between">
-                        <span className="text-sm font-medium text-[#14213D]">
+                        <span className="text-sm font-medium text-card-foreground">
                           {skill.skill}
                         </span>
-                        <span className="text-sm font-bold text-[#000000]">
+                        <span className="text-sm font-bold text-foreground">
                           {skill.frequency}
                         </span>
                       </div>
@@ -563,31 +565,31 @@ export function Analytics() {
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.3, delay: 0.35 }}
-          className="mt-6 bg-white rounded-lg p-6 border border-[#E5E5E5] shadow-sm"
+          className="mt-6 bg-card rounded-lg p-6 border border-border shadow-sm"
         >
           <div className="flex items-center justify-between mb-5">
-            <h3 className="text-lg font-bold text-[#000000]">
+            <h3 className="text-lg font-bold text-foreground">
               Match Insights
             </h3>
-            <span className="text-sm text-[#6b7280] font-medium">
+            <span className="text-sm text-muted-foreground font-medium">
               Jobs only
             </span>
           </div>
 
           <div className="grid grid-cols-2 gap-4">
-            <div className="rounded-lg border border-[#E5E5E5] bg-[#F8FAFC] p-4">
-              <div className="text-xs font-semibold uppercase tracking-wide text-[#6b7280]">
+            <div className="rounded-lg border border-border bg-[#F8FAFC] p-4">
+              <div className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">
                 Avg Match: All Jobs
               </div>
-              <div className="mt-3 text-4xl font-bold text-[#14213D]">
+              <div className="mt-3 text-4xl font-bold text-card-foreground">
                 {matchInsights?.allJobsAverage ?? 0}%
               </div>
-              <p className="mt-2 text-sm text-[#6b7280]">
+              <p className="mt-2 text-sm text-muted-foreground">
                 Average match score across every scored job in your pipeline.
               </p>
             </div>
 
-            <div className="rounded-lg border border-[#E5E5E5] bg-[#FFF9F0] p-4">
+            <div className="rounded-lg border border-border bg-[#FFF9F0] p-4">
               <div className="text-xs font-semibold uppercase tracking-wide text-[#92400E]">
                 Avg Match: Interviewing / Offer
               </div>
@@ -609,20 +611,20 @@ export function Analytics() {
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.3, delay: 0.4 }}
-            className="bg-white rounded-lg p-6 border border-[#E5E5E5] shadow-sm"
+            className="bg-card rounded-lg p-6 border border-border shadow-sm"
           >
             <div className="mb-5 flex items-center justify-between">
-              <h3 className="text-lg font-bold text-[#000000]">
+              <h3 className="text-lg font-bold text-foreground">
                 Rejection Breakdown
               </h3>
-              <span className="text-sm font-medium text-[#6b7280]">
+              <span className="text-sm font-medium text-muted-foreground">
                 {rejectedJobs.length} total
               </span>
             </div>
 
             <div className="space-y-4">
               {rejectedJobs.length === 0 ? (
-                <p className="text-sm text-[#6b7280]">No rejected jobs to review yet.</p>
+                <p className="text-sm text-muted-foreground">No rejected jobs to review yet.</p>
               ) : (
                 rejectedJobs.map((job, index) => (
                   <div
@@ -630,9 +632,9 @@ export function Analytics() {
                     className="flex items-start justify-between gap-4 border-b border-[#F1F3F5] pb-4 last:border-b-0 last:pb-0"
                   >
                     <div className="min-w-0">
-                      <div className="font-bold text-[#000000]">{job.company}</div>
-                      <div className="text-sm text-[#6b7280]">{job.title}</div>
-                      <div className="mt-2 text-sm text-[#6b7280]">
+                      <div className="font-bold text-foreground">{job.company}</div>
+                      <div className="text-sm text-muted-foreground">{job.title}</div>
+                      <div className="mt-2 text-sm text-muted-foreground">
                         {job.rejectionReason || 'Not specified'}
                       </div>
                     </div>
@@ -649,20 +651,20 @@ export function Analytics() {
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.3, delay: 0.45 }}
-            className="bg-white rounded-lg p-6 border border-[#E5E5E5] shadow-sm"
+            className="bg-card rounded-lg p-6 border border-border shadow-sm"
           >
             <div className="mb-5 flex items-center justify-between">
-              <h3 className="text-lg font-bold text-[#000000]">
+              <h3 className="text-lg font-bold text-foreground">
                 Offer Details
               </h3>
-              <span className="text-sm font-medium text-[#6b7280]">
+              <span className="text-sm font-medium text-muted-foreground">
                 {offeredJobs.length} active offers
               </span>
             </div>
 
             <div className="space-y-4">
               {offeredJobs.length === 0 ? (
-                <p className="text-sm text-[#6b7280]">No active offers yet.</p>
+                <p className="text-sm text-muted-foreground">No active offers yet.</p>
               ) : (
                 offeredJobs.map((job, index) => (
                   <div
@@ -670,8 +672,8 @@ export function Analytics() {
                     className="flex items-start justify-between gap-4 border-b border-[#F1F3F5] pb-4 last:border-b-0 last:pb-0"
                   >
                     <div className="min-w-0">
-                      <div className="font-bold text-[#000000]">{job.company}</div>
-                      <div className="text-sm text-[#6b7280]">{job.title}</div>
+                      <div className="font-bold text-foreground">{job.company}</div>
+                      <div className="text-sm text-muted-foreground">{job.title}</div>
                     </div>
                     <span className="shrink-0 rounded-full bg-[#DDF7EA] px-3 py-1 text-xs font-semibold text-[#067647]">
                       Offer
@@ -681,7 +683,7 @@ export function Analytics() {
               )}
             </div>
 
-            <div className="mt-5 border-t border-[#F1F3F5] pt-4 text-sm text-[#6b7280]">
+            <div className="mt-5 border-t border-[#F1F3F5] pt-4 text-sm text-muted-foreground">
               Interview → Offer rate: 25% • Avg. time: 3 weeks
             </div>
           </motion.div>
@@ -695,26 +697,26 @@ export function Analytics() {
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.3, delay: 0.5 }}
-            className="col-span-1 bg-white rounded-lg p-6 border border-[#E5E5E5] shadow-sm"
+            className="col-span-1 bg-card rounded-lg p-6 border border-border shadow-sm"
           >
-            <h3 className="text-lg font-bold text-[#000000] mb-4">
+            <h3 className="text-lg font-bold text-foreground mb-4">
               Pipeline Velocity
             </h3>
             
             <div className="flex flex-col items-center justify-center py-6">
-              <div className="text-6xl font-black text-[#14213D] mb-2 tracking-tighter">
+              <div className="text-6xl font-black text-card-foreground mb-2 tracking-tighter">
                 {responseTimes?.avgResponseTime || 0}
               </div>
-              <div className="text-sm font-semibold uppercase tracking-widest text-[#6b7280]">
+              <div className="text-sm font-semibold uppercase tracking-widest text-muted-foreground">
                 Days Average
               </div>
-              <p className="mt-4 text-center text-sm text-[#6b7280]">
+              <p className="mt-4 text-center text-sm text-muted-foreground">
                 From application submitted to interview scheduled across {responseTimes?.totalResponsesMeasured || 0} tracked responses.
               </p>
             </div>
             
-            <div className="mt-4 rounded-lg bg-[#F8FAFC] p-4 text-center border border-[#E5E5E5]">
-              <div className="text-xs font-semibold uppercase text-[#14213D]">
+            <div className="mt-4 rounded-lg bg-[#F8FAFC] p-4 text-center border border-border">
+              <div className="text-xs font-semibold uppercase text-card-foreground">
                 Interview → Offer Rate
               </div>
               <div className="mt-1 text-2xl font-bold text-[#067647]">
@@ -727,17 +729,17 @@ export function Analytics() {
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.3, delay: 0.55 }}
-            className="col-span-2 bg-white rounded-lg p-6 border border-[#E5E5E5] shadow-sm"
+            className="col-span-2 bg-card rounded-lg p-6 border border-border shadow-sm"
           >
             <div className="mb-5 flex items-center justify-between">
-              <h3 className="text-lg font-bold text-[#000000]">
+              <h3 className="text-lg font-bold text-foreground">
                 Top Companies by Volume
               </h3>
             </div>
 
             <div className="overflow-x-auto">
               <table className="w-full text-left text-sm">
-                <thead className="border-b border-[#E5E5E5] bg-[#F8FAFC] text-xs uppercase text-[#6b7280]">
+                <thead className="border-b border-border bg-[#F8FAFC] text-xs uppercase text-muted-foreground">
                   <tr>
                     <th className="px-4 py-3 font-semibold rounded-tl-lg">Company</th>
                     <th className="px-4 py-3 font-semibold text-center">Total Apps</th>
@@ -749,20 +751,20 @@ export function Analytics() {
                 <tbody className="divide-y divide-[#F1F3F5]">
                   {companyBreakdown.length === 0 ? (
                     <tr>
-                      <td colSpan={5} className="px-4 py-8 text-center text-[#6b7280]">
+                      <td colSpan={5} className="px-4 py-8 text-center text-muted-foreground">
                         No company data available yet.
                       </td>
                     </tr>
                   ) : (
                     companyBreakdown.map((comp, idx) => (
                       <tr key={comp.company} className="hover:bg-[#F8FAFC] transition-colors">
-                        <td className="px-4 py-3 font-semibold text-[#14213D]">{comp.company}</td>
-                        <td className="px-4 py-3 text-center text-[#6b7280]">{comp.total}</td>
+                        <td className="px-4 py-3 font-semibold text-card-foreground">{comp.company}</td>
+                        <td className="px-4 py-3 text-center text-muted-foreground">{comp.total}</td>
                         <td className="px-4 py-3 text-center text-[#FCA311] font-medium">{comp.interviewing > 0 ? comp.interviewing : '-'}</td>
                         <td className="px-4 py-3 text-center text-[#067647] font-medium">{comp.offers > 0 ? comp.offers : '-'}</td>
                         <td className="px-4 py-3 text-right">
                           <span className={`inline-flex items-center px-2 py-1 rounded-md text-xs font-bold ${
-                            Number(comp.interviewRate) > 0 ? 'bg-[#DDF7EA] text-[#067647]' : 'bg-[#F1F3F5] text-[#6b7280]'
+                            Number(comp.interviewRate) > 0 ? 'bg-[#DDF7EA] text-[#067647]' : 'bg-[#F1F3F5] text-muted-foreground'
                           }`}>
                             {comp.interviewRate}%
                           </span>

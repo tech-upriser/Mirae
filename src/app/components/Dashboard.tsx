@@ -432,7 +432,7 @@ export function Dashboard() {
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.4, delay: index * 0.1 }}
       onClick={() => setSelectedApp(app)}
-      className={`bg-white rounded-md overflow-visible shadow-[0_4px_6px_rgba(0,0,0,0.1)] hover:shadow-[0_8px_16px_rgba(252,163,17,0.2)] transition-all duration-300 cursor-pointer group ${
+      className={`bg-card rounded-md overflow-visible shadow-[0_4px_6px_rgba(0,0,0,0.1)] hover:shadow-[0_8px_16px_rgba(252,163,17,0.2)] transition-all duration-300 cursor-pointer group ${
         variant === 'rejected' ? 'opacity-60 grayscale-[0.3]' : ''
       } ${
         variant === 'selected'
@@ -447,7 +447,7 @@ export function Dashboard() {
         <span className="text-white/20 font-bold text-5xl tracking-wider select-none">
           {app.companyAcronym}
         </span>
-        <div className="absolute top-3 right-3 w-10 h-10 bg-white rounded-md flex items-center justify-center shadow-md overflow-hidden">
+        <div className="absolute top-3 right-3 w-10 h-10 bg-card rounded-md flex items-center justify-center shadow-md overflow-hidden">
           {app.imageUrl ? (
             <img
               src={app.imageUrl}
@@ -457,11 +457,11 @@ export function Dashboard() {
                 // Hide img and show text fallback
                 (e.target as HTMLImageElement).style.display = 'none';
                 const parent = (e.target as HTMLImageElement).parentElement;
-                if (parent) parent.innerHTML = `<span class="text-[#14213D] font-bold text-sm">${app.companyAcronym}</span>`;
+                if (parent) parent.innerHTML = `<span class="text-card-foreground font-bold text-sm">${app.companyAcronym}</span>`;
               }}
             />
           ) : (
-            <span className="text-[#14213D] font-bold text-sm">{app.companyAcronym}</span>
+            <span className="text-card-foreground font-bold text-sm">{app.companyAcronym}</span>
           )}
         </div>
       </div>
@@ -469,10 +469,10 @@ export function Dashboard() {
       <div className="p-4">
         <div className="flex items-start justify-between mb-2 gap-3">
           <div className="flex-1 min-w-0">
-            <h3 className="font-bold text-[#000000] text-lg mb-1 leading-tight">
+            <h3 className="font-bold text-foreground text-lg mb-1 leading-tight">
               {app.role}
             </h3>
-            <p className="text-sm text-[#14213D]">{app.company}</p>
+            <p className="text-sm text-card-foreground">{app.company}</p>
           </div>
           {app.url && (
             <a
@@ -483,7 +483,7 @@ export function Dashboard() {
               className="flex-shrink-0 ml-2 p-1 rounded hover:bg-[#FCA311]/10 transition-colors"
               title="Open original job listing"
             >
-              <ExternalLink className="w-4 h-4 text-[#14213D] opacity-40 hover:opacity-100 transition-opacity" />
+              <ExternalLink className="w-4 h-4 text-card-foreground opacity-40 hover:opacity-100 transition-opacity" />
             </a>
           )}
         </div>
@@ -494,7 +494,7 @@ export function Dashboard() {
               variant === 'selected'
                 ? 'bg-[#059669] text-white'
                 : variant === 'rejected'
-                ? 'bg-[#E5E5E5] text-[#14213D] opacity-50'
+                ? 'bg-background text-card-foreground opacity-50'
                 : 'bg-[#d4f4dd] text-[#16a34a]'
             }`}
           >
@@ -514,7 +514,7 @@ export function Dashboard() {
           </div>
 
           <div className="ml-auto flex items-center gap-3">
-            <div className="flex items-center gap-1 text-xs text-[#14213D] opacity-60">
+            <div className="flex items-center gap-1 text-xs text-card-foreground opacity-60">
               <Clock className="w-3 h-3" />
               <span>{app.appliedDate}</span>
             </div>
@@ -526,13 +526,13 @@ export function Dashboard() {
                   e.stopPropagation();
                   setMenuOpenId((current) => (current === app.id ? null : app.id));
                 }}
-                className="flex h-7 w-7 items-center justify-center rounded-md bg-white text-[#6B7280] transition hover:bg-[#F3F4F6] hover:text-[#14213D]"
+                className="flex h-7 w-7 items-center justify-center rounded-md bg-card text-[#6B7280] transition hover:bg-[#F3F4F6] hover:text-card-foreground"
               >
                 <MoreVertical className="h-4 w-4" />
               </button>
 
               {menuOpenId === app.id && (
-                <div className="absolute bottom-full right-0 z-30 mb-2 min-w-[150px] rounded-md border border-[#E5E5E5] bg-white p-1 shadow-lg">
+                <div className="absolute bottom-full right-0 z-30 mb-2 min-w-[150px] rounded-md border border-border bg-card p-1 shadow-lg">
                   <button
                     type="button"
                     onClick={(e) => {
@@ -555,93 +555,95 @@ export function Dashboard() {
   );
 
   return (
-    <div className="ml-60 min-h-screen bg-[#E5E5E5]">
-      <div className="bg-white px-8 pt-6 pb-2 sticky top-0 z-20">
-        <div className="flex items-center justify-between">
-          <div className="flex min-w-0 flex-1 items-center gap-6">
-            <div className="min-w-0">
-              <h1
-                className="text-3xl font-bold text-[#000000]"
-                style={{ fontFamily: 'var(--font-display)' }}
-              >
-                Dashboard
-              </h1>
-              <p className="text-sm text-[#14213D] opacity-70">
-                {activeTab === 'jobs'
-                  ? 'Manage your job pipeline and momentum.'
-                  : activeTab === 'hackathons'
-                  ? 'Track the contests you want to join and the ones you have registered for.'
-                  : 'Keep track of other opportunities you want to remember.'}
-              </p>
+    <div className="ml-60 min-h-screen bg-background">
+      <div className="bg-card border-b border-border sticky top-0 z-20 shadow-sm">
+        <div className="px-8 pt-6 pb-2">
+          <div className="flex items-center justify-between">
+            <div className="flex min-w-0 flex-1 items-center gap-6">
+              <div className="min-w-0">
+                <h1
+                  className="text-3xl font-bold text-foreground"
+                  style={{ fontFamily: 'var(--font-display)' }}
+                >
+                  Dashboard
+                </h1>
+                <p className="text-sm text-card-foreground opacity-70">
+                  {activeTab === 'jobs'
+                    ? 'Manage your job pipeline and momentum.'
+                    : activeTab === 'hackathons'
+                    ? 'Track the contests you want to join and the ones you have registered for.'
+                    : 'Keep track of other opportunities you want to remember.'}
+                </p>
+              </div>
+              <div className="relative hidden max-w-2xl flex-1 md:block">
+                <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-card-foreground opacity-50" />
+                <input
+                  type="text"
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  placeholder="Search applications..."
+                  className="w-full rounded-md border border-border bg-card py-3 pl-12 pr-4 text-foreground focus:outline-none focus:ring-2 focus:ring-[#FCA311]"
+                />
+              </div>
             </div>
-            <div className="relative hidden max-w-2xl flex-1 md:block">
-              <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-[#14213D] opacity-50" />
-              <input
-                type="text"
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                placeholder="Search applications..."
-                className="w-full rounded-md border border-[#E5E5E5] bg-white py-3 pl-12 pr-4 text-[#000000] focus:outline-none focus:ring-2 focus:ring-[#FCA311]"
-              />
-            </div>
-          </div>
 
-          <div className="ml-6 flex items-center gap-3">
-            <button
-              onClick={handleLogout}
-              className="rounded-md border border-[#E5E5E5] px-5 py-3 font-semibold text-[#14213D] transition-colors hover:border-[#FCA311] hover:text-[#FCA311]"
-            >
-              Logout
-            </button>
-            <button
-              onClick={() => setShowAddModal(true)}
-              className="flex items-center gap-2 rounded-md bg-[#FCA311] px-6 py-3 font-semibold text-[#000000] shadow-md transition-all hover:bg-[#fdb748] hover:shadow-lg"
-            >
-              <Plus className="w-5 h-5" />
-              Add Manual
-            </button>
+            <div className="ml-6 flex items-center gap-3">
+              <button
+                onClick={handleLogout}
+                className="rounded-md border border-border px-5 py-3 font-semibold text-card-foreground transition-colors hover:border-[#FCA311] hover:text-[#FCA311]"
+              >
+                Logout
+              </button>
+              <button
+                onClick={() => setShowAddModal(true)}
+                className="flex items-center gap-2 rounded-md bg-[#FCA311] px-6 py-3 font-semibold text-foreground shadow-md transition-all hover:bg-[#fdb748] hover:shadow-lg"
+              >
+                <Plus className="w-5 h-5" />
+                Add Manual
+              </button>
+            </div>
           </div>
         </div>
-      </div>
 
-      <div className="bg-white border-b border-[#E5E5E5] px-8 sticky top-[88px] z-10 shadow-sm">
-        <div className="flex gap-8">
-          {([
-            { value: 'jobs', label: 'Jobs' },
-            { value: 'hackathons', label: 'Hackathons/Contests' },
-            { value: 'others', label: 'Others' },
-          ] as const).map((tab) => (
-            <button
-              key={tab.value}
-              onClick={() => setActiveTab(tab.value)}
-              className={`py-4 px-2 relative transition-all ${
-                activeTab === tab.value
-                  ? 'text-[#000000] font-bold'
-                  : 'text-[#14213D] opacity-60 hover:opacity-100'
-              }`}
-            >
-              {tab.label}
-              {activeTab === tab.value && (
-                <motion.div
-                  layoutId="activeTab"
-                  className="absolute bottom-0 left-0 right-0 h-0.5 bg-[#000000]"
-                />
-              )}
-            </button>
-          ))}
+        <div className="px-8 mt-2">
+          <div className="flex gap-8">
+            {([
+              { value: 'jobs', label: 'Jobs' },
+              { value: 'hackathons', label: 'Hackathons/Contests' },
+              { value: 'others', label: 'Others' },
+            ] as const).map((tab) => (
+              <button
+                key={tab.value}
+                onClick={() => setActiveTab(tab.value)}
+                className={`py-3 px-2 relative transition-all ${
+                  activeTab === tab.value
+                    ? 'text-foreground font-bold'
+                    : 'text-card-foreground opacity-60 hover:opacity-100'
+                }`}
+              >
+                {tab.label}
+                {activeTab === tab.value && (
+                  <motion.div
+                    layoutId="activeTab"
+                    className="absolute bottom-0 left-0 right-0 h-0.5 bg-[#000000]"
+                  />
+                )}
+              </button>
+            ))}
+          </div>
         </div>
       </div>
 
       <div className="p-8">
         <div className="mb-6 flex items-center justify-between gap-4">
-          <div className="text-sm text-[#14213D]">
+          <div className="text-sm text-card-foreground">
             {loading ? 'Loading dashboard...' : currentSummaryText}
           </div>
 
           <button
             type="button"
             onClick={handleSortToggle}
-            className="inline-flex items-center gap-2 rounded-md border border-[#D5D9E2] bg-white px-4 py-2 text-sm font-semibold text-[#14213D] shadow-sm transition-colors hover:border-[#FCA311] hover:bg-[#FFF9F0]"
+            className="inline-flex items-center gap-2 rounded-md border border-[#D5D9E2] bg-card px-4 py-2 text-sm font-semibold text-card-foreground shadow-sm transition-colors hover:border-[#FCA311] hover:bg-[#FFF9F0]"
           >
             <ArrowUpDown className="h-4 w-4 text-[#6B7280]" />
             <span>{sortButtonLabel}</span>
@@ -657,7 +659,7 @@ export function Dashboard() {
             className="mb-12"
           >
             <h2
-              className="text-3xl font-bold text-[#000000] mb-6"
+              className="text-3xl font-bold text-foreground mb-6"
               style={{ fontFamily: 'var(--font-display)' }}
             >
               {section.title} ({section.apps.length})

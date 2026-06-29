@@ -1,7 +1,7 @@
 export function ExtensionOnboardingModal({ onClose }: { onClose: () => void }) {
   return (
     <div className="fixed inset-0 z-[2147483647] flex items-center justify-center bg-black/60 backdrop-blur-md">
-      <div className="bg-white p-8 rounded-2xl max-w-lg w-full shadow-2xl">
+      <div className="bg-card p-8 rounded-2xl max-w-lg w-full shadow-2xl">
         <h2 className="text-2xl font-bold mb-4">Install the Mirae Extension</h2>
         <p className="text-gray-600 mb-6">
           To automatically track job applications and get Match Scores, you need our Chrome extension.
