@@ -191,7 +191,7 @@ export function ApplicationDetail({ application, onClose, onStatusChange, onCont
         className="fixed right-0 top-0 h-screen w-[600px] bg-card shadow-2xl z-50 flex flex-col"
       >
         {/* Header */}
-        <div className="bg-primary text-primary-foreground p-6 sticky top-0 z-10">
+        <div className="bg-secondary text-secondary-foreground p-6 sticky top-0 z-10">
           <div className="flex items-start justify-between mb-4">
             <div className="flex-1">
               <h2 className="text-2xl font-bold text-white mb-1" style={{ fontFamily: 'var(--font-display)' }}>
@@ -311,7 +311,7 @@ export function ApplicationDetail({ application, onClose, onStatusChange, onCont
                         <div className="flex flex-wrap gap-2">
                           {finalMatched.length > 0 ? (
                             finalMatched.map((skill, i) => (
-                              <span key={i} className="px-3 py-1.5 bg-primary text-primary-foreground text-white rounded-full text-xs font-medium">
+                              <span key={i} className="px-3 py-1.5 bg-secondary text-secondary-foreground rounded-full text-xs font-medium">
                                 ✓ {skill}
                               </span>
                             ))
@@ -399,9 +399,9 @@ export function ApplicationDetail({ application, onClose, onStatusChange, onCont
                     <div key={`${event.status}-${event.date}-${index}`} className="relative flex gap-4">
                       <div className="relative flex w-7 shrink-0 justify-center">
                         {showConnector && (
-                          <div className="absolute top-8 bottom-[-1.5rem] w-0.5 bg-primary text-primary-foreground" />
+                          <div className="absolute top-8 bottom-[-1.5rem] w-0.5 bg-secondary text-secondary-foreground" />
                         )}
-                        <div className={`relative z-10 flex h-7 w-7 items-center justify-center rounded-full border-2 ${isNewest ? 'border-[#14213D] bg-primary text-primary-foreground' : 'border-[#14213D] bg-card'}`}>
+                        <div className={`relative z-10 flex h-7 w-7 items-center justify-center rounded-full border-2 ${isNewest ? 'border-[#14213D] bg-secondary text-secondary-foreground' : 'border-[#14213D] bg-card'}`}>
                           <Clock className={`h-3.5 w-3.5 ${isNewest ? 'text-white' : 'text-card-foreground'}`} />
                         </div>
                       </div>
@@ -463,7 +463,7 @@ export function ApplicationDetail({ application, onClose, onStatusChange, onCont
                   type="button"
                   onClick={handleSaveContacts}
                   disabled={isSavingContacts}
-                  className="inline-flex items-center justify-center rounded-md bg-primary text-primary-foreground px-4 py-2 text-sm font-semibold text-white transition-colors hover:bg-[#1f335c] disabled:opacity-60"
+                  className="inline-flex items-center justify-center rounded-md bg-secondary text-secondary-foreground transition-colors hover:bg-[#1f335c] disabled:opacity-60"
                 >
                   {isSavingContacts ? 'Saving Contacts...' : 'Save Contacts'}
                 </button>
@@ -486,7 +486,7 @@ export function ApplicationDetail({ application, onClose, onStatusChange, onCont
                 type="button"
                 onClick={handleSaveNote}
                 disabled={isSavingNote}
-                className="mt-4 self-end rounded-lg bg-primary text-primary-foreground px-6 py-3 font-bold text-white transition-colors hover:bg-[#0B132B] disabled:opacity-60"
+                className="mt-4 self-end rounded-lg bg-secondary text-secondary-foreground transition-colors hover:bg-[#0B132B] disabled:opacity-60"
               >
                 {isSavingNote ? 'Saving Note...' : 'Save Note'}
               </button>

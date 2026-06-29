@@ -35,7 +35,7 @@ export function Sidebar({
   };
 
   return (
-    <aside className="fixed left-0 top-0 h-screen w-60 bg-primary text-primary-foreground flex flex-col z-10 overflow-visible">
+    <aside className="fixed left-0 top-0 h-screen w-60 bg-secondary text-secondary-foreground flex flex-col z-10 overflow-visible">
       <div className="p-6 border-b border-[rgba(252,163,17,0.2)]">
         <div className="flex items-center gap-3">
           <BrandLogo className="h-12 w-12 flex-shrink-0" />

@@ -83,7 +83,7 @@ export function ProfilePopover({ onClose, onManageResumes, onSocialPortfolio, on
                         initial={{ opacity: 0, y: -5 }}
                         animate={{ opacity: 1, y: 0 }}
                         exit={{ opacity: 0, y: -5 }}
-                        className="absolute -top-8 left-1/2 -translate-x-1/2 bg-primary text-primary-foreground text-white text-xs px-2 py-1 rounded whitespace-nowrap"
+                        className="absolute -top-8 left-1/2 -translate-x-1/2 bg-secondary text-secondary-foreground text-xs px-2 py-1 rounded whitespace-nowrap"
                       >
                         Change Photo
                       </motion.div>

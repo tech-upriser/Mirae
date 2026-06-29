@@ -627,7 +627,7 @@ export function Settings({
                 <button
                   type="button"
                   onClick={() => photoInputRef.current?.click()}
-                  className="absolute -bottom-1 -right-1 flex h-8 w-8 items-center justify-center rounded-full border-2 border-white bg-primary text-primary-foreground"
+                  className="absolute -bottom-1 -right-1 flex h-8 w-8 items-center justify-center rounded-full border-2 border-white bg-secondary text-secondary-foreground"
                 >
                   <Camera size={14} className="text-[#FCA311]" />
                 </button>
@@ -717,7 +717,7 @@ export function Settings({
                     type="button"
                     onClick={handleSaveProfile}
                     disabled={saving}
-                    className="rounded-lg bg-primary text-primary-foreground px-4 py-3 font-medium text-white transition-all hover:bg-[#1a2a4f] disabled:opacity-60"
+                    className="rounded-lg bg-secondary text-secondary-foreground px-4 py-3 font-medium transition-all hover:bg-[#1a2a4f] disabled:opacity-60"
                   >
                     Save
                   </button>
@@ -815,7 +815,7 @@ export function Settings({
                   <button
                     type="button"
                     onClick={handleConnectGmail}
-                    className="w-full rounded-lg bg-primary text-primary-foreground px-4 py-3 font-medium text-white transition-all hover:bg-[#1a2a4f]"
+                    className="w-full rounded-lg bg-secondary text-secondary-foreground px-4 py-3 font-medium transition-all hover:bg-[#1a2a4f]"
                   >
                     Connect Gmail Account
                   </button>
@@ -866,7 +866,7 @@ export function Settings({
                   <button
                     type="button"
                     onClick={handleConnectGoogleCalendar}
-                    className="w-full rounded-lg bg-primary text-primary-foreground px-4 py-3 font-medium text-white transition-all hover:bg-[#1a2a4f]"
+                    className="w-full rounded-lg bg-secondary text-secondary-foreground px-4 py-3 font-medium transition-all hover:bg-[#1a2a4f]"
                   >
                     Connect Google Calendar
                   </button>
@@ -999,7 +999,7 @@ export function Settings({
                 <button
                   type="button"
                   onClick={handleEnableAllNotifications}
-                  className="w-full rounded-lg bg-primary text-primary-foreground px-4 py-3 font-medium text-white hover:bg-[#1a2a4f] transition-colors"
+                  className="w-full rounded-lg bg-secondary text-secondary-foreground px-4 py-3 font-medium hover:bg-[#1a2a4f] transition-colors"
                 >
                   Enable All Notifications
                 </button>
@@ -1034,7 +1034,7 @@ export function Settings({
               <button
                 type="button"
                 onClick={() => setShowPasswordModal(true)}
-                className="w-full flex items-center justify-between p-3 rounded-lg border border-[#14213D] text-card-foreground hover:bg-primary text-primary-foreground hover:text-white transition-colors"
+                className="w-full flex items-center justify-between p-3 rounded-lg border border-[#14213D] text-card-foreground hover:bg-secondary text-secondary-foreground transition-colors"
               >
                 <div className="flex items-center gap-3">
                   <Lock className="w-5 h-5" />

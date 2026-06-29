@@ -195,7 +195,7 @@ export function ManageResumesModal({ onClose }: Props) {
                     <div className="min-w-0 flex-1">
                       <div className="mb-1 truncate font-semibold text-foreground">{resumeInfo.fileName}</div>
                       <div className="flex items-center gap-2">
-                        <span className="rounded bg-primary text-primary-foreground px-2 py-1 text-xs text-white">
+                        <span className="rounded bg-secondary text-secondary-foreground">
                           Scoring Active
                         </span>
                         <span className="text-xs text-[#73766A]">{resumeInfo.uploadedAt}</span>
