@@ -78,51 +78,51 @@
 }
 
 .dark {
-  /* Midnight Pro Canvas */
-  --background: #222B3D; 
+  /* Rich Navy Canvas */
+  --background: #0B1221; /* Very dark navy */
   --foreground: #F0F6FC; /* Off-White */
   
-  /* Midnight Pro Containers */
-  --card: #182333; /* Complementary Dark Ash for Cards */
-  --card-foreground: #F0F6FC;
-  --popover: #182333;
-  --popover-foreground: #F0F6FC;
+  /* Containers */
+  --card: #14213D; /* The exact navy from light mode */
+  --card-foreground: #FFFFFF;
+  --popover: #14213D;
+  --popover-foreground: #FFFFFF;
   
-  --border: #32435C; /* Ash Border */
+  --border: #233454; /* Subtle lighter navy border */
   
   /* Primary & Accents */
-  --primary: #F59E0B; /* Orange */
-  --primary-foreground: #0B0E14;
+  --primary: #FCA311; /* Signature Gold */
+  --primary-foreground: #000000;
   
-  --secondary: #161B22; 
-  --secondary-foreground: #F0F6FC;
-  --muted: #161B22;
-  --muted-foreground: #8B949E; /* Muted Silver */
-  --accent: #FFB347; /* Glowing Amber */
-  --accent-foreground: #0B0E14;
+  --secondary: #1F2F4D; 
+  --secondary-foreground: #FFFFFF;
+  --muted: #1F2F4D;
+  --muted-foreground: #94A3B8; /* Slate gray text */
+  --accent: #FCA311; 
+  --accent-foreground: #000000;
   
   --destructive: #EF4444;
-  --destructive-foreground: #F0F6FC;
-  --input: rgba(255, 255, 255, 0.05);
-  --input-background: #161B22;
-  --switch-background: #30363D;
-  --ring: rgba(255, 179, 71, 0.5);
+  --destructive-foreground: #FFFFFF;
+  --input: transparent;
+  --input-background: #0B1221;
+  --switch-background: #1F2F4D;
+  --ring: rgba(252, 163, 17, 0.5);
   
-  --chart-1: #FFB347;
+  --chart-1: #FCA311;
   --chart-2: #3B82F6;
   --chart-3: #10B981;
   --chart-4: #8B5CF6;
   --chart-5: #EC4899;
   
   /* Sidebar */
-  --sidebar: #0B1324; /* Dark Navy Blue */
-  --sidebar-foreground: #8B949E;
-  --sidebar-primary: #FFB347; /* Glowing Amber */
-  --sidebar-primary-foreground: #0B0E14;
-  --sidebar-accent: #1E2D53; 
-  --sidebar-accent-foreground: #F0F6FC;
-  --sidebar-border: #30363D;
-  --sidebar-ring: #FFB347;
+  --sidebar: #0B1221; 
+  --sidebar-foreground: #94A3B8;
+  --sidebar-primary: #FCA311; 
+  --sidebar-primary-foreground: #000000;
+  --sidebar-accent: #14213D; 
+  --sidebar-accent-foreground: #FFFFFF;
+  --sidebar-border: #233454;
+  --sidebar-ring: #FCA311;
   
   --font-weight-medium: 500;
   --font-weight-normal: 400;
