@@ -556,7 +556,7 @@ export function Dashboard() {
 
   return (
     <div className="ml-60 min-h-screen bg-[#E5E5E5]">
-      <div className="bg-white border-b border-[#E5E5E5] px-8 py-6 sticky top-0 z-10 shadow-sm">
+      <div className="bg-white px-8 pt-6 pb-2 sticky top-0 z-20">
         <div className="flex items-center justify-between">
           <div className="flex min-w-0 flex-1 items-center gap-6">
             <div className="min-w-0">
@@ -604,7 +604,7 @@ export function Dashboard() {
         </div>
       </div>
 
-      <div className="bg-white border-b border-[#E5E5E5] px-8 sticky top-[88px] z-10">
+      <div className="bg-white border-b border-[#E5E5E5] px-8 sticky top-[88px] z-10 shadow-sm">
         <div className="flex gap-8">
           {([
             { value: 'jobs', label: 'Jobs' },

@@ -221,34 +221,45 @@ export function Analytics() {
 
   return (
     <div className="ml-60 min-h-screen bg-[#E5E5E5] pb-6">
-      <div className="bg-white border-b border-[#E5E5E5] px-8 py-5 sticky top-0 z-10">
+      <div className="bg-white px-8 pt-6 pb-2 sticky top-0 z-20">
         <div className="flex items-center justify-between">
-          <h1
-            className="text-2xl font-bold text-[#000000]"
-            style={{ fontFamily: 'var(--font-display)' }}
-          >
-            Analytics & Insights
-          </h1>
-          <button className="p-2 hover:bg-[#E5E5E5] rounded transition-colors">
-            <MoreVertical className="w-5 h-5 text-[#14213D]" />
-          </button>
+          <div className="flex min-w-0 flex-1 items-center gap-6">
+            <div className="min-w-0">
+              <h1
+                className="text-3xl font-bold text-[#000000]"
+                style={{ fontFamily: 'var(--font-display)' }}
+              >
+                Analytics & Insights
+              </h1>
+              <p className="text-sm text-[#14213D] opacity-70">
+                {activeCategory === 'Jobs'
+                  ? 'Dive into your job search metrics and conversion rates.'
+                  : activeCategory === 'Hackathons'
+                  ? 'Track your hackathon participation and performance.'
+                  : 'View insights for other opportunities.'}
+              </p>
+            </div>
+          </div>
         </div>
-        <div className="mt-4 flex gap-6">
+      </div>
+
+      <div className="bg-white border-b border-[#E5E5E5] px-8 sticky top-[88px] z-10 shadow-sm">
+        <div className="flex gap-8">
           {(['Jobs', 'Hackathons', 'Others'] as const).map((cat) => (
             <button
               key={cat}
               onClick={() => setActiveCategory(cat)}
-              className={`pb-3 text-sm font-bold transition-all relative ${
+              className={`py-4 px-2 relative transition-all ${
                 activeCategory === cat
-                  ? 'text-[#14213D]'
-                  : 'text-[#6b7280] hover:text-[#14213D]'
+                  ? 'text-[#000000] font-bold'
+                  : 'text-[#14213D] opacity-60 hover:opacity-100'
               }`}
             >
-              {cat}
+              {cat === 'Hackathons' ? 'Hackathons/Contests' : cat}
               {activeCategory === cat && (
                 <motion.div
                   layoutId="activeTabIndicator"
-                  className="absolute bottom-0 left-0 right-0 h-0.5 bg-[#14213D]"
+                  className="absolute bottom-0 left-0 right-0 h-0.5 bg-[#000000]"
                 />
               )}
             </button>
