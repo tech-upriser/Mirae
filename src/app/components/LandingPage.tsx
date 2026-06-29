@@ -88,7 +88,7 @@ export function LandingPage() {
               transition={{ duration: 0.45 }}
               className="max-w-4xl"
             >
-              <h1 className="text-5xl font-bold leading-tight tracking-tight text-[#FFA007] sm:text-6xl lg:text-7xl">
+              <h1 className="text-5xl font-bold leading-tight tracking-tight text-[#FFA007] dark:text-black sm:text-6xl lg:text-7xl">
                 Track every opportunity with clarity, rhythm, and calm.
               </h1>
               <p className="mx-auto mt-6 max-w-2xl text-base leading-7 text-secondary-foreground/78 sm:text-lg">
