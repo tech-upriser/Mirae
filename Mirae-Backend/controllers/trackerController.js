@@ -153,7 +153,60 @@ Rules:
   return [];
 };
 
+const extractJobDetailsWithAI = async (text) => {
+  if (!text || text.trim().length < 20) return { skills: [], description: '' };
+  
+  const systemPrompt = `You are an expert technical recruiter and parser.
+Given the noisy raw text extracted from a job posting webpage, extract:
+1. A clean, professional summary of the core job description (responsibilities, about the role, and requirements). Ignore all website navigation menus, footer links, privacy policies, unrelated ads, and boilerplate company text. Format it cleanly with basic text (no markdown, just newlines for paragraphs).
+2. A precise list of ONLY technical skills required for this job (Programming Languages, Frameworks, Databases, Tools). Ignore soft skills.
+
+Return ONLY valid JSON.
+
+Format:
+{
+  "description": "String containing the cleaned job description...",
+  "skills": ["Skill1", "Skill2"]
+}`;
+
+  const userMessage = `Job Posting Text:\n${text.substring(0, 25000)}`;
+
+  let attempt = 1;
+  const maxAttempts = 2;
+
+  while (attempt <= maxAttempts) {
+    try {
+      console.log(`🧠 [Groq API] Extracting job details (Attempt ${attempt}/${maxAttempts})...`);
+      const chatCompletion = await groq.chat.completions.create({
+        messages: [
+          { role: "system", content: systemPrompt },
+          { role: "user", content: userMessage }
+        ],
+        model: "llama-3.3-70b-versatile",
+        response_format: { type: "json_object" },
+        temperature: 0.2,
+      });
+
+      const content = chatCompletion.choices[0].message.content;
+      const parsed = JSON.parse(content);
+      
+      if (parsed) {
+        return {
+          description: parsed.description || '',
+          skills: Array.isArray(parsed.skills) ? parsed.skills : []
+        };
+      }
+    } catch (error) {
+      console.error(`⚠️ [Groq API] Attempt ${attempt} failed:`, error.message);
+    }
+    attempt++;
+  }
+
+  return { skills: [], description: '' };
+};
+
 exports.extractSkillsWithAI = extractSkillsWithAI;
+exports.extractJobDetailsWithAI = extractJobDetailsWithAI;
 
 const computeSkillGap = (resumeSkills = [], jobSkills = []) => {
   const normUser = (resumeSkills || []).map(s => String(s || '').trim().toLowerCase()).filter(Boolean);
@@ -549,9 +602,9 @@ exports.createJob = async (req, res) => {
 
     const hasResume = !!(user.resumeText && user.resumeText.trim().length > 20);
 
-    // 2. Extract technical skills from the job description
-    const extractedSkills = await extractSkillsWithAI(rawText, false);
-    const normalizedJobSkills = normalizeSkillList(extractedSkills);
+    // 2. Extract job details and technical skills from the raw text
+    const extractedData = await extractJobDetailsWithAI(rawText);
+    const normalizedJobSkills = normalizeSkillList(extractedData.skills);
 
     // 3. Retrieve user's resumeSkills or extract on-the-fly if missing
     let resumeSkills = [];
@@ -576,7 +629,7 @@ exports.createJob = async (req, res) => {
       ? incomingData.company.trim()
       : companyFromUrl(url);
 
-    let finalDescription = incomingData.description || '';
+    let finalDescription = extractedData.description || incomingData.description || '';
     if (!finalDescription && rawText) {
       finalDescription = rawText.substring(0, 4000).trim();
       if (rawText.length > 4000) finalDescription += '...';
