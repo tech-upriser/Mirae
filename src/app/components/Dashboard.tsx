@@ -638,7 +638,7 @@ export function Dashboard() {
                 {activeTab === tab.value && (
                   <motion.div
                     layoutId="activeTab"
-                    className="absolute bottom-0 left-0 right-0 h-0.5 bg-[#000000]"
+                    className="absolute bottom-0 left-0 right-0 h-0.5 bg-[#000000] dark:bg-[#FCA311]"
                   />
                 )}
               </button>
