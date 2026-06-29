@@ -297,7 +297,7 @@ export function ApplicationDetail({ application, onClose, onStatusChange, onCont
             <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }}>
               
               <div className="flex items-center justify-between mb-8">
-                <div className="flex-1 mr-8">
+                <div className="flex-1 min-w-0 mr-8">
                   <h3 className="text-lg font-bold text-foreground mb-3">Skill Gap Analysis</h3>
 
                   {!hasUserResumeSkills ? (
@@ -355,8 +355,8 @@ export function ApplicationDetail({ application, onClose, onStatusChange, onCont
                 </div>
 
                 <div className="relative w-32 h-32 flex-shrink-0">
-                  <svg className="w-full h-full transform -rotate-90 overflow-visible" viewBox="0 0 128 128">
-                    <circle cx="64" cy="64" r="56" stroke="#f3f4f6" strokeWidth="12" fill="none" className="dark:stroke-secondary" />
+                  <svg className="w-full h-full transform -rotate-90">
+                    <circle cx="64" cy="64" r="56" className="stroke-muted" strokeWidth="12" fill="none" />
                     <circle
                       cx="64" cy="64" r="56" stroke="#FCA311" strokeWidth="12" fill="none"
                       strokeDasharray={`${2 * Math.PI * 56}`}

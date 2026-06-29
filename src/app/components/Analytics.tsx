@@ -286,7 +286,7 @@ export function Analytics() {
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.3, delay: 0.05 }}
-            className="bg-card rounded-lg p-5 border border-border shadow-sm"
+            className="bg-card rounded-lg p-5 border border-border border-t-[3px] border-t-[#FCA311] shadow-sm transition-all hover:shadow-[0_8px_16px_rgba(252,163,17,0.15)]"
           >
             <div className="text-xs uppercase tracking-wide text-card-foreground mb-2 font-semibold opacity-60">
               SAVED
@@ -305,7 +305,7 @@ export function Analytics() {
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.3, delay: 0.1 }}
-            className="bg-card rounded-lg p-5 border border-border shadow-sm"
+            className="bg-card rounded-lg p-5 border border-border border-t-[3px] border-t-[#FCA311] shadow-sm transition-all hover:shadow-[0_8px_16px_rgba(252,163,17,0.15)]"
           >
             <div className="text-xs uppercase tracking-wide text-card-foreground mb-2 font-semibold opacity-60">
               {activeCategory === 'Hackathons' ? 'REGISTERED/PARTICIPATING' : activeCategory === 'Others' ? 'ACTIVE' : 'APPLIED'}
@@ -324,7 +324,7 @@ export function Analytics() {
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.3, delay: 0.15 }}
-            className="bg-card rounded-lg p-5 border border-border shadow-sm"
+            className="bg-card rounded-lg p-5 border border-border border-t-[3px] border-t-[#FCA311] shadow-sm transition-all hover:shadow-[0_8px_16px_rgba(252,163,17,0.15)]"
           >
             <div className="text-xs uppercase tracking-wide text-card-foreground mb-2 font-semibold opacity-60">
               {activeCategory === 'Hackathons' ? 'N/A' : activeCategory === 'Others' ? 'LOST/REJECTED' : 'REJECTED'}
@@ -343,7 +343,7 @@ export function Analytics() {
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.3, delay: 0.2 }}
-            className="bg-card rounded-lg p-5 border border-border shadow-sm"
+            className="bg-card rounded-lg p-5 border border-border border-t-[3px] border-t-[#FCA311] shadow-sm transition-all hover:shadow-[0_8px_16px_rgba(252,163,17,0.15)]"
           >
             <div className="text-xs uppercase tracking-wide text-card-foreground mb-2 font-semibold opacity-60">
               {activeCategory === 'Hackathons' ? 'WON/COMPLETED' : activeCategory === 'Others' ? 'COMPLETED' : 'OFFERS'}
@@ -365,7 +365,7 @@ export function Analytics() {
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.3, delay: 0.25 }}
-              className="bg-card rounded-lg p-6 border border-border shadow-sm"
+              className="bg-card rounded-lg p-6 border border-border border-t-[3px] border-t-[#FCA311] shadow-sm transition-all hover:shadow-[0_8px_16px_rgba(252,163,17,0.15)]"
             >
               <h3 className="text-lg font-bold text-foreground mb-5">
                 Application Funnel
@@ -406,7 +406,7 @@ export function Analytics() {
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.3, delay: 0.25 }}
-              className="bg-card rounded-lg p-6 border border-border shadow-sm"
+              className="bg-card rounded-lg p-6 border border-border border-t-[3px] border-t-[#FCA311] shadow-sm transition-all hover:shadow-[0_8px_16px_rgba(252,163,17,0.15)]"
             >
               <div className="flex items-center justify-between mb-4">
                 <h3 className="text-lg font-bold text-foreground">
@@ -472,7 +472,7 @@ export function Analytics() {
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.3, delay: 0.3 }}
-            className="bg-card rounded-lg p-6 border border-border shadow-sm"
+            className="bg-card rounded-lg p-6 border border-border border-t-[3px] border-t-[#FCA311] shadow-sm transition-all hover:shadow-[0_8px_16px_rgba(252,163,17,0.15)]"
           >
             <h3 className="text-lg font-bold text-foreground mb-4">
               Top Skills
@@ -522,7 +522,7 @@ export function Analytics() {
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.3, delay: 0.3 }}
-            className="bg-card rounded-lg p-6 border border-border shadow-sm"
+            className="bg-card rounded-lg p-6 border border-border border-t-[3px] border-t-[#FCA311] shadow-sm transition-all hover:shadow-[0_8px_16px_rgba(252,163,17,0.15)]"
           >
             <h3 className="text-lg font-bold text-foreground mb-4">
               Top Missing Skills
@@ -574,7 +574,7 @@ export function Analytics() {
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.3, delay: 0.35 }}
-          className="mt-6 bg-card rounded-lg p-6 border border-border shadow-sm"
+          className="mt-6 bg-card rounded-lg p-6 border border-border border-t-[3px] border-t-[#FCA311] shadow-sm transition-all hover:shadow-[0_8px_16px_rgba(252,163,17,0.15)]"
         >
           <div className="flex items-center justify-between mb-5">
             <h3 className="text-lg font-bold text-foreground">
@@ -620,7 +620,7 @@ export function Analytics() {
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.3, delay: 0.4 }}
-            className="bg-card rounded-lg p-6 border border-border shadow-sm"
+            className="bg-card rounded-lg p-6 border border-border border-t-[3px] border-t-[#FCA311] shadow-sm transition-all hover:shadow-[0_8px_16px_rgba(252,163,17,0.15)]"
           >
             <div className="mb-5 flex items-center justify-between">
               <h3 className="text-lg font-bold text-foreground">
@@ -660,7 +660,7 @@ export function Analytics() {
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.3, delay: 0.45 }}
-            className="bg-card rounded-lg p-6 border border-border shadow-sm"
+            className="bg-card rounded-lg p-6 border border-border border-t-[3px] border-t-[#FCA311] shadow-sm transition-all hover:shadow-[0_8px_16px_rgba(252,163,17,0.15)]"
           >
             <div className="mb-5 flex items-center justify-between">
               <h3 className="text-lg font-bold text-foreground">
@@ -705,7 +705,7 @@ export function Analytics() {
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.3, delay: 0.5 }}
-            className="col-span-1 bg-card rounded-lg p-6 border border-border shadow-sm"
+            className="col-span-1 bg-card rounded-lg p-6 border border-border border-t-[3px] border-t-[#FCA311] shadow-sm transition-all hover:shadow-[0_8px_16px_rgba(252,163,17,0.15)]"
           >
             <h3 className="text-lg font-bold text-foreground mb-4">
               Pipeline Velocity
@@ -741,7 +741,7 @@ export function Analytics() {
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.3, delay: 0.55 }}
-            className="col-span-2 bg-card rounded-lg p-6 border border-border shadow-sm"
+            className="col-span-2 bg-card rounded-lg p-6 border border-border border-t-[3px] border-t-[#FCA311] shadow-sm transition-all hover:shadow-[0_8px_16px_rgba(252,163,17,0.15)]"
           >
             <div className="mb-5 flex items-center justify-between">
               <h3 className="text-lg font-bold text-foreground">

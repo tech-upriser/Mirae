@@ -131,7 +131,7 @@ function SectionCard({
     <motion.section
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
-      className={`app-card rounded-xl bg-card p-6 shadow-md ${danger ? "border-2 border-[#DC6B6B] bg-red-50/20" : ""}`}
+      className={`app-card rounded-xl border border-border border-t-[3px] ${danger ? "border-t-[#DC6B6B] bg-red-50/20" : "border-t-[#FCA311] bg-card"} p-6 shadow-sm transition-all hover:shadow-[0_8px_16px_rgba(252,163,17,0.15)]`}
     >
       <div className="mb-5">
         <div className="mb-2 flex items-center gap-3">
