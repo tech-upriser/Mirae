@@ -112,9 +112,7 @@ function ToggleRow({
   );
 }
 
-const isNotificationMasterOff = (settings: SettingsData) =>
-  !settings.notifications.notificationsEnabled ||
-  !settings.notifications.remindersEnabled;
+// isNotificationMasterOff removed
 
 function SectionCard({
   icon,
@@ -530,6 +528,48 @@ export function Settings({
     }
   };
 
+  const handleEnableAllNotifications = async () => {
+    await persistSettings({
+      ...settings,
+      notifications: {
+        ...settings.notifications,
+        notificationsEnabled: true,
+        remindersEnabled: true,
+        browserNotifications: true,
+        followUpReminders: true,
+        deadlineAlerts: true,
+        interviewReminders: true,
+      },
+    });
+    if (Notification.permission !== "granted" && "Notification" in window) {
+      const permission = await Notification.requestPermission();
+      setNotificationPermission(permission);
+      if (permission === "granted") {
+        toast.success("All notifications and browser alerts enabled.");
+      } else {
+        toast.info("All internal alerts enabled, but browser notifications were blocked.");
+      }
+    } else {
+      toast.success("All notifications enabled.");
+    }
+  };
+
+  const handleDisableAllNotifications = async () => {
+    await persistSettings({
+      ...settings,
+      notifications: {
+        ...settings.notifications,
+        notificationsEnabled: false,
+        remindersEnabled: false,
+        browserNotifications: false,
+        followUpReminders: false,
+        deadlineAlerts: false,
+        interviewReminders: false,
+      },
+    });
+    toast.success("All notifications disabled.");
+  };
+
   return (
     <div className="ml-60 min-h-screen bg-[#E5E5E5]">
       <div className="bg-white border-b border-[#E5E5E5] sticky top-0 z-20 shadow-sm">
@@ -900,36 +940,15 @@ export function Settings({
             title="Notifications"
             subtitle="Reminders and schedule-aware alerts"
           >
-            {isNotificationMasterOff(settings) && (
-              <p className="mb-4 rounded-lg border border-[#DC6B6B]/30 bg-[#DC6B6B]/10 px-3 py-2 text-sm text-[#B42318]">
-                Notifications are currently disabled. Turn on both master switches to receive alerts.
-              </p>
-            )}
             <div className="mb-4 border-b border-gray-100 pb-4">
-              <ToggleRow
-                label="Enable notifications"
-                checked={settings.notifications.notificationsEnabled}
-                onCheckedChange={(value) =>
-                  updateNotificationSetting("notificationsEnabled", value)
-                }
-              />
-              <ToggleRow
-                label="Enable reminders"
-                checked={settings.notifications.remindersEnabled}
-                onCheckedChange={(value) =>
-                  updateNotificationSetting("remindersEnabled", value)
-                }
-              />
               <ToggleRow
                 label="Browser pop-up notifications"
                 checked={settings.notifications.browserNotifications}
-                disabled={isNotificationMasterOff(settings)}
                 onCheckedChange={toggleBrowserNotificationChannel}
               />
               <ToggleRow
                 label="Follow-up reminders"
                 checked={settings.notifications.followUpReminders}
-                disabled={isNotificationMasterOff(settings)}
                 onCheckedChange={(value) =>
                   updateNotificationSetting("followUpReminders", value)
                 }
@@ -937,7 +956,6 @@ export function Settings({
               <ToggleRow
                 label="Deadline alerts"
                 checked={settings.notifications.deadlineAlerts}
-                disabled={isNotificationMasterOff(settings)}
                 onCheckedChange={(value) =>
                   updateNotificationSetting("deadlineAlerts", value)
                 }
@@ -945,7 +963,6 @@ export function Settings({
               <ToggleRow
                 label="Interview reminders"
                 checked={settings.notifications.interviewReminders}
-                disabled={isNotificationMasterOff(settings)}
                 onCheckedChange={(value) =>
                   updateNotificationSetting("interviewReminders", value)
                 }
@@ -965,15 +982,23 @@ export function Settings({
                         : "Not enabled"}
                 </span>
               </p>
-              <button
-                type="button"
-                onClick={requestBrowserNotifications}
-                disabled={isNotificationMasterOff(settings)}
-                className="w-full rounded-lg border border-[#14213D] px-4 py-3 font-medium text-[#14213D] hover:bg-[#14213D] hover:text-white"
-              >
-                Enable Browser Notifications
-              </button>
-              <p className="text-xs text-[#14213D]/60">
+              <div className="flex flex-col gap-2 pt-2">
+                <button
+                  type="button"
+                  onClick={handleEnableAllNotifications}
+                  className="w-full rounded-lg bg-[#14213D] px-4 py-3 font-medium text-white hover:bg-[#1a2a4f] transition-colors"
+                >
+                  Enable All Notifications
+                </button>
+                <button
+                  type="button"
+                  onClick={handleDisableAllNotifications}
+                  className="w-full rounded-lg border border-[#14213D] px-4 py-3 font-medium text-[#14213D] hover:bg-[#f3f4f6] transition-colors"
+                >
+                  Disable All Notifications
+                </button>
+              </div>
+              <p className="text-xs text-[#14213D]/60 pt-2">
                 To fully revoke browser permission after enabling, open browser
                 site settings for this app and change Notifications to Block.
               </p>
