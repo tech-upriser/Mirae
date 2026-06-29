@@ -18,6 +18,10 @@ const userSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
+    tagline: {
+      type: String,
+      default: "",
+    },
     // 📄 Stores the text extracted from the user's resume
     resumeText: {
       type: String,

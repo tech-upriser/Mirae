@@ -73,9 +73,8 @@ export function Sidebar({
       </nav>
 
       <div className="p-4 border-t border-[rgba(252,163,17,0.2)]">
-        <button
-          onClick={() => setShowProfilePopover(!showProfilePopover)}
-          className="w-full flex items-center gap-3 p-3 rounded-md bg-[rgba(252,163,17,0.05)] hover:bg-[rgba(252,163,17,0.1)] transition-colors cursor-pointer"
+        <div
+          className="w-full flex items-center gap-3 p-3 rounded-md bg-[rgba(252,163,17,0.05)] transition-colors"
         >
           {/* Profile Avatar */}
           <div className="w-10 h-10 rounded-full bg-[#FCA311] flex items-center justify-center overflow-hidden">
@@ -93,31 +92,12 @@ export function Sidebar({
             <div className="text-sm font-medium text-white">
               {user?.name || 'Mirae User'}
             </div>
-            <div className="text-xs text-[#E5E5E5]">Job Seeker</div>
+            {(user as any)?.tagline && (
+              <div className="text-xs text-[#E5E5E5]">{(user as any).tagline}</div>
+            )}
           </div>
-        </button>
+        </div>
       </div>
-
-      {/* Profile Popover */}
-      <AnimatePresence>
-        {showProfilePopover && (
-          <ProfilePopover
-            onClose={() => setShowProfilePopover(false)}
-            onManageResumes={() => {
-              setShowProfilePopover(false);
-              onManageResumesOpen();
-            }}
-            onSocialPortfolio={() => {
-              setShowProfilePopover(false);
-              onSocialPortfolioOpen();
-            }}
-            onLogout={() => {
-              setShowProfilePopover(false);
-              onLogoutOpen();
-            }}
-          />
-        )}
-      </AnimatePresence>
     </aside>
   );
 }

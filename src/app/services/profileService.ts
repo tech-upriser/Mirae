@@ -4,6 +4,7 @@ export interface ProfileData {
   _id: string;
   name: string;
   email: string;
+  tagline?: string;
   profilePhoto?: string;
   is2FAEnabled?: boolean;
   resumeSkills?: string[];
@@ -21,7 +22,7 @@ export const profileService = {
     return data;
   },
 
-  async updateProfile(payload: { name: string; email: string }): Promise<ProfileData> {
+  async updateProfile(payload: { name: string; email: string; tagline?: string }): Promise<ProfileData> {
     const { data } = await api.put<ProfileResponse>('/profile/update', payload);
     return data.user;
   },

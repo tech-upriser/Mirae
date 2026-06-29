@@ -16,6 +16,11 @@ import {
   X,
   Mail,
   CheckCircle,
+  FileText,
+  Link2,
+  HelpCircle,
+  LogOut,
+  Moon,
 } from "lucide-react";
 import { toast } from "sonner";
 import { authService } from "../services/authService";
@@ -32,7 +37,7 @@ import {
   syncGoogleCalendar,
   type SettingsData,
 } from "../services/settingsService";
-import { setTheme } from "../hooks/useTheme";
+import { setTheme, useTheme } from "../hooks/useTheme";
 import { useUser } from "../contexts/UserContext";
 import api from "../services/api";
 
@@ -153,13 +158,25 @@ function SectionCard({
   );
 }
 
-export function Settings() {
+interface SettingsProps {
+  onManageResumesOpen?: () => void;
+  onSocialPortfolioOpen?: () => void;
+  onLogoutOpen?: () => void;
+}
+
+export function Settings({
+  onManageResumesOpen,
+  onSocialPortfolioOpen,
+  onLogoutOpen,
+}: SettingsProps) {
   const navigate = useNavigate();
   const photoInputRef = useRef<HTMLInputElement | null>(null);
 
   // Destructure everything from context properly inside the component
   const { user, refetchProfile, isGmailConnected, setIsGmailConnected } =
     useUser();
+  const { theme, toggleTheme } = useTheme();
+  const isDarkMode = theme === 'dark';
 
   const [settings, setSettings] = useState<SettingsData>(defaultSettings);
   const [loading, setLoading] = useState(true);
@@ -170,9 +187,11 @@ export function Settings() {
   const [isUploadingPhoto, setIsUploadingPhoto] = useState(false);
   const [name, setName] = useState("User");
   const [email, setEmail] = useState("user@example.com");
+  const [tagline, setTagline] = useState("");
   const [profilePhoto, setProfilePhoto] = useState("");
   const [draftName, setDraftName] = useState("User");
   const [draftEmail, setDraftEmail] = useState("user@example.com");
+  const [draftTagline, setDraftTagline] = useState("");
 
   const currentProfilePhoto = profilePhoto || user?.profilePhoto || "";
   const [isEditingProfile, setIsEditingProfile] = useState(false);
@@ -292,13 +311,15 @@ export function Settings() {
         }
 
         // Use user context data instead of fetching again
-        if (user?.name) {
-          setName(user.name);
-          setDraftName(user.name);
-        }
-        if (user?.email) {
-          setEmail(user.email);
-          setDraftEmail(user.email);
+        if (user) {
+          setName(user.name || "User");
+          setDraftName(user.name || "User");
+          setEmail(user.email || "user@example.com");
+          setDraftEmail(user.email || "user@example.com");
+          
+          const userTagline = (user as any).tagline || "";
+          setTagline(userTagline);
+          setDraftTagline(userTagline);
         }
         if (user?.profilePhoto) {
           setProfilePhoto(user.profilePhoto);
@@ -392,17 +413,20 @@ export function Settings() {
     try {
       setSaving(true);
       const updated = await profileService.updateProfile({
-        name: trimmedName,
-        email: normalizedEmail,
+        name: draftName.trim(),
+        email: draftEmail.trim(),
+        tagline: draftTagline.trim(),
       });
       setName(updated.name);
       setEmail(updated.email);
+      setTagline(updated.tagline || "");
       setDraftName(updated.name);
       setDraftEmail(updated.email);
+      setDraftTagline(updated.tagline || "");
       setIsEditingProfile(false);
       window.localStorage.setItem("userName", updated.name);
       window.localStorage.setItem("userEmail", updated.email);
-      toast.success("Profile updated successfully.");
+      toast.success("Profile updated successfully!");
     } catch (error: any) {
       toast.error(error?.response?.data?.error || "Failed to update profile.");
     } finally {
@@ -606,6 +630,23 @@ export function Settings() {
                   }`}
                 />
               </div>
+              <div>
+                <label className="mb-2 block text-sm font-medium text-[#14213D]">
+                  Tagline (e.g. Job Seeker)
+                </label>
+                <input
+                  type="text"
+                  value={draftTagline}
+                  onChange={(event) => setDraftTagline(event.target.value)}
+                  readOnly={!isEditingProfile}
+                  placeholder="Job Seeker"
+                  className={`w-full rounded-lg border px-4 py-2.5 text-[#14213D] ${
+                    isEditingProfile
+                      ? "border-gray-200 focus:border-[#FCA311] focus:outline-none focus:ring-2 focus:ring-[#FCA311]/30"
+                      : "cursor-not-allowed border-gray-200 bg-gray-50"
+                  }`}
+                />
+              </div>
               {!isEditingProfile ? (
                 <button
                   type="button"
@@ -630,6 +671,7 @@ export function Settings() {
                     onClick={() => {
                       setDraftName(name);
                       setDraftEmail(email);
+                      setDraftTagline(tagline);
                       setIsEditingProfile(false);
                     }}
                     disabled={saving}
@@ -639,22 +681,94 @@ export function Settings() {
                   </button>
                 </div>
               )}
-              <button
-                type="button"
-                onClick={() => setShowPasswordModal(true)}
-                className="flex w-full items-center justify-center gap-2 rounded-lg bg-[#14213D] px-4 py-3 font-medium text-white hover:bg-[#1a2a4f]"
-              >
-                <Lock size={18} />
-                Change Password
-              </button>
-              <button
-                type="button"
-                onClick={() => photoInputRef.current?.click()}
-                disabled={isUploadingPhoto}
-                className="w-full rounded-lg border-2 border-[#FCA311] px-4 py-3 font-medium text-[#FCA311] hover:bg-[#FCA311] hover:text-white disabled:opacity-60"
-              >
-                {isUploadingPhoto ? "Uploading..." : "Upload Profile Picture"}
-              </button>
+              <div className="pt-4 border-t border-gray-100 space-y-3 mt-6">
+                <button
+                  type="button"
+                  onClick={() => setShowPasswordModal(true)}
+                  className="w-full flex items-center justify-between p-3 rounded-lg bg-gray-50 hover:bg-gray-100 transition-colors border border-gray-100"
+                >
+                  <div className="flex items-center gap-3">
+                    <Lock className="w-5 h-5 text-[#14213D]" />
+                    <span className="font-medium text-[#14213D]">Change Password</span>
+                  </div>
+                </button>
+                <button
+                  type="button"
+                  onClick={() => photoInputRef.current?.click()}
+                  disabled={isUploadingPhoto}
+                  className="w-full flex items-center justify-between p-3 rounded-lg bg-gray-50 hover:bg-gray-100 transition-colors border border-gray-100 disabled:opacity-50"
+                >
+                  <div className="flex items-center gap-3">
+                    <Camera className="w-5 h-5 text-[#14213D]" />
+                    <span className="font-medium text-[#14213D]">
+                      {isUploadingPhoto ? "Uploading..." : "Upload Profile Picture"}
+                    </span>
+                  </div>
+                </button>
+                <button
+                  type="button"
+                  className="w-full flex items-center justify-between p-3 rounded-lg bg-gray-50 hover:bg-gray-100 transition-colors border border-gray-100"
+                >
+                  <div className="flex items-center gap-3">
+                    <Moon className="w-5 h-5 text-[#14213D]" />
+                    <span className="font-medium text-[#14213D]">Theme (Dark/Light)</span>
+                  </div>
+                  <div
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      toggleTheme();
+                    }}
+                    className={`w-10 h-5 rounded-full transition-all cursor-pointer flex items-center px-0.5 ${
+                      isDarkMode ? 'bg-[#FCA311]' : 'bg-[#E5E5E5]'
+                    }`}
+                  >
+                    <motion.div
+                      animate={{ x: isDarkMode ? 20 : 0 }}
+                      transition={{ type: 'spring', stiffness: 500, damping: 30 }}
+                      className="w-4 h-4 bg-white rounded-full shadow-md"
+                    />
+                  </div>
+                </button>
+                <button
+                  type="button"
+                  onClick={onManageResumesOpen}
+                  className="w-full flex items-center justify-between p-3 rounded-lg bg-gray-50 hover:bg-gray-100 transition-colors border border-gray-100"
+                >
+                  <div className="flex items-center gap-3">
+                    <FileText className="w-5 h-5 text-[#14213D]" />
+                    <span className="font-medium text-[#14213D]">Manage Resumes</span>
+                  </div>
+                </button>
+                <button
+                  type="button"
+                  onClick={onSocialPortfolioOpen}
+                  className="w-full flex items-center justify-between p-3 rounded-lg bg-gray-50 hover:bg-gray-100 transition-colors border border-gray-100"
+                >
+                  <div className="flex items-center gap-3">
+                    <Link2 className="w-5 h-5 text-[#14213D]" />
+                    <span className="font-medium text-[#14213D]">Social & Portfolio</span>
+                  </div>
+                </button>
+                <button
+                  type="button"
+                  className="w-full flex items-center justify-between p-3 rounded-lg bg-gray-50 hover:bg-gray-100 transition-colors border border-gray-100"
+                >
+                  <div className="flex items-center gap-3">
+                    <HelpCircle className="w-5 h-5 text-[#14213D]" />
+                    <span className="font-medium text-[#14213D]">Help & Community</span>
+                  </div>
+                </button>
+                <button
+                  type="button"
+                  onClick={onLogoutOpen}
+                  className="w-full flex items-center justify-between p-3 rounded-lg bg-red-50 hover:bg-red-100 transition-colors border border-red-100"
+                >
+                  <div className="flex items-center gap-3">
+                    <LogOut className="w-5 h-5 text-[#E11D48]" />
+                    <span className="font-medium text-[#E11D48]">Logout</span>
+                  </div>
+                </button>
+              </div>
             </div>
           </SectionCard>
 

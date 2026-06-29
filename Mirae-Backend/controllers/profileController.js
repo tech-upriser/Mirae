@@ -49,7 +49,7 @@ exports.getProfile = async (req, res) => {
 
 exports.updateProfile = async (req, res) => {
   try {
-    const { name, email } = req.body;
+    const { name, email, tagline } = req.body;
 
     if (!name || !name.trim()) {
       return res.status(400).json({ error: "Name is required" });
@@ -75,6 +75,7 @@ exports.updateProfile = async (req, res) => {
         $set: {
           name: name.trim(),
           email: normalizedEmail,
+          tagline: tagline ? tagline.trim() : "",
           "settings.profile.name": name.trim(),
           "settings.profile.email": normalizedEmail
         }
