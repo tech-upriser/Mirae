@@ -586,7 +586,7 @@ export function Analytics() {
           </div>
 
           <div className="grid grid-cols-2 gap-4">
-            <div className="rounded-lg border border-border bg-[#F8FAFC] p-4">
+            <div className="rounded-lg border border-border bg-secondary-foreground/5 p-4">
               <div className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">
                 Avg Match: All Jobs
               </div>
@@ -598,14 +598,14 @@ export function Analytics() {
               </p>
             </div>
 
-            <div className="rounded-lg border border-border bg-[#FFF9F0] p-4">
-              <div className="text-xs font-semibold uppercase tracking-wide text-[#92400E]">
+            <div className="rounded-lg border border-border bg-secondary-foreground/5 p-4">
+              <div className="text-xs font-semibold uppercase tracking-wide text-secondary-foreground">
                 Avg Match: Interviewing / Offer
               </div>
-              <div className="mt-3 text-4xl font-bold text-[#92400E]">
+              <div className="mt-3 text-4xl font-bold text-secondary-foreground">
                 {matchInsights?.interviewAverage ?? 0}%
               </div>
-              <p className="mt-2 text-sm text-[#8A5A14]">
+              <p className="mt-2 text-sm text-secondary-foreground/80">
                 Average match score for the jobs that are progressing the furthest.
               </p>
             </div>
@@ -638,7 +638,7 @@ export function Analytics() {
                 rejectedJobs.map((job, index) => (
                   <div
                     key={`${job.company}-${job.title}-${index}`}
-                    className="flex items-start justify-between gap-4 border-b border-[#F1F3F5] pb-4 last:border-b-0 last:pb-0"
+                    className="flex items-start justify-between gap-4 border-b border-border pb-4 last:border-b-0 last:pb-0"
                   >
                     <div className="min-w-0">
                       <div className="font-bold text-foreground">{job.company}</div>
@@ -692,7 +692,7 @@ export function Analytics() {
               )}
             </div>
 
-            <div className="mt-5 border-t border-[#F1F3F5] pt-4 text-sm text-muted-foreground">
+            <div className="mt-5 border-t border-border pt-4 text-sm text-muted-foreground">
               Interview → Offer rate: 25% • Avg. time: 3 weeks
             </div>
           </motion.div>
@@ -727,7 +727,7 @@ export function Analytics() {
               </p>
             </div>
             
-            <div className="mt-4 rounded-lg bg-[#F8FAFC] p-4 text-center border border-border">
+            <div className="mt-4 rounded-lg bg-secondary-foreground/5 p-4 text-center border border-border">
               <div className="text-xs font-semibold uppercase text-card-foreground">
                 {activeCategory === 'Hackathons' ? 'Participated → Won Rate' : activeCategory === 'Others' ? 'Active → Completed Rate' : 'Interview → Offer Rate'}
               </div>
@@ -751,7 +751,7 @@ export function Analytics() {
 
             <div className="overflow-x-auto">
               <table className="w-full text-left text-sm">
-                <thead className="border-b border-border bg-[#F8FAFC] text-xs uppercase text-muted-foreground">
+                <thead className="border-b border-border bg-secondary-foreground/5 text-xs uppercase text-muted-foreground">
                   <tr>
                     <th className="px-4 py-3 font-semibold rounded-tl-lg">Company</th>
                     <th className="px-4 py-3 font-semibold text-center">Total Apps</th>
@@ -764,7 +764,7 @@ export function Analytics() {
                     <th className="px-4 py-3 font-semibold text-right rounded-tr-lg">Success Rate</th>
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-[#F1F3F5]">
+                <tbody className="divide-y divide-border">
                   {companyBreakdown.length === 0 ? (
                     <tr>
                       <td colSpan={5} className="px-4 py-8 text-center text-muted-foreground">
@@ -773,14 +773,14 @@ export function Analytics() {
                     </tr>
                   ) : (
                     companyBreakdown.map((comp, idx) => (
-                      <tr key={comp.company} className="hover:bg-[#F8FAFC] transition-colors">
+                      <tr key={comp.company} className="hover:bg-secondary-foreground/5 transition-colors">
                         <td className="px-4 py-3 font-semibold text-card-foreground">{comp.company}</td>
                         <td className="px-4 py-3 text-center text-muted-foreground">{comp.total}</td>
                         <td className="px-4 py-3 text-center text-[#FCA311] font-medium">{comp.interviewing > 0 ? comp.interviewing : '-'}</td>
                         <td className="px-4 py-3 text-center text-[#067647] font-medium">{comp.offers > 0 ? comp.offers : '-'}</td>
                         <td className="px-4 py-3 text-right">
                           <span className={`inline-flex items-center px-2 py-1 rounded-md text-xs font-bold ${
-                            Number(comp.interviewRate) > 0 ? 'bg-[#DDF7EA] text-[#067647]' : 'bg-[#F1F3F5] text-muted-foreground'
+                            Number(comp.interviewRate) > 0 ? 'bg-emerald-500/10 text-emerald-500' : 'bg-secondary-foreground/10 text-muted-foreground'
                           }`}>
                             {comp.interviewRate}%
                           </span>
