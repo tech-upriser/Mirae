@@ -327,7 +327,7 @@ export function Analytics() {
             className="bg-card rounded-lg p-5 border border-border border-t-[3px] border-t-[#FCA311] shadow-sm transition-all hover:shadow-[0_8px_16px_rgba(252,163,17,0.15)]"
           >
             <div className="text-xs uppercase tracking-wide text-card-foreground mb-2 font-semibold opacity-60">
-              {activeCategory === 'Hackathons' ? 'N/A' : activeCategory === 'Others' ? 'LOST/REJECTED' : 'REJECTED'}
+              {activeCategory === 'Jobs' ? 'REJECTED' : 'LOST/REJECTED'}
             </div>
             <div className="text-4xl font-bold text-foreground mb-3 leading-none">
               {overview?.rejected ?? 0}
