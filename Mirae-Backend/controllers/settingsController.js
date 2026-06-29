@@ -242,7 +242,12 @@ exports.resetSettings = async (req, res) => {
 exports.clearData = async (req, res) => {
   try {
     const userId = req.user.id;
+    const Contact = require('../models/Contact');
+    const CalendarEvent = require('../models/CalendarEvent');
+    
     await Job.deleteMany({ userId });
+    await Contact.deleteMany({ userId });
+    await CalendarEvent.deleteMany({ userId });
 
     return res.status(200).json({
       message: "All application data cleared successfully"

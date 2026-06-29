@@ -311,3 +311,39 @@ exports.changePassword = async (req, res) => {
     return res.status(500).json({ error: "Internal Server Error" });
   }
 };
+
+exports.deleteAccount = async (req, res) => {
+  try {
+    const userId = req.user.id;
+    const Job = require('../models/Job');
+    const Contact = require('../models/Contact');
+    const CalendarEvent = require('../models/CalendarEvent');
+    const Settings = require('../models/Settings');
+
+    // Delete all associated data
+    await Job.deleteMany({ userId });
+    await Contact.deleteMany({ userId });
+    await CalendarEvent.deleteMany({ userId });
+    await Settings.deleteMany({ userId });
+
+    // Delete user's resume file if exists
+    const user = await User.findById(userId);
+    if (user && user.resumeFileName) {
+      const fs = require('fs');
+      const path = require('path');
+      const resumeUploadDir = path.join(__dirname, '..', 'uploads', 'resumes');
+      const filePath = path.join(resumeUploadDir, user.resumeFileName);
+      if (fs.existsSync(filePath)) {
+        fs.unlinkSync(filePath);
+      }
+    }
+    
+    // Finally delete the user
+    await User.findByIdAndDelete(userId);
+
+    res.status(200).json({ message: "Account deleted successfully" });
+  } catch (error) {
+    console.error("Delete Account Error:", error);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+};
