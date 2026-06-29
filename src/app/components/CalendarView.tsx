@@ -536,7 +536,8 @@ export function CalendarView() {
     eventDateTime.setHours(Math.floor(eventMinutes / 60), eventMinutes % 60, 0, 0);
 
     if (event.status === 'completed') return 'completed';
-    if (eventDateTime.getTime() < now.getTime()) return 'missed';
+    // Auto-complete past events so they don't show up as 'Missed' errors
+    if (eventDateTime.getTime() < now.getTime()) return 'completed';
     return 'active';
   };
 
