@@ -552,7 +552,7 @@ export function Settings({
         </div>
       )}
 
-      <div className="app-card-grid grid max-w-7xl grid-cols-1 gap-8 xl:grid-cols-2">
+      <div className="app-card-grid grid max-w-7xl grid-cols-1 gap-8 md:grid-cols-2">
         {/* LEFT COLUMN */}
         <div className="space-y-8">
           <SectionCard
