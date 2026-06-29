@@ -94,7 +94,8 @@ Rules:
 - No duplicate skills.
 - Normalize names (e.g. "ReactJS" -> "React", "Node" -> "Node.js").
 - Ignore soft skills (e.g. leadership, communication).
-- Ignore education, projects, companies, and achievements.`
+- Ignore education, degrees (B.Tech, MS, PhD, Bachelor's, Master's, Graduate), projects, companies, and achievements.
+- Extract ONLY explicit technical skills (e.g. Python, AWS, Docker).`
     : `You are an expert technical recruiter.
     
 Extract ONLY technical skills required from this job description (Programming Languages, Frameworks, Libraries, Databases, Cloud Platforms, Developer Tools).
@@ -108,8 +109,9 @@ Format:
 
 Rules:
 - No soft skills.
+- Ignore education requirements and degrees (e.g. B.Tech, MS, PhD, Bachelor's, Master's, Graduate, Undergraduate).
 - Normalize names (e.g., "JS" -> "JavaScript").
-- Extract explicit technical requirements only.`;
+- Extract explicit technical requirements only (e.g. Python, AWS, Docker).`;
 
   const userMessage = isResume 
     ? `Resume Text:\n${text.substring(0, 6000)}`
