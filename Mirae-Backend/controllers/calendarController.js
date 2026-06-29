@@ -228,8 +228,14 @@ exports.deleteEvent = async (req, res) => {
     
     // If the event was synced from a dashboard job/hackathon, clear its deadline so it doesn't sync back
     if (deletedEvent.source === 'dashboard' && deletedEvent.sourceId) {
-      const jobId = deletedEvent.sourceId.replace('dashboard-job-', '');
-      await Job.findOneAndUpdate({ _id: jobId, userId }, { $set: { deadline: null } });
+      try {
+        const jobId = deletedEvent.sourceId.replace('dashboard-job-', '');
+        if (jobId && jobId !== 'undefined') {
+          await Job.findOneAndUpdate({ _id: jobId, userId }, { $unset: { deadline: 1 } });
+        }
+      } catch (err) {
+        console.error('Error clearing dashboard job deadline on event delete:', err.message);
+      }
     }
     
     await googleCalendarController.deleteMiraeEventFromGoogle(userId, deletedEvent.googleEventId);
