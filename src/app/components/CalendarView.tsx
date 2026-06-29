@@ -761,57 +761,7 @@ export function CalendarView() {
             </div>
 
             <div className="mt-6 pt-6 border-t border-[#E5E5E5] space-y-4">
-              <div className="flex items-center justify-between p-3 bg-[#E0F2FE] bg-opacity-50 rounded-lg border border-[#378ADD] border-opacity-20">
-                <div className="flex items-center gap-2">
-                  <div className="w-8 h-8 bg-white rounded-full flex items-center justify-center">
-                    <CalendarIcon className="w-4 h-4 text-[#378ADD]" />
-                  </div>
-                  <div>
-                    <div className="text-sm font-semibold text-[#14213D]">
-                      {googleCalendarConnected ? 'Google Calendar Connected' : 'Google Calendar Disconnected'}
-                    </div>
-                    <div className="text-xs text-[#6b7280]">
-                      {googleCalendarConnected ? 'Auto-syncing events & reminders' : 'Click to connect and sync'}
-                    </div>
-                  </div>
-                </div>
-                <div className="flex items-center gap-2">
-                  {googleCalendarConnected ? (
-                    <>
-                      <div className="w-2 h-2 bg-[#067647] rounded-full animate-pulse"></div>
-                      <span className="text-xs text-[#067647] font-medium">Active</span>
-                      <button
-                        onClick={handleDisconnectGoogleCalendar}
-                        className="px-3 py-1 bg-[#B42318] text-white text-xs rounded hover:bg-[#991B14] transition-colors"
-                      >
-                        Disconnect
-                      </button>
-                      <button
-                        onClick={handleGoogleCalendarSync}
-                        disabled={syncing}
-                        className="px-3 py-1 bg-[#22C55E] text-white text-xs rounded hover:bg-[#16A34A] transition-colors disabled:opacity-50"
-                      >
-                        {syncing ? 'Syncing...' : 'Sync Now'}
-                      </button>
-                    </>
-                  ) : (
-                    <button
-                      onClick={handleGoogleCalendarConnect}
-                      className="px-3 py-1 bg-[#378ADD] text-white text-xs rounded hover:bg-[#2E6BB8] transition-colors"
-                    >
-                      Connect
-                    </button>
-                  )}
-                </div>
-              </div>
-              {googleError && (
-                <div className="text-sm text-[#B42318]">{googleError}</div>
-              )}
-              {googleSyncMessage && (
-                <div className="rounded-lg border border-[#BBF7D0] bg-[#F0FDF4] px-3 py-2 text-sm font-medium text-[#067647]">
-                  {googleSyncMessage}
-                </div>
-              )}
+
               {calendarMessage && (
                 <div className="rounded-lg border border-[#D0D5DD] bg-white px-3 py-2 text-sm font-medium text-[#14213D]">
                   {calendarMessage}

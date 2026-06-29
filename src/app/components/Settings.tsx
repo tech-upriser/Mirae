@@ -212,7 +212,18 @@ export function Settings() {
     try {
       const response = await api.get("/auth/google/url");
       if (response.data && response.data.url) {
-        window.location.href = response.data.url;
+        const popup = window.open(response.data.url, 'Google Calendar Connect', 'width=500,height=600');
+
+        const messageListener = async (event: MessageEvent) => {
+          if (event?.data?.type === 'GOOGLE_CALENDAR_CONNECTED') {
+            setIsCalendarConnected(true);
+            window.removeEventListener('message', messageListener);
+            toast.success("Google Calendar connected successfully!");
+            // Optionally sync immediately: await handleSyncGoogleCalendar();
+          }
+        };
+
+        window.addEventListener('message', messageListener);
       }
     } catch (error) {
       toast.error("Failed to connect to Google Calendar.");
