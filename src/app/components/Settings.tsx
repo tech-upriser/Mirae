@@ -1,6 +1,5 @@
 /* eslint-disable */
 // @ts-nocheck
-import { getGmailConnectionStatus } from "../services/settingsService";
 import { useEffect, useMemo, useRef, useState, type ReactNode } from "react";
 import { useNavigate } from "react-router";
 import { AnimatePresence, motion } from "motion/react";
@@ -26,6 +25,11 @@ import {
   getSettings,
   resetSettings,
   updateSettings,
+  getGmailConnectionStatus,
+  disconnectGmail,
+  getGoogleCalendarStatus,
+  disconnectGoogleCalendar,
+  syncGoogleCalendar,
   type SettingsData,
 } from "../services/settingsService";
 import { setTheme } from "../hooks/useTheme";
@@ -176,6 +180,7 @@ export function Settings() {
   const [showDeleteAccountModal, setShowDeleteAccountModal] = useState(false);
   const [showClearDataModal, setShowClearDataModal] = useState(false);
   const [showResetModal, setShowResetModal] = useState(false);
+  const [isCalendarConnected, setIsCalendarConnected] = useState(false);
 
   const handleConnectGmail = async () => {
     try {
@@ -190,6 +195,47 @@ export function Settings() {
     } catch (error) {
       console.error("Failed to get Gmail Auth URL", error);
       toast.error("Failed to connect to Google. Please try again.");
+    }
+  };
+
+  const handleDisconnectGmail = async () => {
+    try {
+      await disconnectGmail();
+      setIsGmailConnected(false);
+      toast.success("Gmail disconnected successfully.");
+    } catch (error) {
+      toast.error("Failed to disconnect Gmail.");
+    }
+  };
+
+  const handleConnectGoogleCalendar = async () => {
+    try {
+      const response = await api.get("/auth/google/url");
+      if (response.data && response.data.url) {
+        window.location.href = response.data.url;
+      }
+    } catch (error) {
+      toast.error("Failed to connect to Google Calendar.");
+    }
+  };
+
+  const handleDisconnectGoogleCalendar = async () => {
+    try {
+      await disconnectGoogleCalendar();
+      setIsCalendarConnected(false);
+      toast.success("Google Calendar disconnected successfully.");
+    } catch (error) {
+      toast.error("Failed to disconnect Google Calendar.");
+    }
+  };
+
+  const handleSyncGoogleCalendar = async () => {
+    try {
+      toast.info("Syncing calendar events...");
+      const res = await syncGoogleCalendar();
+      toast.success(`Synced ${res.syncedCount} events successfully.`);
+    } catch (error) {
+      toast.error("Failed to sync calendar.");
     }
   };
 
@@ -223,6 +269,9 @@ export function Settings() {
         try {
           const gmailStatus = await getGmailConnectionStatus();
           setIsGmailConnected(gmailStatus.isConnected);
+
+          const calendarStatus = await getGoogleCalendarStatus();
+          setIsCalendarConnected(calendarStatus.connected);
 
           const settingsPayload = await getSettings();
           setSettings(settingsPayload);
@@ -767,19 +816,76 @@ export function Settings() {
                 )}
               </div>
 
-              <button
-                type="button"
-                onClick={handleConnectGmail}
-                className={`w-full rounded-lg px-4 py-3 font-medium transition-all ${
-                  isGmailConnected
-                    ? "border border-gray-300 bg-white text-[#14213D] hover:bg-gray-50"
-                    : "bg-[#14213D] text-white hover:bg-[#1a2a4f]"
-                }`}
-              >
-                {isGmailConnected
-                  ? "Manage Gmail Connection"
-                  : "Connect Gmail Account"}
-              </button>
+              <div className="flex flex-col gap-2 mt-4">
+                {isGmailConnected ? (
+                  <button
+                    type="button"
+                    onClick={handleDisconnectGmail}
+                    className="w-full rounded-lg border border-red-200 bg-red-50 px-4 py-3 font-medium text-red-600 transition-all hover:bg-red-100"
+                  >
+                    Disconnect Gmail
+                  </button>
+                ) : (
+                  <button
+                    type="button"
+                    onClick={handleConnectGmail}
+                    className="w-full rounded-lg bg-[#14213D] px-4 py-3 font-medium text-white transition-all hover:bg-[#1a2a4f]"
+                  >
+                    Connect Gmail Account
+                  </button>
+                )}
+              </div>
+            </div>
+
+            <div className="mt-4 rounded-lg border border-gray-100 bg-gray-50/50 p-4">
+              <div className="mb-4 flex items-start justify-between gap-4">
+                <div>
+                  <h3
+                    className="font-semibold text-[#14213D]"
+                    style={{ fontFamily: "Outfit" }}
+                  >
+                    Google Calendar Sync
+                  </h3>
+                  <p className="mt-1 text-sm text-[#14213D]/70">
+                    Automatically sync your interviews and deadlines to your primary Google Calendar.
+                  </p>
+                </div>
+                {isCalendarConnected && (
+                  <span className="flex items-center gap-1.5 rounded-full bg-green-100 px-3 py-1 text-xs font-medium text-green-700">
+                    <CheckCircle size={14} />
+                    Connected
+                  </span>
+                )}
+              </div>
+
+              <div className="flex flex-col gap-2 mt-4">
+                {isCalendarConnected ? (
+                  <>
+                    <button
+                      type="button"
+                      onClick={handleSyncGoogleCalendar}
+                      className="w-full rounded-lg border border-gray-300 bg-white px-4 py-3 font-medium text-[#14213D] transition-all hover:bg-gray-50"
+                    >
+                      Sync Now
+                    </button>
+                    <button
+                      type="button"
+                      onClick={handleDisconnectGoogleCalendar}
+                      className="w-full rounded-lg border border-red-200 bg-red-50 px-4 py-3 font-medium text-red-600 transition-all hover:bg-red-100"
+                    >
+                      Disconnect Calendar
+                    </button>
+                  </>
+                ) : (
+                  <button
+                    type="button"
+                    onClick={handleConnectGoogleCalendar}
+                    className="w-full rounded-lg bg-[#14213D] px-4 py-3 font-medium text-white transition-all hover:bg-[#1a2a4f]"
+                  >
+                    Connect Google Calendar
+                  </button>
+                )}
+              </div>
             </div>
           </SectionCard>
 

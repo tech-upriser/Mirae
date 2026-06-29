@@ -84,6 +84,7 @@ router.post('/login', async (req, res) => {
 router.get('/google/url', protect, googleCalendarController.getGoogleAuthUrl);
 router.get('/google/status', protect, googleCalendarController.getGoogleConnectionStatus);
 router.post('/google/sync', protect, googleCalendarController.syncGoogleCalendar);
+router.post('/google/disconnect', protect, googleCalendarController.disconnect);
 router.get('/google/callback', googleCalendarController.handleGoogleCallback);
 
 module.exports = router;

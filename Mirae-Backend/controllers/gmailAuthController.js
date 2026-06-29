@@ -81,8 +81,34 @@ const startWatching = async (req, res) => {
   }
 };
 
+const disconnect = async (req, res) => {
+  try {
+    const user = await User.findById(req.user.id);
+    if (!user) return res.status(404).json({ error: "User not found" });
+    user.gmailTokens = undefined;
+    user.isGmailConnected = false;
+    await user.save();
+    res.status(200).json({ message: "Gmail disconnected" });
+  } catch (error) {
+    console.error("Disconnect error:", error);
+    res.status(500).json({ error: "Server error" });
+  }
+};
+
+const getStatus = async (req, res) => {
+  try {
+    const user = await User.findById(req.user.id);
+    if (!user) return res.status(404).json({ error: "User not found" });
+    res.status(200).json({ isConnected: !!user.isGmailConnected });
+  } catch (error) {
+    res.status(500).json({ error: "Server error" });
+  }
+};
+
 module.exports = {
   getAuthUrl,
   handleOAuthCallback,
   startWatching, // NEW
+  disconnect,
+  getStatus,
 };

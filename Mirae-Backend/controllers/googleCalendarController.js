@@ -386,6 +386,21 @@ const syncGoogleCalendar = async (req, res) => {
   }
 };
 
+const disconnect = async (req, res) => {
+  try {
+    const user = await User.findById(req.user.id);
+    if (!user) return res.status(404).json({ error: 'User not found' });
+    user.googleRefreshToken = undefined;
+    user.googleAccessToken = undefined;
+    user.googleTokenExpiry = undefined;
+    await user.save();
+    return res.status(200).json({ message: 'Google Calendar disconnected' });
+  } catch (error) {
+    console.error('Disconnect error:', error);
+    return res.status(500).json({ error: 'Server error' });
+  }
+};
+
 module.exports = {
   getGoogleAuthUrl,
   handleGoogleCallback,
@@ -393,4 +408,5 @@ module.exports = {
   syncGoogleCalendar,
   upsertMiraeEventToGoogle,
   deleteMiraeEventFromGoogle,
+  disconnect,
 };

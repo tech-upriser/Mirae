@@ -69,7 +69,7 @@ export const getGmailConnectionStatus =
   async (): Promise<GmailStatusResponse> => {
     try {
       const { data } = await api.get<GmailStatusResponse>(
-        "/settings/gmail-status",
+        "/gmail/status",
       );
       return data;
     } catch (error) {
@@ -77,3 +77,26 @@ export const getGmailConnectionStatus =
       return { isConnected: false };
     }
   };
+
+export const disconnectGmail = async (): Promise<void> => {
+  await api.post("/gmail/disconnect");
+};
+
+export const getGoogleCalendarStatus = async (): Promise<{ connected: boolean }> => {
+  try {
+    const { data } = await api.get("/auth/google/status");
+    return data;
+  } catch (error) {
+    console.error("Failed to get Google Calendar status:", error);
+    return { connected: false };
+  }
+};
+
+export const disconnectGoogleCalendar = async (): Promise<void> => {
+  await api.post("/auth/google/disconnect");
+};
+
+export const syncGoogleCalendar = async (): Promise<{ message: string, exportedCount: number, syncedCount: number }> => {
+  const { data } = await api.post("/auth/google/sync");
+  return data;
+};
