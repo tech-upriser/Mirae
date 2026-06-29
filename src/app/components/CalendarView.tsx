@@ -218,7 +218,7 @@ export function CalendarView() {
     setNewEventDate('');
     setNewEventType('deadline');
     setNewEventStart('');
-    setNewEventEnd('');
+    setNewEventEnd('11:59 PM');
     setNewEventDescription('');
     setNewEventLocation('');
     setNewEventApplyLink('');
@@ -309,11 +309,18 @@ export function CalendarView() {
         setCalendarMessage('Event added.');
       }
       await fetchEvents();
-      if (googleCalendarConnected) {
-        await handleGoogleCalendarSync();
-      }
       setSelectedDate(pickedDate);
       setShowAddEventModal(false);
+
+      if (googleCalendarConnected) {
+        try {
+          await handleGoogleCalendarSync();
+        } catch (syncError) {
+          console.error('Google Calendar sync failed after save:', syncError);
+          setGoogleError(syncError instanceof Error ? syncError.message : 'Failed to sync with Google Calendar');
+          setCalendarMessage((prev) => `${prev} (saved locally, Google sync failed)`);
+        }
+      }
     } catch (error) {
       console.error('Add event failed:', error);
       alert('Failed to add event. Please try again.');
@@ -1198,7 +1205,7 @@ export function CalendarView() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 z-[100000] flex items-center justify-center bg-white/20 p-6"
+            className="fixed inset-0 z-[100000] flex items-center justify-center overflow-y-auto bg-white/20 p-6"
             style={{ backdropFilter: 'blur(12px)', WebkitBackdropFilter: 'blur(12px)' }}
             onClick={() => setShowAddEventModal(false)}
           >
@@ -1207,7 +1214,7 @@ export function CalendarView() {
               initial={{ scale: 0.97, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
               exit={{ scale: 0.97, opacity: 0 }}
-              className="bg-white rounded-xl shadow-2xl border border-[#E5E5E5] max-w-2xl w-full p-6"
+              className="bg-white rounded-xl shadow-2xl border border-[#E5E5E5] max-w-2xl w-full max-h-[85vh] overflow-y-auto p-6"
             >
               <div className="flex items-center justify-between mb-5">
                 <div>
