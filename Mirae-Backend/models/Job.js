@@ -51,6 +51,12 @@ const jobSchema = new mongoose.Schema({
     recruiterName: { type: String, default: '' },
     hiringManager: { type: String, default: '' }
   },
+  networkContacts: [{
+    name: String,
+    role: String,
+    url: String,
+    status: { type: String, default: 'To Contact' } // e.g. To Contact, Messaged, Replied, Referral
+  }],
   notes: { type: String, default: '' }
 
 }, { 

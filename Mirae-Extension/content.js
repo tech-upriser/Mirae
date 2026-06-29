@@ -17,14 +17,32 @@ const scrapeAndSendToMirae = () => {
   lastSaveStartedAt = Date.now();
   console.log("Mirae: Extracting raw page text...");
 
-  // Grab EVERYTHING visible on the page, collapse whitespace
-  let rawText = document.body.innerText.replace(/\s+/g, ' ').trim();
+  // Try to find the most relevant main content container first
+  const selectors = [
+    'main',
+    '[class*="description"]',
+    '[id*="description"]',
+    '[class*="details"]',
+    '[class*="job-view"]',
+    'article',
+    '.jobs-description__content'
+  ];
+  
+  let mainContent = '';
+  for (const selector of selectors) {
+    const el = document.querySelector(selector);
+    if (el && el.innerText.length > 500) {
+      mainContent += el.innerText + '\n';
+    }
+  }
 
-  // Send the first 8000 characters — plenty of context for extraction
-  // without footer/nav junk overwhelming it
+  // Fallback to body text if selectors missed or it's a simple page
+  let rawText = (mainContent.length > 500 ? mainContent : document.body.innerText).replace(/\s+/g, ' ').trim();
+
+  // Send up to 25000 characters to capture the full description
   const jobData = {
     url: window.location.href,
-    rawText: rawText.substring(0, 8000),
+    rawText: rawText.substring(0, 25000),
     tabTitle: document.title || ''
   };
 

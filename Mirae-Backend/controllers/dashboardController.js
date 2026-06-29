@@ -56,7 +56,7 @@ const getRecentJobs = async (req, res) => {
       .sort(sortField)
       .limit(50)
       .select(
-        'company title status category url description matchScore skills jobSkills salary location appliedDate deadline createdAt postedDate history contacts notes'
+        'company title status category url description matchScore skills jobSkills salary location appliedDate deadline createdAt postedDate history contacts networkContacts notes'
       );
 
     const healedJobs = await Promise.all(

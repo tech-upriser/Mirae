@@ -1,4 +1,4 @@
-import { X, MapPin, Calendar, Clock, Search, BarChart3 } from 'lucide-react';
+import { X, MapPin, Calendar, Clock, Search, BarChart3, ChevronDown, Plus } from 'lucide-react';
 import { motion } from 'motion/react';
 import { useEffect, useState } from 'react';
 import { updateJobContacts, updateJobNotes } from '../services/dashboardService';
@@ -54,8 +54,11 @@ export function ApplicationDetail({ application, onClose, onStatusChange, onCont
   const [status, setStatus] = useState(normalizeStatusValue(application.stage || 'Saved'));
   
   // New State Variables for Networking
-  const [recruiterName, setRecruiterName] = useState(application.contacts?.recruiterName || '');
-  const [hiringManager, setHiringManager] = useState(application.contacts?.hiringManager || '');
+  const [networkContacts, setNetworkContacts] = useState<any[]>(application.networkContacts || []);
+  const [newContactName, setNewContactName] = useState('');
+  const [newContactRole, setNewContactRole] = useState('');
+  const [newContactUrl, setNewContactUrl] = useState('');
+  
   const [scratchpadText, setScratchpadText] = useState(application.notes || '');
   const [isSavingContacts, setIsSavingContacts] = useState(false);
   const [isSavingNote, setIsSavingNote] = useState(false);
@@ -124,27 +127,48 @@ export function ApplicationDetail({ application, onClose, onStatusChange, onCont
 
   useEffect(() => {
     setRecruiterName(application.contacts?.recruiterName || '');
-    setHiringManager(application.contacts?.hiringManager || '');
+    setNetworkContacts(application.networkContacts || []);
     setScratchpadText(application.notes || '');
     setStatus(normalizeStatusValue(application.stage || 'Saved'));
-  }, [application.contacts, application.notes, application.stage, application.id]);
+  }, [application.networkContacts, application.notes, application.stage, application.id]);
 
   const handleSaveContacts = async () => {
-    setIsSavingContacts(true);
     try {
-      if (onContactsSaved) {
-        await onContactsSaved(application.id, recruiterName, hiringManager);
-      } else {
-        await updateJobContacts(application.id, recruiterName, hiringManager);
-      }
-
-      alert('Contacts saved successfully.');
+      setIsSavingContacts(true);
+      const token = localStorage.getItem('token');
+      await fetch(`http://localhost:5000/api/tracker/${application._id}/contacts`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        },
+        body: JSON.stringify({ networkContacts })
+      });
+      onContactsSaved?.(networkContacts);
     } catch (error) {
-      console.error(error);
-      alert('Failed to save contacts.');
+      console.error('Failed to save contacts', error);
     } finally {
       setIsSavingContacts(false);
     }
+  };
+
+  const handleAddContact = () => {
+    if (!newContactName.trim()) return;
+    setNetworkContacts([...networkContacts, {
+      name: newContactName,
+      role: newContactRole,
+      url: newContactUrl,
+      status: 'To Contact'
+    }]);
+    setNewContactName('');
+    setNewContactRole('');
+    setNewContactUrl('');
+  };
+
+  const handleRemoveContact = (index: number) => {
+    const updated = [...networkContacts];
+    updated.splice(index, 1);
+    setNetworkContacts(updated);
   };
 
 
@@ -247,17 +271,20 @@ export function ApplicationDetail({ application, onClose, onStatusChange, onCont
             
             <div className="flex items-center gap-3">
               {/* 2. Status Dropdown (Actionable) */}
-              <select
-                value={status}
-                onChange={handleStatusChange}
-                className="px-4 py-2 bg-secondary-foreground text-secondary rounded-md font-bold hover:bg-secondary-foreground/90 transition-all cursor-pointer outline-none appearance-none pr-8 relative border-none"
-                style={{ backgroundImage: 'url("data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22currentcolor%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2012.9l128%20127.9c3.6%203.6%207.8%205.4%2012.8%205.4s9.2-1.8%2012.8-5.4L287%2095c3.5-3.5%205.4-7.8%205.4-12.8%200-5-1.9-9.2-5.5-12.8z%22%2F%3E%3C%2Fsvg%3E")', backgroundRepeat: 'no-repeat', backgroundPosition: 'right .7rem top 50%', backgroundSize: '.65rem auto' }}
-              >
-                <option value="Saved">Saved</option>
-                <option value="Applied">Applied / Interviewing</option>
-                <option value="Offer">Offered</option>
-                <option value="Rejected">Rejected</option>
-              </select>
+              <div className="relative inline-block">
+                <select
+                  value={status}
+                  onChange={handleStatusChange}
+                  className="px-4 py-2 bg-secondary-foreground text-secondary rounded-md font-bold hover:bg-secondary-foreground/90 transition-all cursor-pointer outline-none appearance-none pr-8 border-none"
+                >
+                  <option value="Saved">Saved</option>
+                  <option value="Applied">Applied</option>
+                  <option value="Interviewing">Interviewing</option>
+                  <option value="Offer">Offered</option>
+                  <option value="Rejected">Rejected</option>
+                </select>
+                <ChevronDown className="absolute right-2.5 top-1/2 -translate-y-1/2 h-4 w-4 pointer-events-none text-secondary" />
+              </div>
               
               <button onClick={onClose} className="rounded-md p-2 text-secondary-foreground/80 hover:bg-secondary-foreground/10 hover:text-secondary-foreground transition-colors">
                 <X className="w-6 h-6" />
@@ -355,7 +382,7 @@ export function ApplicationDetail({ application, onClose, onStatusChange, onCont
                 </div>
 
                 <div className="relative w-32 h-32 flex-shrink-0">
-                  <svg className="w-full h-full transform -rotate-90">
+                  <svg className="w-full h-full transform -rotate-90" viewBox="0 0 128 128">
                     <circle cx="64" cy="64" r="56" className="stroke-muted" strokeWidth="12" fill="none" />
                     <circle
                       cx="64" cy="64" r="56" stroke="#FCA311" strokeWidth="12" fill="none"
@@ -425,47 +452,99 @@ export function ApplicationDetail({ application, onClose, onStatusChange, onCont
               <div className="mb-5 flex items-center justify-between gap-4">
                 <h3 className="text-lg font-bold text-foreground">Networking CRM</h3>
                 <a
-                  href={`https://www.linkedin.com/search/results/people/?keywords=${encodeURIComponent((application.company || '') + ' IIT Patna')}`}
+                  href={`https://www.linkedin.com/search/results/people/?keywords=${encodeURIComponent(application.company || '')}&origin=FACETED_SEARCH`}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="inline-flex items-center gap-2 rounded-md border border-border px-3 py-2 text-xs font-medium text-muted-foreground transition-colors hover:bg-muted/50"
                 >
                   <Search className="h-3.5 w-3.5" />
-                  Find IIT Patna Alumni
+                  {`Find People at ${application.company || 'Company'}`}
                 </a>
               </div>
 
-              <div className="grid grid-cols-2 gap-4 mb-4">
-                <div>
-                  <label className="mb-1 block text-xs font-semibold text-muted-foreground">Recruiter Name</label>
-                  <input
-                    type="text"
-                    value={recruiterName}
-                    onChange={(e) => setRecruiterName(e.target.value)}
-                    className="w-full rounded-md border border-border p-2 text-sm focus:outline-none focus:ring-1 focus:ring-[#FCA311]"
-                    placeholder="Jane Doe"
-                  />
-                </div>
-                <div>
-                  <label className="mb-1 block text-xs font-semibold text-muted-foreground">Hiring Manager</label>
-                  <input
-                    type="text"
-                    value={hiringManager}
-                    onChange={(e) => setHiringManager(e.target.value)}
-                    className="w-full rounded-md border border-border p-2 text-sm focus:outline-none focus:ring-1 focus:ring-[#FCA311]"
-                    placeholder="John Smith"
-                  />
-                </div>
+              <p className="text-sm text-muted-foreground mb-4">Track key contacts for this opportunity</p>
+              
+              <div className="flex flex-col gap-3 mb-6 max-h-[150px] overflow-y-auto pr-2">
+                {networkContacts.length === 0 ? (
+                  <div className="text-sm text-muted-foreground/70 italic p-4 bg-muted/20 border border-border rounded-lg text-center">
+                    No contacts added yet. Build your network below!
+                  </div>
+                ) : (
+                  networkContacts.map((contact, index) => (
+                    <div key={index} className="flex items-center justify-between p-3 border border-border rounded-lg bg-card shadow-sm">
+                      <div>
+                        <p className="font-semibold text-sm text-foreground">{contact.name}</p>
+                        <p className="text-xs text-muted-foreground">{contact.role}</p>
+                      </div>
+                      <div className="flex items-center gap-3">
+                        {contact.url && (
+                          <a href={contact.url.startsWith('http') ? contact.url : `https://${contact.url}`} target="_blank" rel="noopener noreferrer" className="text-xs text-[#FCA311] hover:underline">
+                            Link
+                          </a>
+                        )}
+                        <span className="text-[10px] uppercase font-bold px-2 py-0.5 rounded-full bg-secondary/20 text-secondary-foreground border border-secondary/30">
+                          {contact.status}
+                        </span>
+                        <button onClick={() => handleRemoveContact(index)} className="text-muted-foreground hover:text-red-500 transition-colors">
+                          <X className="w-4 h-4" />
+                        </button>
+                      </div>
+                    </div>
+                  ))
+                )}
               </div>
 
-              <div className="mb-4">
+              <div className="bg-muted/30 border border-border rounded-lg p-4 mb-4">
+                <h4 className="text-xs font-bold text-foreground mb-3 uppercase tracking-wider">Add New Contact</h4>
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-3 mb-3">
+                  <div>
+                    <label className="mb-1 block text-xs font-semibold text-muted-foreground">Name</label>
+                    <input
+                      type="text"
+                      value={newContactName}
+                      onChange={(e) => setNewContactName(e.target.value)}
+                      className="w-full rounded-md border border-border p-2 text-sm focus:outline-none focus:ring-1 focus:ring-[#FCA311]"
+                      placeholder="Jane Doe"
+                    />
+                  </div>
+                  <div>
+                    <label className="mb-1 block text-xs font-semibold text-muted-foreground">Role</label>
+                    <input
+                      type="text"
+                      value={newContactRole}
+                      onChange={(e) => setNewContactRole(e.target.value)}
+                      className="w-full rounded-md border border-border p-2 text-sm focus:outline-none focus:ring-1 focus:ring-[#FCA311]"
+                      placeholder="Software Engineer"
+                    />
+                  </div>
+                  <div>
+                    <label className="mb-1 block text-xs font-semibold text-muted-foreground">LinkedIn URL</label>
+                    <input
+                      type="text"
+                      value={newContactUrl}
+                      onChange={(e) => setNewContactUrl(e.target.value)}
+                      className="w-full rounded-md border border-border p-2 text-sm focus:outline-none focus:ring-1 focus:ring-[#FCA311]"
+                      placeholder="linkedin.com/in/..."
+                    />
+                  </div>
+                </div>
+                <button
+                  type="button"
+                  onClick={handleAddContact}
+                  className="w-full inline-flex items-center justify-center rounded-md border border-border bg-card px-3 py-1.5 text-xs font-medium text-foreground transition-colors hover:bg-muted"
+                >
+                  <Plus className="w-3.5 h-3.5 mr-1" /> Add to Network
+                </button>
+              </div>
+
+              <div className="mb-4 mt-auto pt-2 border-t border-border">
                 <button
                   type="button"
                   onClick={handleSaveContacts}
                   disabled={isSavingContacts}
-                  className="inline-flex items-center justify-center rounded-md bg-secondary text-secondary-foreground transition-colors hover:bg-[#1f335c] disabled:opacity-60"
+                  className="w-full inline-flex items-center justify-center rounded-md bg-secondary py-2.5 text-secondary-foreground transition-colors hover:bg-[#1f335c] disabled:opacity-60"
                 >
-                  {isSavingContacts ? 'Saving Contacts...' : 'Save Contacts'}
+                  {isSavingContacts ? 'Saving CRM...' : 'Save Network CRM'}
                 </button>
               </div>
 

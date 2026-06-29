@@ -285,7 +285,7 @@ const getFunnel = async (req, res) => {
 
     res.status(200).json({
       funnel: [
-        { stage: 'Saved', count: totalSaved },
+        { stage: 'Total Pipeline', count: totalSaved },
         { stage: 'Applied', count: totalApplied },
         { stage: 'Interviewing', count: totalInterviewing },
         { stage: 'Offer', count: totalOffers }

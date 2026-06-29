@@ -35,6 +35,10 @@ export function SocialPortfolioModal({ onClose }: Props) {
   const [newPlatform, setNewPlatform] = useState('');
   const [newUrl, setNewUrl] = useState('');
 
+  const [editingId, setEditingId] = useState<string | null>(null);
+  const [editPlatform, setEditPlatform] = useState('');
+  const [editUrl, setEditUrl] = useState('');
+
   const handleAddLink = async () => {
     if (newPlatform && newUrl) {
       const newLink: SocialLink = {
@@ -66,6 +70,19 @@ export function SocialPortfolioModal({ onClose }: Props) {
       await authService.updateSocialLinks(updatedLinks);
     } catch (error) {
       console.error("Failed to delete link", error);
+    }
+  };
+
+  const handleEditLink = async (id: string) => {
+    const updatedLinks = links.map(link =>
+      link.id === id ? { ...link, platform: editPlatform, title: editPlatform, url: editUrl } : link
+    );
+    setLinks(updatedLinks);
+    setEditingId(null);
+    try {
+      await authService.updateSocialLinks(updatedLinks);
+    } catch (error) {
+      console.error('Failed to update link', error);
     }
   };
 
@@ -154,9 +171,6 @@ export function SocialPortfolioModal({ onClose }: Props) {
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.3, delay: index * 0.1 }}
                     className="group relative bg-card border border-border rounded-lg p-5 hover:border-[#FCA311] hover:shadow-lg transition-all duration-300"
-                    style={{
-                      background: 'linear-gradient(135deg, rgba(252, 163, 17, 0.02) 0%, rgba(255, 255, 255, 1) 100%)',
-                    }}
                   >
                     <div className="flex items-center gap-4">
                       {/* Platform Icon */}
@@ -165,43 +179,83 @@ export function SocialPortfolioModal({ onClose }: Props) {
                       </div>
 
                       {/* Link Info */}
-                      <div className="flex-1 min-w-0">
-                        <div className="flex items-center gap-2 mb-1">
-                          <span className="font-semibold text-card-foreground" style={{ fontFamily: 'Outfit' }}>
-                            {link.platform}
-                          </span>
-                          <span className="text-xs px-2 py-0.5 bg-[#FCA311]/10 text-[#FCA311] rounded-full font-medium">
-                            {link.title}
-                          </span>
+                      {editingId === link.id ? (
+                        <div className="flex-1 min-w-0 space-y-3">
+                          <input
+                            type="text"
+                            value={editPlatform}
+                            onChange={(e) => setEditPlatform(e.target.value)}
+                            placeholder="Platform / Title"
+                            className="w-full px-3 py-2 bg-card border border-border rounded-lg focus:outline-none focus:border-[#FCA311] focus:ring-2 focus:ring-[#FCA311]/20 transition-all text-card-foreground text-sm"
+                            style={{ fontFamily: 'Outfit' }}
+                          />
+                          <input
+                            type="url"
+                            value={editUrl}
+                            onChange={(e) => setEditUrl(e.target.value)}
+                            placeholder="https://..."
+                            className="w-full px-3 py-2 bg-card border border-border rounded-lg focus:outline-none focus:border-[#FCA311] focus:ring-2 focus:ring-[#FCA311]/20 transition-all text-card-foreground text-sm"
+                            style={{ fontFamily: 'Outfit' }}
+                          />
+                          <div className="flex gap-2">
+                            <button
+                              onClick={() => handleEditLink(link.id)}
+                              className="px-4 py-1.5 bg-[#FCA311] text-white rounded-lg hover:bg-[#fdb748] transition-all text-sm font-semibold"
+                              style={{ fontFamily: 'Outfit' }}
+                            >
+                              Save
+                            </button>
+                            <button
+                              onClick={() => setEditingId(null)}
+                              className="px-4 py-1.5 border border-border text-card-foreground rounded-lg hover:bg-background transition-all text-sm font-semibold"
+                              style={{ fontFamily: 'Outfit' }}
+                            >
+                              Cancel
+                            </button>
+                          </div>
                         </div>
-                        <a
-                          href={link.url}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="text-sm text-card-foreground/60 hover:text-[#FCA311] transition-colors flex items-center gap-1 truncate"
-                          style={{ fontFamily: 'Outfit' }}
-                        >
-                          {link.url}
-                          <ExternalLink className="w-3 h-3 flex-shrink-0" />
-                        </a>
-                      </div>
+                      ) : (
+                        <>
+                        <div className="flex-1 min-w-0">
+                          <div className="flex items-center gap-2 mb-1">
+                            <span className="font-semibold text-card-foreground" style={{ fontFamily: 'Outfit' }}>
+                              {link.platform}
+                            </span>
+                            <span className="text-xs px-2 py-0.5 bg-[#FCA311]/10 text-[#FCA311] rounded-full font-medium">
+                              {link.title}
+                            </span>
+                          </div>
+                          <a
+                            href={link.url}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="text-sm text-card-foreground/60 hover:text-[#FCA311] transition-colors flex items-center gap-1 truncate"
+                            style={{ fontFamily: 'Outfit' }}
+                          >
+                            {link.url}
+                            <ExternalLink className="w-3 h-3 flex-shrink-0" />
+                          </a>
+                        </div>
 
-                      {/* Actions */}
-                      <div className="flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity flex-shrink-0">
-                        <button
-                          className="p-2 hover:bg-[#FCA311]/10 rounded-lg transition-colors"
-                          title="Edit"
-                        >
-                          <Edit2 className="w-4 h-4 text-card-foreground" />
-                        </button>
-                        <button
-                          onClick={() => handleDeleteLink(link.id)}
-                          className="p-2 hover:bg-red-50 rounded-lg transition-colors"
-                          title="Delete"
-                        >
-                          <Trash2 className="w-4 h-4 text-[#E11D48]" />
-                        </button>
-                      </div>
+                        {/* Actions */}
+                        <div className="flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity flex-shrink-0">
+                          <button
+                            onClick={() => { setEditingId(link.id); setEditPlatform(link.platform); setEditUrl(link.url); }}
+                            className="p-2 hover:bg-[#FCA311]/10 rounded-lg transition-colors"
+                            title="Edit"
+                          >
+                            <Edit2 className="w-4 h-4 text-card-foreground" />
+                          </button>
+                          <button
+                            onClick={() => handleDeleteLink(link.id)}
+                            className="p-2 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-lg transition-colors"
+                            title="Delete"
+                          >
+                            <Trash2 className="w-4 h-4 text-[#E11D48]" />
+                          </button>
+                        </div>
+                        </>
+                      )}
                     </div>
                   </motion.div>
                 );

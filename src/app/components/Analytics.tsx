@@ -150,6 +150,7 @@ export function Analytics() {
   const funnelSteps = useMemo(() => {
     if (funnelData?.funnel) {
       const colors = {
+        'Total Pipeline': '#6b7280',
         'Saved': '#6b7280',
         'Applied': '#14213D',
         'Registered': '#14213D',
@@ -161,11 +162,16 @@ export function Analytics() {
         'Completed': '#067647'
       };
       const total = funnelData.funnel[0]?.count || 1;
+      const labelMap: Record<string, Record<string, string>> = {
+        Hackathons: { Applied: 'Registered', Interviewing: 'Participated', Offer: 'Won/Completed' },
+        Others: { Applied: 'Active', Interviewing: 'In Progress', Offer: 'Completed' },
+      };
+      const remap = labelMap[activeCategory] || {};
       return funnelData.funnel.map(step => ({
-        label: step.stage,
+        label: remap[step.stage] || step.stage,
         value: step.count,
         percent: Math.round((step.count / total) * 100),
-        color: colors[step.stage as keyof typeof colors] || '#FCA311'
+        color: colors[(remap[step.stage] || step.stage) as keyof typeof colors] || colors[step.stage as keyof typeof colors] || '#FCA311'
       }));
     }
     // Fallback if API fails
@@ -285,11 +291,11 @@ export function Analytics() {
           <motion.div
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.3, delay: 0.05 }}
+            transition={{ duration: 0.3 }}
             className="bg-card rounded-lg p-5 border border-border border-t-[3px] border-t-[#FCA311] shadow-sm transition-all hover:shadow-[0_8px_16px_rgba(252,163,17,0.15)]"
           >
             <div className="text-xs uppercase tracking-wide text-card-foreground mb-2 font-semibold opacity-60">
-              SAVED
+              {activeCategory === 'Jobs' ? 'SAVED' : 'TOTAL PIPELINE'}
             </div>
             <div className="text-4xl font-bold text-foreground mb-3 leading-none">
               {overview?.saved ?? 0}
@@ -308,10 +314,10 @@ export function Analytics() {
             className="bg-card rounded-lg p-5 border border-border border-t-[3px] border-t-[#FCA311] shadow-sm transition-all hover:shadow-[0_8px_16px_rgba(252,163,17,0.15)]"
           >
             <div className="text-xs uppercase tracking-wide text-card-foreground mb-2 font-semibold opacity-60">
-              {activeCategory === 'Hackathons' ? 'REGISTERED/PARTICIPATING' : activeCategory === 'Others' ? 'ACTIVE' : 'APPLIED'}
+              {activeCategory === 'Hackathons' ? 'REGISTERED' : activeCategory === 'Others' ? 'ACTIVE' : 'APPLIED'}
             </div>
             <div className="text-4xl font-bold text-foreground mb-3 leading-none">
-              {(overview?.applied ?? 0) + (overview?.interviewing ?? 0)}
+              {overview?.applied ?? 0}
             </div>
             <div className="inline-flex items-center px-3 py-1.5 bg-[#FEF3C7] rounded-full">
               <span className="text-xs font-semibold text-[#92400E]">
@@ -327,14 +333,14 @@ export function Analytics() {
             className="bg-card rounded-lg p-5 border border-border border-t-[3px] border-t-[#FCA311] shadow-sm transition-all hover:shadow-[0_8px_16px_rgba(252,163,17,0.15)]"
           >
             <div className="text-xs uppercase tracking-wide text-card-foreground mb-2 font-semibold opacity-60">
-              {activeCategory === 'Jobs' ? 'REJECTED' : 'LOST/REJECTED'}
+              {activeCategory === 'Hackathons' ? 'PARTICIPATING' : activeCategory === 'Others' ? 'IN PROGRESS' : 'INTERVIEWING'}
             </div>
             <div className="text-4xl font-bold text-foreground mb-3 leading-none">
-              {overview?.rejected ?? 0}
+              {overview?.interviewing ?? 0}
             </div>
             <div className="inline-flex items-center px-3 py-1.5 bg-[#FDE2E2] rounded-full">
               <span className="text-xs font-semibold text-[#B42318]">
-                {summaryPills.rejected}
+                {overview?.totalJobs ? `${Math.round(((overview?.interviewing ?? 0) / overview.totalJobs) * 100)}%` : '0%'}
               </span>
             </div>
           </motion.div>
@@ -365,7 +371,7 @@ export function Analytics() {
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.3, delay: 0.25 }}
-              className="bg-card rounded-lg p-6 border border-border border-t-[3px] border-t-[#FCA311] shadow-sm transition-all hover:shadow-[0_8px_16px_rgba(252,163,17,0.15)] h-full flex flex-col justify-between"
+              className="bg-card rounded-lg p-6 border border-border border-t-[3px] border-t-[#FCA311] shadow-sm transition-all hover:shadow-[0_8px_16px_rgba(252,163,17,0.15)]"
             >
               <h3 className="text-lg font-bold text-foreground mb-5">
                 Application Funnel
@@ -406,7 +412,7 @@ export function Analytics() {
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.3, delay: 0.25 }}
-              className="bg-card rounded-lg p-6 border border-border border-t-[3px] border-t-[#FCA311] shadow-sm transition-all hover:shadow-[0_8px_16px_rgba(252,163,17,0.15)] h-full flex flex-col justify-between"
+              className="bg-card rounded-lg p-6 border border-border border-t-[3px] border-t-[#FCA311] shadow-sm transition-all hover:shadow-[0_8px_16px_rgba(252,163,17,0.15)]"
             >
               <div className="flex items-center justify-between mb-4">
                 <h3 className="text-lg font-bold text-foreground">
@@ -472,7 +478,7 @@ export function Analytics() {
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.3, delay: 0.3 }}
-            className="bg-card rounded-lg p-6 border border-border border-t-[3px] border-t-[#FCA311] shadow-sm transition-all hover:shadow-[0_8px_16px_rgba(252,163,17,0.15)] h-full flex flex-col justify-between"
+            className="bg-card rounded-lg p-6 border border-border border-t-[3px] border-t-[#FCA311] shadow-sm transition-all hover:shadow-[0_8px_16px_rgba(252,163,17,0.15)]"
           >
             <h3 className="text-lg font-bold text-foreground mb-4">
               Top Skills
@@ -522,7 +528,7 @@ export function Analytics() {
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.3, delay: 0.3 }}
-            className="bg-card rounded-lg p-6 border border-border border-t-[3px] border-t-[#FCA311] shadow-sm transition-all hover:shadow-[0_8px_16px_rgba(252,163,17,0.15)] h-full flex flex-col justify-between"
+            className="bg-card rounded-lg p-6 border border-border border-t-[3px] border-t-[#FCA311] shadow-sm transition-all hover:shadow-[0_8px_16px_rgba(252,163,17,0.15)]"
           >
             <h3 className="text-lg font-bold text-foreground mb-4">
               Top Missing Skills
@@ -603,7 +609,7 @@ export function Analytics() {
                 Avg Match: Interviewing / Offer
               </div>
               <div className="mt-3 text-4xl font-bold text-secondary-foreground">
-                {matchInsights?.interviewAverage ?? 0}%
+                {matchInsights?.interviewAverage ? `${matchInsights.interviewAverage}%` : 'N/A'}
               </div>
               <p className="mt-2 text-sm text-secondary-foreground/80">
                 Average match score for the jobs that are progressing the furthest.

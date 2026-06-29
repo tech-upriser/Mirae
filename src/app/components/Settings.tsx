@@ -3,6 +3,7 @@
 import { useEffect, useMemo, useRef, useState, type ReactNode } from "react";
 import { useNavigate } from "react-router";
 import { AnimatePresence, motion } from "motion/react";
+import { UserGuideModal } from "./UserGuideModal";
 import * as RadioGroup from "@radix-ui/react-radio-group";
 import * as Switch from "@radix-ui/react-switch";
 import {
@@ -104,7 +105,7 @@ function ToggleRow({
         checked={checked}
         disabled={disabled}
         onCheckedChange={onCheckedChange}
-        className="relative h-6 w-11 cursor-pointer rounded-full bg-gray-300 transition-all data-[state=checked]:bg-[#FCA311] disabled:cursor-not-allowed disabled:opacity-60"
+        className="relative h-6 w-11 cursor-pointer rounded-full bg-muted transition-all data-[state=checked]:bg-[#FCA311] disabled:cursor-not-allowed disabled:opacity-60"
       >
         <Switch.Thumb className="block h-5 w-5 translate-x-0.5 rounded-full bg-card shadow transition-transform data-[state=checked]:translate-x-[22px]" />
       </Switch.Root>
@@ -199,6 +200,7 @@ export function Settings({
   const [showClearDataModal, setShowClearDataModal] = useState(false);
   const [showResetModal, setShowResetModal] = useState(false);
   const [isCalendarConnected, setIsCalendarConnected] = useState(false);
+  const [showUserGuide, setShowUserGuide] = useState(false);
 
   const handleConnectGmail = async () => {
     try {
@@ -611,7 +613,7 @@ export function Settings({
             title="Account Settings"
             subtitle="Manage your profile information"
           >
-            <div className="mb-5 flex items-center gap-4 border-b border-gray-100 pb-5">
+            <div className="mb-5 flex items-center gap-4 border-b border-border pb-5">
               <div className="relative">
                 {currentProfilePhoto ? (
                   <img
@@ -648,6 +650,21 @@ export function Settings({
                     {name}
                   </h3>
                   <p className="text-sm text-card-foreground/50">{email}</p>
+                  {user?.socialLinks && user.socialLinks.length > 0 && (
+                    <div className="mt-3 flex flex-wrap gap-2">
+                      {user.socialLinks.map((link) => (
+                        <a
+                          key={link.id}
+                          href={link.url}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="inline-flex items-center gap-1.5 rounded-full bg-secondary/60 px-3 py-1 text-xs font-medium text-secondary-foreground hover:bg-secondary transition-colors border border-border"
+                        >
+                          {link.platform}
+                        </a>
+                      ))}
+                    </div>
+                  )}
                 </div>
                 {!isEditingProfile && (
                   <button
@@ -736,12 +753,12 @@ export function Settings({
                   </button>
                 </div>
               )}
-              <div className="pt-4 border-t border-gray-100 space-y-3 mt-6">
+              <div className="pt-4 border-t border-border space-y-3 mt-6">
                 <button
                   type="button"
                   onClick={() => photoInputRef.current?.click()}
                   disabled={isUploadingPhoto}
-                  className="w-full flex items-center justify-between p-3 rounded-lg bg-muted/50 hover:bg-muted transition-colors border border-gray-100 disabled:opacity-50"
+                  className="w-full flex items-center justify-between p-3 rounded-lg bg-muted/50 hover:bg-muted transition-colors border border-border disabled:opacity-50"
                 >
                   <div className="flex items-center gap-3">
                     <Camera className="w-5 h-5 text-card-foreground" />
@@ -753,7 +770,7 @@ export function Settings({
                 <button
                   type="button"
                   onClick={onManageResumesOpen}
-                  className="w-full flex items-center justify-between p-3 rounded-lg bg-muted/50 hover:bg-muted transition-colors border border-gray-100"
+                  className="w-full flex items-center justify-between p-3 rounded-lg bg-muted/50 hover:bg-muted transition-colors border border-border"
                 >
                   <div className="flex items-center gap-3">
                     <FileText className="w-5 h-5 text-card-foreground" />
@@ -763,7 +780,7 @@ export function Settings({
                 <button
                   type="button"
                   onClick={onSocialPortfolioOpen}
-                  className="w-full flex items-center justify-between p-3 rounded-lg bg-muted/50 hover:bg-muted transition-colors border border-gray-100"
+                  className="w-full flex items-center justify-between p-3 rounded-lg bg-muted/50 hover:bg-muted transition-colors border border-border"
                 >
                   <div className="flex items-center gap-3">
                     <Link2 className="w-5 h-5 text-card-foreground" />
@@ -779,7 +796,7 @@ export function Settings({
             title="Integrations"
             subtitle="Connect external accounts for automated tracking"
           >
-            <div className="rounded-lg border border-gray-100 bg-muted/50/50 p-4">
+            <div className="rounded-lg border border-border bg-muted/50 p-4">
               <div className="mb-4 flex items-start justify-between gap-4">
                 <div>
                   <h3
@@ -795,7 +812,7 @@ export function Settings({
                   </p>
                 </div>
                 {isGmailConnected && (
-                  <span className="flex items-center gap-1.5 rounded-full bg-green-100 px-3 py-1 text-xs font-medium text-green-700">
+                  <span className="flex items-center gap-1.5 rounded-full bg-green-100 dark:bg-green-900/30 px-3 py-1 text-xs font-medium text-green-700 dark:text-green-400">
                     <CheckCircle size={14} />
                     Connected
                   </span>
@@ -807,7 +824,7 @@ export function Settings({
                   <button
                     type="button"
                     onClick={handleDisconnectGmail}
-                    className="w-full rounded-lg border border-red-200 bg-red-50 px-4 py-3 font-medium text-red-600 transition-all hover:bg-red-100"
+                    className="w-full rounded-lg border border-red-200 dark:border-red-800 bg-red-50 dark:bg-red-900/20 px-4 py-3 font-medium text-red-600 transition-all hover:bg-red-100 dark:hover:bg-red-900/40"
                   >
                     Disconnect Gmail
                   </button>
@@ -823,7 +840,7 @@ export function Settings({
               </div>
             </div>
 
-            <div className="mt-4 rounded-lg border border-gray-100 bg-muted/50/50 p-4">
+            <div className="mt-4 rounded-lg border border-border bg-muted/50 p-4">
               <div className="mb-4 flex items-start justify-between gap-4">
                 <div>
                   <h3
@@ -837,7 +854,7 @@ export function Settings({
                   </p>
                 </div>
                 {isCalendarConnected && (
-                  <span className="flex items-center gap-1.5 rounded-full bg-green-100 px-3 py-1 text-xs font-medium text-green-700">
+                  <span className="flex items-center gap-1.5 rounded-full bg-green-100 dark:bg-green-900/30 px-3 py-1 text-xs font-medium text-green-700 dark:text-green-400">
                     <CheckCircle size={14} />
                     Connected
                   </span>
@@ -857,7 +874,7 @@ export function Settings({
                     <button
                       type="button"
                       onClick={handleDisconnectGoogleCalendar}
-                      className="w-full rounded-lg border border-red-200 bg-red-50 px-4 py-3 font-medium text-red-600 transition-all hover:bg-red-100"
+                      className="w-full rounded-lg border border-red-200 dark:border-red-800 bg-red-50 dark:bg-red-900/20 px-4 py-3 font-medium text-red-600 transition-all hover:bg-red-100 dark:hover:bg-red-900/40"
                     >
                       Disconnect Calendar
                     </button>
@@ -883,7 +900,7 @@ export function Settings({
             <div className="space-y-3">
               <button
                 type="button"
-                className="w-full flex items-center justify-between p-3 rounded-lg bg-muted/50 hover:bg-muted transition-colors border border-gray-100"
+                className="w-full flex items-center justify-between p-3 rounded-lg bg-muted/50 hover:bg-muted transition-colors border border-border"
               >
                 <div className="flex items-center gap-3">
                   <Moon className="w-5 h-5 text-card-foreground" />
@@ -915,8 +932,8 @@ export function Settings({
               </button>
               <button
                 type="button"
-                onClick={() => toast.info("Help & Community is coming soon!")}
-                className="w-full flex items-center justify-between p-3 rounded-lg bg-muted/50 hover:bg-muted transition-colors border border-gray-100"
+                onClick={() => setShowUserGuide(true)}
+                className="w-full flex items-center justify-between p-3 rounded-lg bg-muted/50 hover:bg-muted transition-colors border border-border"
               >
                 <div className="flex items-center gap-3">
                   <HelpCircle className="w-5 h-5 text-card-foreground" />
@@ -931,7 +948,7 @@ export function Settings({
                   window.localStorage.removeItem("isLoggedIn");
                   window.location.href = "/";
                 }}
-                className="w-full flex items-center justify-between p-3 rounded-lg bg-red-50 hover:bg-red-100 transition-colors border border-red-100"
+                className="w-full flex items-center justify-between p-3 rounded-lg bg-red-50 dark:bg-red-900/20 hover:bg-red-100 dark:hover:bg-red-900/40 transition-colors border border-red-100 dark:border-red-800"
               >
                 <div className="flex items-center gap-3">
                   <LogOut className="w-5 h-5 text-[#E11D48]" />
@@ -953,11 +970,11 @@ export function Settings({
                   settings.notifications.followUpReminders ||
                   settings.notifications.deadlineAlerts ||
                   settings.notifications.interviewReminders) ? (
-                  <span className="rounded-md bg-green-50 px-2.5 py-0.5 text-sm font-medium text-green-600 border border-green-100">
+                  <span className="rounded-md bg-green-50 dark:bg-green-900/20 px-2.5 py-0.5 text-sm font-medium text-green-600 dark:text-green-400 border border-green-100 dark:border-green-800">
                     Enabled
                   </span>
                 ) : (
-                  <span className="rounded-md bg-red-50 px-2.5 py-0.5 text-sm font-medium text-red-600 border border-red-100">
+                  <span className="rounded-md bg-red-50 dark:bg-red-900/20 px-2.5 py-0.5 text-sm font-medium text-red-600 dark:text-red-400 border border-red-100 dark:border-red-800">
                     Disabled
                   </span>
                 )}
@@ -965,7 +982,7 @@ export function Settings({
             }
             subtitle="Reminders and schedule-aware alerts"
           >
-            <div className="mb-4 border-b border-gray-100 pb-4">
+            <div className="mb-4 border-b border-border pb-4">
               <ToggleRow
                 label="Browser pop-up notifications"
                 checked={settings.notifications.browserNotifications}
@@ -1006,7 +1023,7 @@ export function Settings({
                 <button
                   type="button"
                   onClick={handleDisableAllNotifications}
-                  className="w-full rounded-lg border border-[#14213D] px-4 py-3 font-medium text-card-foreground hover:bg-[#f3f4f6] transition-colors"
+                  className="w-full rounded-lg border border-[#14213D] px-4 py-3 font-medium text-card-foreground hover:bg-muted transition-colors"
                 >
                   Disable All Notifications
                 </button>
@@ -1131,6 +1148,12 @@ export function Settings({
             onConfirm={handleResetSettings}
             danger
           />
+        )}
+      </AnimatePresence>
+
+      <AnimatePresence>
+        {showUserGuide && (
+          <UserGuideModal onClose={() => setShowUserGuide(false)} />
         )}
       </AnimatePresence>
     </div>

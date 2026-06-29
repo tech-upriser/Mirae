@@ -114,8 +114,8 @@ Rules:
 - Extract explicit technical requirements only (e.g. Python, AWS, Docker).`;
 
   const userMessage = isResume 
-    ? `Resume Text:\n${text.substring(0, 6000)}`
-    : `Job Description:\n${text.substring(0, 6000)}`;
+    ? `Resume Text:\n${text.substring(0, 25000)}`
+    : `Job Description:\n${text.substring(0, 25000)}`;
 
   let attempt = 1;
   const maxAttempts = 2; // Retry once means 2 total attempts
@@ -578,8 +578,8 @@ exports.createJob = async (req, res) => {
 
     let finalDescription = incomingData.description || '';
     if (!finalDescription && rawText) {
-      finalDescription = rawText.substring(0, 1000).trim();
-      if (rawText.length > 1000) finalDescription += '...';
+      finalDescription = rawText.substring(0, 4000).trim();
+      if (rawText.length > 4000) finalDescription += '...';
     }
 
     const categoryContext = [
@@ -780,6 +780,9 @@ exports.updateJobStatus = async (req, res) => {
 // Save networking contacts
 exports.updateJobContacts = async (req, res) => {
   try {
+    const networkContacts = Array.isArray(req.body?.networkContacts) ? req.body.networkContacts : [];
+    
+    // Also support legacy recruiterName/hiringManager if passed
     const recruiterName = String(req.body?.recruiterName || '').trim();
     const hiringManager = String(req.body?.hiringManager || '').trim();
 
@@ -787,6 +790,7 @@ exports.updateJobContacts = async (req, res) => {
       { _id: req.params.id, userId: req.user.id },
       {
         $set: {
+          networkContacts,
           contacts: {
             recruiterName,
             hiringManager,

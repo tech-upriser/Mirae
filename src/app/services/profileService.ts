@@ -8,6 +8,7 @@ export interface ProfileData {
   profilePhoto?: string;
   is2FAEnabled?: boolean;
   resumeSkills?: string[];
+  socialLinks?: Array<{ id: string; platform: string; url: string }>;
 }
 
 interface ProfileResponse {

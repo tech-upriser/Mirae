@@ -3,6 +3,7 @@ import { motion } from 'motion/react';
 import { useEffect, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
 import { authService } from '../services/authService';
+import { useUser } from '../contexts/UserContext';
 
 interface Props {
   onClose: () => void;
@@ -20,6 +21,7 @@ export function ManageResumesModal({ onClose }: Props) {
   const [resumeInfo, setResumeInfo] = useState<ResumeInfo | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
+  const { refetchProfile } = useUser();
 
   // Load current resume info from the backend on mount
   useEffect(() => {
@@ -81,6 +83,7 @@ export function ManageResumesModal({ onClose }: Props) {
         charCount: result.stats.charCount,
       });
 
+      await refetchProfile();
       setError('');
 
     } catch (err: any) {
@@ -99,6 +102,7 @@ export function ManageResumesModal({ onClose }: Props) {
     try {
       await authService.deleteResume();
       setResumeInfo(null);
+      await refetchProfile();
       setError('');
     } catch (err: any) {
       setError(err.message || "Failed to delete resume.");

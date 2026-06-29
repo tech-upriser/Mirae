@@ -19,6 +19,7 @@ import {
   getRecentJobs,
   updateJobContacts,
   updateJobNotes,
+  updateJobStatus,
 } from '../services/dashboardService';
 import { useRealtimeUpdates } from '../hooks/useRealtimeUpdates';
 
