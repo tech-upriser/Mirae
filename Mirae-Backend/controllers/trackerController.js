@@ -218,36 +218,270 @@ Format:
 exports.extractSkillsWithAI = extractSkillsWithAI;
 exports.extractJobDetailsWithAI = extractJobDetailsWithAI;
 
-const computeSkillGap = (resumeSkills = [], jobSkills = []) => {
-  const normUser = (resumeSkills || []).map(s => String(s || '').trim().toLowerCase()).filter(Boolean);
-  const normJob = (jobSkills || []).map(s => String(s || '').trim().toLowerCase()).filter(Boolean);
+/**
+ * Normalizes a text string by:
+ * - Converting to lowercase
+ * - Translating '&' to 'and'
+ * - Replacing punctuation/special chars (except '+' and '#') with spaces
+ * - Collapsing extra whitespace
+ */
+function normalize(text) {
+  if (!text) return '';
+  return String(text)
+    .toLowerCase()
+    .replace(/&/g, ' and ')
+    .replace(/[^a-z0-9+#\s]/g, ' ')
+    .replace(/\s+/g, ' ')
+    .trim();
+}
 
-  // matchedSkills = resumeSkills.filter(skill => jobSkills.includes(skill))
-  const matchedSkills = (resumeSkills || []).filter(skill => 
-    normJob.includes(skill.trim().toLowerCase())
-  );
+// Configurable Synonym Dictionary (Bidirectional Groups)
+const SYNONYM_GROUPS = [
+  ['javascript', 'js'],
+  ['typescript', 'ts'],
+  ['c#', 'c sharp'],
+  ['golang', 'go'],
+  ['sql', 'mysql', 'postgresql', 'postgres'],
+  ['react', 'react.js', 'reactjs'],
+  ['node.js', 'nodejs', 'node js'],
+  ['express.js', 'express', 'expressjs'],
+  ['mongodb', 'mongo db'],
+  ['kubernetes', 'k8s'],
+  ['aws', 'amazon web services'],
+  ['google cloud', 'gcp'],
+  ['azure', 'microsoft azure'],
+  ['git', 'github', 'gitlab'],
+  ['rest api', 'restful api', 'rest apis', 'restful apis', 'rest'],
+  ['distributed systems', 'distributed system'],
+  ['algorithms', 'algorithmic'],
+  ['software development', 'software engineering'],
+  ['machine learning', 'ml'],
+  ['artificial intelligence', 'ai'],
+  ['dsa', 'data structures and algorithms', 'data structures & algorithms'],
+  ['oop', 'object-oriented programming', 'object oriented programming']
+];
 
-  // missingSkills = jobSkills.filter(skill => !resumeSkills.includes(skill))
-  const missingSkills = (jobSkills || []).filter(skill => 
-    !normUser.includes(skill.trim().toLowerCase())
-  );
-
-  let matchPercentage = null;
-  const totalRequired = normJob.length;
-  if (totalRequired > 0) {
-    // Score is (matched / total required by job) * 100
-    matchPercentage = Math.round((matchedSkills.length / totalRequired) * 100);
-  } else if (normUser.length > 0) {
-    // Edge case: if job has 0 skills but user has skills, we can't mathematically calculate a score
-    matchPercentage = null;
+// Generate lookup map for synonyms
+const SYNONYM_MAP = {};
+for (const group of SYNONYM_GROUPS) {
+  const normalizedGroup = group.map(term => normalize(term)).filter(Boolean);
+  for (const term of normalizedGroup) {
+    SYNONYM_MAP[term] = normalizedGroup;
   }
+}
 
+/**
+ * Computes Levenshtein distance between two strings
+ */
+function levenshtein(a, b) {
+  const tmp = [];
+  for (let i = 0; i <= b.length; i++) {
+    tmp[i] = [i];
+  }
+  for (let j = 0; j <= a.length; j++) {
+    tmp[0][j] = j;
+  }
+  for (let i = 1; i <= b.length; i++) {
+    for (let j = 1; j <= a.length; j++) {
+      if (b.charAt(i - 1) === a.charAt(j - 1)) {
+        tmp[i][j] = tmp[i - 1][j - 1];
+      } else {
+        tmp[i][j] = Math.min(
+          tmp[i - 1][j - 1] + 1, // substitution
+          tmp[i][j - 1] + 1,     // insertion
+          tmp[i - 1][j] + 1      // deletion
+        );
+      }
+    }
+  }
+  return tmp[b.length][a.length];
+}
+
+/**
+ * Calculates normalized Levenshtein similarity (0.0 to 1.0)
+ */
+function getLevenshteinSimilarity(s1, s2) {
+  const len = Math.max(s1.length, s2.length);
+  if (len === 0) return 1.0;
+  const dist = levenshtein(s1, s2);
+  return (len - dist) / len;
+}
+
+/**
+ * Extracts canonical representation of a skill name for deduplication
+ */
+function getCanonicalSkill(skillName) {
+  const norm = normalize(skillName);
+  if (!norm) return '';
+  
+  // Handle parenthesized text like "Amazon Web Services (AWS)"
+  const parenRegex = /\(([^)]+)\)/;
+  const match = skillName.match(parenRegex);
+  if (match) {
+    const inside = normalize(match[1]);
+    if (SYNONYM_MAP[inside]) {
+      return SYNONYM_MAP[inside][0];
+    }
+  }
+  
+  if (SYNONYM_MAP[norm]) {
+    return SYNONYM_MAP[norm][0];
+  }
+  
+  const withoutParen = normalize(skillName.replace(/\([^)]+\)/g, ' '));
+  if (SYNONYM_MAP[withoutParen]) {
+    return SYNONYM_MAP[withoutParen][0];
+  }
+  
+  return norm;
+}
+
+/**
+ * Deduplicates required job skills by mapping to canonical forms
+ */
+function deduplicateJobSkills(jobSkills) {
+  const seen = new Set();
+  const uniqueSkills = [];
+  for (const skill of jobSkills) {
+    if (!skill) continue;
+    const canonical = getCanonicalSkill(skill);
+    if (canonical && !seen.has(canonical)) {
+      seen.add(canonical);
+      uniqueSkills.push(skill);
+    }
+  }
+  return uniqueSkills;
+}
+
+/**
+ * Returns all possible variants (abbreviations, synonyms, parts) for a skill
+ */
+function getSkillVariants(skill) {
+  const variants = new Set();
+  const norm = normalize(skill);
+  if (norm) {
+    variants.add(norm);
+  }
+  
+  // Check text inside parenthesis (e.g. AWS)
+  const parenRegex = /\(([^)]+)\)/g;
+  let match;
+  while ((match = parenRegex.exec(skill)) !== null) {
+    const inside = normalize(match[1]);
+    if (inside) variants.add(inside);
+  }
+  
+  // Check text without parenthesis
+  const withoutParen = normalize(skill.replace(/\([^)]+\)/g, ' '));
+  if (withoutParen) variants.add(withoutParen);
+  
+  // Expand synonyms for all found variants
+  const currentVariants = Array.from(variants);
+  for (const variant of currentVariants) {
+    const syns = SYNONYM_MAP[variant];
+    if (syns) {
+      for (const syn of syns) {
+        const normSyn = normalize(syn);
+        if (normSyn) variants.add(normSyn);
+      }
+    }
+  }
+  
+  return Array.from(variants);
+}
+
+/**
+ * Performs sliding window fuzzy matching of a variant against resume tokens
+ */
+function fuzzyMatchPhrase(variant, resumeTokens, threshold = 0.82) {
+  const variantTokens = variant.split(' ').filter(Boolean);
+  const n = variantTokens.length;
+  if (n === 0) return false;
+  
+  for (let i = 0; i <= resumeTokens.length - n; i++) {
+    const windowTokens = resumeTokens.slice(i, i + n);
+    const windowPhrase = windowTokens.join(' ');
+    
+    const similarity = getLevenshteinSimilarity(windowPhrase, variant);
+    if (similarity >= threshold) {
+      return true;
+    }
+  }
+  return false;
+}
+
+/**
+ * Checks if a skill is matched in the searchSpace or resumeTokens
+ */
+function isSkillMatched(skill, searchSpace, resumeTokens) {
+  const variants = getSkillVariants(skill);
+  
+  for (const variant of variants) {
+    // 1. Exact whole-word/phrase match
+    if (searchSpace.includes(' ' + variant + ' ')) {
+      return true;
+    }
+    
+    // 2. Compound phrase matching (split by ' and ')
+    const parts = variant.split(' and ').map(p => p.trim()).filter(Boolean);
+    if (parts.length > 1) {
+      const allPartsMatched = parts.every(part => {
+        if (searchSpace.includes(' ' + part + ' ')) return true;
+        if (part.length > 4 && fuzzyMatchPhrase(part, resumeTokens, 0.82)) return true;
+        return false;
+      });
+      if (allPartsMatched) {
+        return true;
+      }
+    }
+    
+    // 3. Fuzzy matching on the variant (no fuzzy matching for short words)
+    const threshold = variant.length <= 4 ? 1.0 : 0.82;
+    if (fuzzyMatchPhrase(variant, resumeTokens, threshold)) {
+      return true;
+    }
+  }
+  
+  return false;
+}
+
+const computeSkillGap = (resumeSkills = [], jobSkills = [], resumeText = '') => {
+  // 1. Deduplicate required job skills
+  const uniqueJobSkills = deduplicateJobSkills(jobSkills || []);
+  
+  // 2. Prepare resume search space
+  const resumeSkillsList = Array.isArray(resumeSkills) ? resumeSkills : [];
+  const searchPool = [
+    ...resumeSkillsList,
+    resumeText || ''
+  ];
+  
+  const searchSpace = ' ' + searchPool.map(s => normalize(s)).join(' ') + ' ';
+  const resumeTokens = normalize(resumeText || '').split(' ').filter(Boolean);
+  
+  const matchedSkills = [];
+  const missingSkills = [];
+  
+  for (const skill of uniqueJobSkills) {
+    if (isSkillMatched(skill, searchSpace, resumeTokens)) {
+      matchedSkills.push(skill);
+    } else {
+      missingSkills.push(skill);
+    }
+  }
+  
+  let matchPercentage = null;
+  const totalRequired = uniqueJobSkills.length;
+  if (totalRequired > 0) {
+    matchPercentage = Math.round((matchedSkills.length / totalRequired) * 100);
+  }
+  
   return {
     matchPercentage,
     matchedSkills,
     missingSkills,
-    resumeSkills,
-    jobSkills
+    resumeSkills: resumeSkillsList,
+    jobSkills: uniqueJobSkills
   };
 };
 
@@ -270,11 +504,10 @@ const ensureJobSkillsAndMatch = async (job, user) => {
     }
   }
 
-
-
-  // If user has resumeSkills, compute matching on-the-fly and sync to job document
-  if (user && Array.isArray(user.resumeSkills) && user.resumeSkills.length > 0) {
-    const gap = computeSkillGap(user.resumeSkills, job.jobSkills);
+  // If user has resumeSkills or resumeText, compute matching on-the-fly and sync to job document
+  const hasResume = !!(user && user.resumeText && user.resumeText.trim().length > 20);
+  if (hasResume) {
+    const gap = computeSkillGap(user.resumeSkills || [], job.jobSkills, user.resumeText);
 
     if (
       job.matchScore !== gap.matchPercentage ||
