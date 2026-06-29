@@ -113,7 +113,8 @@ function ToggleRow({
 }
 
 const isNotificationMasterOff = (settings: SettingsData) =>
-  !settings.notifications.notificationsEnabled;
+  !settings.notifications.notificationsEnabled ||
+  !settings.notifications.remindersEnabled;
 
 function SectionCard({
   icon,
@@ -901,7 +902,7 @@ export function Settings({
           >
             {isNotificationMasterOff(settings) && (
               <p className="mb-4 rounded-lg border border-[#DC6B6B]/30 bg-[#DC6B6B]/10 px-3 py-2 text-sm text-[#B42318]">
-                Notifications are currently disabled. Turn on the master switch to receive alerts.
+                Notifications are currently disabled. Turn on both master switches to receive alerts.
               </p>
             )}
             <div className="mb-4 border-b border-gray-100 pb-4">
@@ -910,6 +911,13 @@ export function Settings({
                 checked={settings.notifications.notificationsEnabled}
                 onCheckedChange={(value) =>
                   updateNotificationSetting("notificationsEnabled", value)
+                }
+              />
+              <ToggleRow
+                label="Enable reminders"
+                checked={settings.notifications.remindersEnabled}
+                onCheckedChange={(value) =>
+                  updateNotificationSetting("remindersEnabled", value)
                 }
               />
               <ToggleRow
