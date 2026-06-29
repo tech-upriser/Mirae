@@ -213,6 +213,13 @@ export function CalendarView() {
     fetchGoogleStatus();
   }, []);
 
+  useEffect(() => {
+    if (calendarMessage) {
+      const timer = setTimeout(() => setCalendarMessage(null), 3000);
+      return () => clearTimeout(timer);
+    }
+  }, [calendarMessage]);
+
   const resetNewEventForm = () => {
     setNewEventTitle('');
     setNewEventDate('');
