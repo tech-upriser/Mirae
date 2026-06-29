@@ -426,6 +426,7 @@ export function Settings({
       setIsEditingProfile(false);
       window.localStorage.setItem("userName", updated.name);
       window.localStorage.setItem("userEmail", updated.email);
+      await refetchProfile();
       toast.success("Profile updated successfully!");
     } catch (error: any) {
       toast.error(error?.response?.data?.error || "Failed to update profile.");
@@ -587,14 +588,26 @@ export function Settings({
                   onChange={handleProfilePhotoUpload}
                 />
               </div>
-              <div>
-                <h3
-                  className="text-lg font-semibold text-[#14213D]"
-                  style={{ fontFamily: "Outfit" }}
-                >
-                  {name}
-                </h3>
-                <p className="text-sm text-[#14213D]/50">{email}</p>
+              <div className="flex flex-1 items-start justify-between">
+                <div>
+                  <h3
+                    className="text-lg font-semibold text-[#14213D]"
+                    style={{ fontFamily: "Outfit" }}
+                  >
+                    {name}
+                  </h3>
+                  <p className="text-sm text-[#14213D]/50">{email}</p>
+                </div>
+                {!isEditingProfile && (
+                  <button
+                    type="button"
+                    onClick={() => setIsEditingProfile(true)}
+                    disabled={saving}
+                    className="rounded-full border border-gray-200 bg-white px-4 py-1.5 text-sm font-medium text-[#14213D] shadow-sm transition-all hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-[#FCA311] disabled:opacity-60"
+                  >
+                    Edit Profile
+                  </button>
+                )}
               </div>
             </div>
 
@@ -647,16 +660,7 @@ export function Settings({
                   }`}
                 />
               </div>
-              {!isEditingProfile ? (
-                <button
-                  type="button"
-                  onClick={() => setIsEditingProfile(true)}
-                  disabled={saving}
-                  className="w-full rounded-lg border border-[#14213D] px-4 py-3 font-medium text-[#14213D] transition-all hover:bg-[#14213D] hover:text-white disabled:opacity-60"
-                >
-                  Edit Profile
-                </button>
-              ) : (
+              {isEditingProfile && (
                 <div className="grid grid-cols-2 gap-3">
                   <button
                     type="button"
