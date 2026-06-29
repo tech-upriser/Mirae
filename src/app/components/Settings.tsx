@@ -627,9 +627,9 @@ export function Settings({
                 <button
                   type="button"
                   onClick={() => photoInputRef.current?.click()}
-                  className="absolute -bottom-1 -right-1 flex h-8 w-8 items-center justify-center rounded-full border-2 border-white bg-secondary text-secondary-foreground"
+                  className="absolute -bottom-1 -right-1 flex h-8 w-8 items-center justify-center rounded-full border-2 border-card bg-secondary text-secondary-foreground"
                 >
-                  <Camera size={14} className="text-[#FCA311]" />
+                  <Camera size={14} />
                 </button>
                 <input
                   ref={photoInputRef}
