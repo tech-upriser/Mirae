@@ -111,12 +111,15 @@ export function Analytics() {
       (overview?.applied ?? 0) +
       (overview?.interviewing ?? 0);
 
+    const successLabel = activeCategory === 'Hackathons' ? 'Won/Completed' : activeCategory === 'Others' ? 'Completed' : 'Offers';
+    const rejectLabel = activeCategory === 'Others' ? 'Lost/Rejected' : 'Rejected';
+
     return [
-      { name: 'Offers', value: offers, color: '#067647' },
-      { name: 'Rejected', value: rejected, color: '#B42318' },
+      { name: successLabel, value: offers, color: '#067647' },
+      { name: rejectLabel, value: rejected, color: '#B42318' },
       { name: 'Active', value: active, color: '#14213D' },
     ];
-  }, [overview]);
+  }, [overview, activeCategory]);
 
   const topSkillBars = useMemo(() => {
     const topSkills = overview?.topSkills || [];
@@ -149,21 +152,29 @@ export function Analytics() {
       const colors = {
         'Saved': '#6b7280',
         'Applied': '#14213D',
+        'Registered': '#14213D',
+        'Active': '#14213D',
         'Interviewing': '#FCA311',
-        'Offer': '#067647'
+        'Participated': '#FCA311',
+        'Offer': '#067647',
+        'Won': '#067647',
+        'Completed': '#067647'
       };
       const total = funnelData.funnel[0]?.count || 1;
       return funnelData.funnel.map(step => ({
         label: step.stage,
         value: step.count,
         percent: Math.round((step.count / total) * 100),
-        color: colors[step.stage as keyof typeof colors] || '#000'
+        color: colors[step.stage as keyof typeof colors] || '#FCA311'
       }));
     }
     // Fallback if API fails
     const total = overview?.totalJobs ?? 0;
     const calcPercent = (value: number) =>
       total > 0 ? Math.round((value / total) * 100) : 0;
+
+    const label2 = activeCategory === 'Hackathons' ? 'Registered' : activeCategory === 'Others' ? 'Active' : 'Applied / Interviewing';
+    const label3 = activeCategory === 'Hackathons' ? 'Won/Completed' : activeCategory === 'Others' ? 'Completed' : 'Offer';
 
     return [
       {
@@ -173,19 +184,19 @@ export function Analytics() {
         color: '#6b7280',
       },
       {
-        label: 'Applied / Interviewing',
+        label: label2,
         value: (overview?.applied ?? 0) + (overview?.interviewing ?? 0),
         percent: calcPercent((overview?.applied ?? 0) + (overview?.interviewing ?? 0)),
         color: '#14213D',
       },
       {
-        label: 'Offer',
+        label: label3,
         value: overview?.offers ?? 0,
         percent: calcPercent(overview?.offers ?? 0),
         color: '#067647',
       },
     ];
-  }, [overview, funnelData]);
+  }, [overview, funnelData, activeCategory]);
 
 
   const summaryPills = useMemo(() => {
@@ -297,7 +308,7 @@ export function Analytics() {
             className="bg-card rounded-lg p-5 border border-border shadow-sm"
           >
             <div className="text-xs uppercase tracking-wide text-card-foreground mb-2 font-semibold opacity-60">
-              APPLIED
+              {activeCategory === 'Hackathons' ? 'REGISTERED/PARTICIPATING' : activeCategory === 'Others' ? 'ACTIVE' : 'APPLIED'}
             </div>
             <div className="text-4xl font-bold text-foreground mb-3 leading-none">
               {(overview?.applied ?? 0) + (overview?.interviewing ?? 0)}
@@ -316,7 +327,7 @@ export function Analytics() {
             className="bg-card rounded-lg p-5 border border-border shadow-sm"
           >
             <div className="text-xs uppercase tracking-wide text-card-foreground mb-2 font-semibold opacity-60">
-              REJECTED
+              {activeCategory === 'Hackathons' ? 'N/A' : activeCategory === 'Others' ? 'LOST/REJECTED' : 'REJECTED'}
             </div>
             <div className="text-4xl font-bold text-foreground mb-3 leading-none">
               {overview?.rejected ?? 0}
@@ -335,7 +346,7 @@ export function Analytics() {
             className="bg-card rounded-lg p-5 border border-border shadow-sm"
           >
             <div className="text-xs uppercase tracking-wide text-card-foreground mb-2 font-semibold opacity-60">
-              OFFERS
+              {activeCategory === 'Hackathons' ? 'WON/COMPLETED' : activeCategory === 'Others' ? 'COMPLETED' : 'OFFERS'}
             </div>
             <div className="text-4xl font-bold text-foreground mb-3 leading-none">
               {overview?.offers ?? 0}
@@ -348,7 +359,6 @@ export function Analytics() {
           </motion.div>
         </div>
 
-        {activeCategory === 'Jobs' && (
         <div className="grid grid-cols-2 gap-6">
           <div className="space-y-6">
             <motion.div
@@ -456,7 +466,6 @@ export function Analytics() {
             </motion.div>
           </div>
         </div>
-        )}
 
         <div className="mt-6 grid grid-cols-2 gap-6">
           <motion.div
@@ -691,7 +700,6 @@ export function Analytics() {
         )}
 
         {/* Career OS New Analytics */}
-        {activeCategory === 'Jobs' && (
         <div className="mt-6 grid grid-cols-3 gap-6">
           <motion.div
             initial={{ opacity: 0, y: 10 }}
@@ -711,13 +719,17 @@ export function Analytics() {
                 Days Average
               </div>
               <p className="mt-4 text-center text-sm text-muted-foreground">
-                From application submitted to interview scheduled across {responseTimes?.totalResponsesMeasured || 0} tracked responses.
+                {activeCategory === 'Hackathons' 
+                  ? `From registration to participation across ${responseTimes?.totalResponsesMeasured || 0} tracked events.` 
+                  : activeCategory === 'Others'
+                  ? `From saved to active across ${responseTimes?.totalResponsesMeasured || 0} tracked items.`
+                  : `From application submitted to interview scheduled across ${responseTimes?.totalResponsesMeasured || 0} tracked responses.`}
               </p>
             </div>
             
             <div className="mt-4 rounded-lg bg-[#F8FAFC] p-4 text-center border border-border">
               <div className="text-xs font-semibold uppercase text-card-foreground">
-                Interview → Offer Rate
+                {activeCategory === 'Hackathons' ? 'Participated → Won Rate' : activeCategory === 'Others' ? 'Active → Completed Rate' : 'Interview → Offer Rate'}
               </div>
               <div className="mt-1 text-2xl font-bold text-[#067647]">
                 {funnelData?.conversionRates?.interviewToOffer || '0'}%
@@ -743,8 +755,12 @@ export function Analytics() {
                   <tr>
                     <th className="px-4 py-3 font-semibold rounded-tl-lg">Company</th>
                     <th className="px-4 py-3 font-semibold text-center">Total Apps</th>
-                    <th className="px-4 py-3 font-semibold text-center">Interviewing</th>
-                    <th className="px-4 py-3 font-semibold text-center">Offers</th>
+                    <th className="px-4 py-3 font-semibold text-center">
+                      {activeCategory === 'Hackathons' ? 'Participating' : activeCategory === 'Others' ? 'Active' : 'Interviewing'}
+                    </th>
+                    <th className="px-4 py-3 font-semibold text-center">
+                      {activeCategory === 'Hackathons' ? 'Won' : activeCategory === 'Others' ? 'Completed' : 'Offers'}
+                    </th>
                     <th className="px-4 py-3 font-semibold text-right rounded-tr-lg">Success Rate</th>
                   </tr>
                 </thead>
@@ -777,7 +793,6 @@ export function Analytics() {
             </div>
           </motion.div>
         </div>
-        )}
       </div>
     </div>
   );

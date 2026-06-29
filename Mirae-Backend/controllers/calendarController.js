@@ -36,7 +36,12 @@ const getAuthenticatedUserId = (req, res) => {
 
 const buildDashboardReminder = (job, userId) => {
   const title = getDashboardReminderTitle(job);
-  const type = job.status === 'Interviewing' ? 'interview' : 'deadline';
+  
+  // Support Job, Hackathon, and Others statuses
+  const isInterviewLike = ['Interviewing', 'Participated', 'Active'].includes(job.status);
+  const isCompleted = ['Offer', 'Offered', 'Rejected', 'Won', 'Completed', 'Lost'].includes(job.status);
+  
+  const type = isInterviewLike ? 'interview' : 'deadline';
   const details = [
     hasMeaningfulValue(job.title) ? `Role: ${job.title}` : '',
     hasMeaningfulValue(job.company) ? `Company: ${job.company}` : '',
@@ -50,7 +55,7 @@ const buildDashboardReminder = (job, userId) => {
     startTime: type === 'interview' ? '09:00 AM' : '',
     endTime: type === 'interview' ? '10:00 AM' : '11:59 PM',
     type,
-    status: job.status === 'Offer' || job.status === 'Rejected' ? 'completed' : 'pending',
+    status: isCompleted ? 'completed' : 'pending',
     location: hasMeaningfulValue(job.location) ? job.location : '',
     applyLink: hasMeaningfulValue(job.url) ? job.url : '',
     userId,
@@ -220,6 +225,13 @@ exports.deleteEvent = async (req, res) => {
     if (!deletedEvent) {
       return res.status(404).json({ error: 'Calendar event not found' });
     }
+    
+    // If the event was synced from a dashboard job/hackathon, clear its deadline so it doesn't sync back
+    if (deletedEvent.source === 'dashboard' && deletedEvent.sourceId) {
+      const jobId = deletedEvent.sourceId.replace('dashboard-job-', '');
+      await Job.findOneAndUpdate({ _id: jobId, userId }, { $set: { deadline: null } });
+    }
+    
     await googleCalendarController.deleteMiraeEventFromGoogle(userId, deletedEvent.googleEventId);
     res.status(200).json({ message: 'Calendar event deleted' });
   } catch (error) {

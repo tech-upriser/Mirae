@@ -10,11 +10,24 @@ const getAnalyticsOverview = async (req, res) => {
     );
 
     const totalJobs = jobs.length;
-    const offers = jobs.filter((job) => job.status === 'Offer').length;
-    const rejected = jobs.filter((job) => job.status === 'Rejected').length;
-    const interviewing = jobs.filter((job) => job.status === 'Interviewing').length;
-    const applied = jobs.filter((job) => job.status === 'Applied').length;
     const saved = jobs.filter((job) => job.status === 'Saved').length;
+    
+    let offers = 0, rejected = 0, interviewing = 0, applied = 0;
+    
+    if (category === 'Hackathons') {
+      applied = jobs.filter((job) => job.status === 'Registered').length;
+      interviewing = jobs.filter((job) => job.status === 'Participated').length;
+      offers = jobs.filter((job) => job.status === 'Won' || job.status === 'Completed').length;
+    } else if (category === 'Others') {
+      applied = jobs.filter((job) => job.status === 'Active').length;
+      offers = jobs.filter((job) => job.status === 'Completed').length;
+      rejected = jobs.filter((job) => job.status === 'Lost' || job.status === 'Rejected').length;
+    } else {
+      offers = jobs.filter((job) => job.status === 'Offer' || job.status === 'Offered').length;
+      rejected = jobs.filter((job) => job.status === 'Rejected').length;
+      interviewing = jobs.filter((job) => job.status === 'Interviewing').length;
+      applied = jobs.filter((job) => job.status === 'Applied').length;
+    }
 
     // Only average jobs that actually have a match score (not null)
     const scoredJobs = jobs.filter((job) => job.matchScore !== null && job.matchScore !== undefined);
@@ -185,7 +198,11 @@ const getMatchInsights = async (req, res) => {
             { $group: { _id: null, avgScore: { $avg: '$matchScore' } } },
           ],
           rejectedJobs: [
-            { $match: { status: 'Rejected' } },
+            { 
+              $match: category === 'Others' 
+                ? { status: { $in: ['Rejected', 'Lost'] } }
+                : { status: 'Rejected' } 
+            },
             { $sort: { updatedAt: -1 } },
             { $limit: 4 },
             {
@@ -198,7 +215,13 @@ const getMatchInsights = async (req, res) => {
             },
           ],
           offeredJobs: [
-            { $match: { status: { $in: ['Offer', 'Offered'] } } },
+            { 
+              $match: category === 'Hackathons'
+                ? { status: { $in: ['Won', 'Completed'] } }
+                : category === 'Others'
+                ? { status: 'Completed' }
+                : { status: { $in: ['Offer', 'Offered'] } } 
+            },
             { $sort: { updatedAt: -1 } },
             { $limit: 4 },
             {
@@ -237,15 +260,22 @@ const getFunnel = async (req, res) => {
     let saved = 0, applied = 0, interviewing = 0, offers = 0, rejected = 0;
     
     // In a funnel, everyone who applied was also saved. 
-    // Everyone who is interviewing was also applied.
-    // So we count cumulative progression.
     jobs.forEach(job => {
-      // Basic counts
       if (job.status === 'Saved') saved++;
-      else if (job.status === 'Applied') applied++;
-      else if (job.status === 'Interviewing') interviewing++;
-      else if (job.status === 'Offer') offers++;
-      else if (job.status === 'Rejected') rejected++;
+      else if (category === 'Hackathons') {
+        if (job.status === 'Registered') applied++;
+        else if (job.status === 'Participated') interviewing++;
+        else if (job.status === 'Won' || job.status === 'Completed') offers++;
+      } else if (category === 'Others') {
+        if (job.status === 'Active') applied++;
+        else if (job.status === 'Completed') offers++;
+        else if (job.status === 'Lost' || job.status === 'Rejected') rejected++;
+      } else {
+        if (job.status === 'Applied') applied++;
+        else if (job.status === 'Interviewing') interviewing++;
+        else if (job.status === 'Offer' || job.status === 'Offered') offers++;
+        else if (job.status === 'Rejected') rejected++;
+      }
     });
 
     const totalOffers = offers;
