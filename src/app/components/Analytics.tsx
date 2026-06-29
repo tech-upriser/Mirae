@@ -365,7 +365,7 @@ export function Analytics() {
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.3, delay: 0.25 }}
-              className="bg-card rounded-lg p-6 border border-border border-t-[3px] border-t-[#FCA311] shadow-sm transition-all hover:shadow-[0_8px_16px_rgba(252,163,17,0.15)]"
+              className="bg-card rounded-lg p-6 border border-border border-t-[3px] border-t-[#FCA311] shadow-sm transition-all hover:shadow-[0_8px_16px_rgba(252,163,17,0.15)] h-full flex flex-col justify-between"
             >
               <h3 className="text-lg font-bold text-foreground mb-5">
                 Application Funnel
@@ -406,7 +406,7 @@ export function Analytics() {
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.3, delay: 0.25 }}
-              className="bg-card rounded-lg p-6 border border-border border-t-[3px] border-t-[#FCA311] shadow-sm transition-all hover:shadow-[0_8px_16px_rgba(252,163,17,0.15)]"
+              className="bg-card rounded-lg p-6 border border-border border-t-[3px] border-t-[#FCA311] shadow-sm transition-all hover:shadow-[0_8px_16px_rgba(252,163,17,0.15)] h-full flex flex-col justify-between"
             >
               <div className="flex items-center justify-between mb-4">
                 <h3 className="text-lg font-bold text-foreground">
@@ -472,7 +472,7 @@ export function Analytics() {
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.3, delay: 0.3 }}
-            className="bg-card rounded-lg p-6 border border-border border-t-[3px] border-t-[#FCA311] shadow-sm transition-all hover:shadow-[0_8px_16px_rgba(252,163,17,0.15)]"
+            className="bg-card rounded-lg p-6 border border-border border-t-[3px] border-t-[#FCA311] shadow-sm transition-all hover:shadow-[0_8px_16px_rgba(252,163,17,0.15)] h-full flex flex-col justify-between"
           >
             <h3 className="text-lg font-bold text-foreground mb-4">
               Top Skills
@@ -522,7 +522,7 @@ export function Analytics() {
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.3, delay: 0.3 }}
-            className="bg-card rounded-lg p-6 border border-border border-t-[3px] border-t-[#FCA311] shadow-sm transition-all hover:shadow-[0_8px_16px_rgba(252,163,17,0.15)]"
+            className="bg-card rounded-lg p-6 border border-border border-t-[3px] border-t-[#FCA311] shadow-sm transition-all hover:shadow-[0_8px_16px_rgba(252,163,17,0.15)] h-full flex flex-col justify-between"
           >
             <h3 className="text-lg font-bold text-foreground mb-4">
               Top Missing Skills
