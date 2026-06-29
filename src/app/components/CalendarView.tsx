@@ -745,12 +745,12 @@ export function CalendarView() {
                       }}
                       className={`
                         aspect-square border rounded-xl p-3 relative transition-all cursor-pointer
-                        ${!isToday && !isClash && !isSelected && !isPast ? 'bg-card border-border hover:border-[#FCA311] hover:shadow-sm' : ''}
-                        ${isToday ? 'bg-[#E0F2FE] border-border shadow-sm relative' : ''}
-                        ${isClash && !isToday ? 'bg-[#FEF2F2] border-[#B42318] border-2 shadow-[0_0_0_3px_rgba(180,35,24,0.16)]' : ''}
-                        ${isSelected && !isToday ? 'bg-card border-[#14213D] border-2 shadow-lg' : ''}
+                        ${!isToday && !isClash && !isSelected && !isPast ? 'bg-card border-border hover:border-secondary hover:shadow-sm' : ''}
+                        ${isToday ? 'bg-[#378ADD]/10 border-border shadow-sm relative' : ''}
+                        ${isClash && !isToday ? 'bg-[#B42318]/10 border-[#B42318] border-2 shadow-[0_0_0_3px_rgba(180,35,24,0.16)]' : ''}
+                        ${isSelected && !isToday ? 'bg-card border-secondary-foreground border-2 shadow-lg' : ''}
                         ${isClash ? 'ring-4 ring-[#B42318]/20' : ''}
-                        ${isPast ? 'bg-[#F3F4F6] border-border opacity-65 grayscale' : ''}
+                        ${isPast ? 'bg-foreground/5 border-border opacity-65 grayscale' : ''}
                       `}
                     >
                       {isToday && (

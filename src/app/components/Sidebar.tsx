@@ -36,16 +36,16 @@ export function Sidebar({
 
   return (
     <aside className="fixed left-0 top-0 h-screen w-60 bg-secondary text-secondary-foreground flex flex-col z-10 overflow-visible">
-      <div className="p-6 border-b border-[rgba(252,163,17,0.2)]">
+      <div className="p-6 border-b border-secondary-foreground/20">
         <div className="flex items-center gap-3">
           <BrandLogo className="h-12 w-12 flex-shrink-0" />
           <h1 className="text-2xl tracking-tight" style={{ fontFamily: 'var(--font-display)' }}>
-            <span className="text-[#FCA311]">Mirae</span>
+            <span className="text-secondary-foreground">Mirae</span>
           </h1>
         </div>
         <div className="flex items-center gap-2 mt-2">
-          <div className="w-2 h-2 rounded-full bg-[#FCA311] animate-pulse"></div>
-          <span className="text-xs text-[#E5E5E5]">Connected</span>
+          <div className="w-2 h-2 rounded-full bg-secondary-foreground animate-pulse"></div>
+          <span className="text-xs text-secondary-foreground/80">Connected</span>
         </div>
       </div>
 
@@ -60,8 +60,8 @@ export function Sidebar({
               className={`
                 flex items-center gap-3 px-4 py-3 rounded-md mb-2 transition-all duration-200
                 ${isActive
-                  ? 'bg-[rgba(252,163,17,0.1)] text-[#FCA311] border-l-4 border-[#FCA311] shadow-lg'
-                  : 'text-[#E5E5E5] hover:bg-[rgba(252,163,17,0.05)] hover:text-white'
+                  ? 'bg-secondary-foreground/10 text-secondary-foreground border-l-4 border-secondary-foreground shadow-lg font-bold'
+                  : 'text-secondary-foreground/80 hover:bg-secondary-foreground/5 hover:text-secondary-foreground'
                 }
               `}
             >
@@ -72,12 +72,12 @@ export function Sidebar({
         })}
       </nav>
 
-      <div className="p-4 border-t border-[rgba(252,163,17,0.2)]">
+      <div className="p-4 border-t border-secondary-foreground/20">
         <div
-          className="w-full flex items-center gap-3 p-3 rounded-md bg-[rgba(252,163,17,0.05)] transition-colors"
+          className="w-full flex items-center gap-3 p-3 rounded-md bg-secondary-foreground/5 transition-colors"
         >
           {/* Profile Avatar */}
-          <div className="w-10 h-10 rounded-full bg-[#FCA311] flex items-center justify-center overflow-hidden">
+          <div className="w-10 h-10 rounded-full bg-secondary-foreground/20 flex items-center justify-center overflow-hidden">
             {user?.profilePhoto ? (
               <img
                 src={user.profilePhoto}
@@ -89,11 +89,11 @@ export function Sidebar({
             )}
           </div>
           <div className="text-left">
-            <div className="text-sm font-medium text-white">
+            <div className="text-sm font-bold text-secondary-foreground">
               {user?.name || 'Mirae User'}
             </div>
             {(user as any)?.tagline && (
-              <div className="text-xs text-[#E5E5E5]">{(user as any).tagline}</div>
+              <div className="text-xs text-secondary-foreground/80">{(user as any).tagline}</div>
             )}
           </div>
         </div>
