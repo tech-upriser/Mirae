@@ -375,7 +375,18 @@ export function Dashboard() {
       {
         key: 'hackathons-registered',
         title: 'Registered',
-        apps: filteredApps.filter((app) => app.stage !== 'Saved'),
+        apps: filteredApps.filter((app) => app.stage === 'Registered'),
+      },
+      {
+        key: 'hackathons-participated',
+        title: 'Participated',
+        apps: filteredApps.filter((app) => app.stage === 'Participated'),
+      },
+      {
+        key: 'hackathons-completed',
+        title: 'Completed / Won',
+        apps: filteredApps.filter((app) => app.stage === 'Completed' || app.stage === 'Won'),
+        variant: 'selected',
       },
     ],
     [filteredApps]
@@ -391,17 +402,19 @@ export function Dashboard() {
       {
         key: 'others-active',
         title: 'Active',
-        apps: filteredApps.filter(
-          (app) => app.stage === 'Applied' || app.stage === 'Interviewing'
-        ),
+        apps: filteredApps.filter((app) => app.stage === 'Active'),
       },
       {
         key: 'others-completed',
         title: 'Completed',
-        apps: filteredApps.filter(
-          (app) => app.stage === 'Offer' || app.stage === 'Rejected'
-        ),
+        apps: filteredApps.filter((app) => app.stage === 'Completed'),
         variant: 'selected',
+      },
+      {
+        key: 'others-rejected',
+        title: 'Rejected / Lost',
+        apps: filteredApps.filter((app) => app.stage === 'Rejected' || app.stage === 'Lost'),
+        variant: 'rejected',
       },
     ],
     [filteredApps]
@@ -418,8 +431,8 @@ export function Dashboard() {
     activeTab === 'jobs'
       ? `Total Jobs: ${activeSummary.totalJobs} | Saved: ${activeSummary.saved} | Applied / Interviewing: ${activeSummary.applied + activeSummary.interviewing} | Offers: ${activeSummary.offers} | Rejected: ${activeSummary.rejected}`
       : activeTab === 'hackathons'
-      ? `Total Hackathons/Contests: ${filteredApps.length} | Saved: ${hackathonSections[0].apps.length} | Registered: ${hackathonSections[1].apps.length}`
-      : `Total Others: ${filteredApps.length} | Saved: ${othersSections[0].apps.length} | Active: ${othersSections[1].apps.length} | Completed: ${othersSections[2].apps.length}`;
+      ? `Total Hackathons/Contests: ${filteredApps.length} | Saved: ${hackathonSections[0].apps.length} | Registered: ${hackathonSections[1].apps.length} | Participated: ${hackathonSections[2].apps.length} | Completed: ${hackathonSections[3].apps.length}`
+      : `Total Others: ${filteredApps.length} | Saved: ${othersSections[0].apps.length} | Active: ${othersSections[1].apps.length} | Completed: ${othersSections[2].apps.length} | Rejected: ${othersSections[3].apps.length}`;
 
   const renderCard = (
     app: Application,
@@ -686,6 +699,7 @@ export function Dashboard() {
           <OpportunityDetail
             application={selectedApp}
             onClose={() => setSelectedApp(null)}
+            onStatusChange={handleStatusChange}
           />
         ))}
 

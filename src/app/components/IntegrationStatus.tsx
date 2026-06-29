@@ -33,7 +33,7 @@ export function IntegrationStatus({
     <motion.div
       initial={{ opacity: 0, y: 10 }}
       animate={{ opacity: 1, y: 0 }}
-      className="rounded-xl border border-gray-200 bg-card p-5 shadow-sm"
+      className="rounded-xl border border-border bg-card p-5 shadow-sm"
     >
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-4">
@@ -41,7 +41,7 @@ export function IntegrationStatus({
             className={`flex h-12 w-12 items-center justify-center rounded-full ${
               isConnected
                 ? "bg-green-100 text-green-600"
-                : "bg-gray-100 text-gray-400"
+                : "bg-muted text-muted-foreground"
             }`}
           >
             <Mail size={24} />
@@ -62,15 +62,15 @@ export function IntegrationStatus({
                     Active
                   </span>
                   {lastSynced && (
-                    <span className="text-xs text-gray-400">
+                    <span className="text-xs text-muted-foreground">
                       • Last checked: {lastSynced}
                     </span>
                   )}
                 </>
               ) : (
                 <>
-                  <XCircle size={16} className="text-gray-400" />
-                  <span className="text-sm font-medium text-gray-500">
+                  <XCircle size={16} className="text-muted-foreground" />
+                  <span className="text-sm font-medium text-muted-foreground">
                     Not Connected
                   </span>
                 </>
@@ -84,7 +84,7 @@ export function IntegrationStatus({
             <>
               <button
                 onClick={handleRefresh}
-                className="p-2 text-gray-400 hover:text-card-foreground transition-colors"
+                className="p-2 text-muted-foreground hover:text-card-foreground transition-colors"
                 title="Force Sync"
               >
                 <RefreshCw
@@ -102,7 +102,7 @@ export function IntegrationStatus({
           ) : (
             <button
               onClick={onConnect}
-              className="group flex items-center gap-2 rounded-lg bg-[#14213D] px-5 py-2 text-sm font-medium text-white transition-colors hover:bg-[#1a2a4f]"
+              className="group flex items-center gap-2 rounded-lg bg-primary text-primary-foreground px-5 py-2 text-sm font-medium text-white transition-colors hover:bg-[#1a2a4f]"
             >
               Connect Account
               <ArrowRight

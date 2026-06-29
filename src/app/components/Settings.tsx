@@ -627,7 +627,7 @@ export function Settings({
                 <button
                   type="button"
                   onClick={() => photoInputRef.current?.click()}
-                  className="absolute -bottom-1 -right-1 flex h-8 w-8 items-center justify-center rounded-full border-2 border-white bg-[#14213D]"
+                  className="absolute -bottom-1 -right-1 flex h-8 w-8 items-center justify-center rounded-full border-2 border-white bg-primary text-primary-foreground"
                 >
                   <Camera size={14} className="text-[#FCA311]" />
                 </button>
@@ -654,7 +654,7 @@ export function Settings({
                     type="button"
                     onClick={() => setIsEditingProfile(true)}
                     disabled={saving}
-                    className="rounded-full border border-gray-200 bg-card px-4 py-1.5 text-sm font-medium text-card-foreground shadow-sm transition-all hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-[#FCA311] disabled:opacity-60"
+                    className="rounded-full border border-border bg-card px-4 py-1.5 text-sm font-medium text-card-foreground shadow-sm transition-all hover:bg-muted/50 focus:outline-none focus:ring-2 focus:ring-[#FCA311] disabled:opacity-60"
                   >
                     Edit Profile
                   </button>
@@ -673,8 +673,8 @@ export function Settings({
                   readOnly={!isEditingProfile}
                   className={`w-full rounded-lg border px-4 py-2.5 text-card-foreground ${
                     isEditingProfile
-                      ? "border-gray-200 focus:border-[#FCA311] focus:outline-none focus:ring-2 focus:ring-[#FCA311]/30"
-                      : "cursor-not-allowed border-gray-200 bg-gray-50"
+                      ? "border-border focus:border-[#FCA311] focus:outline-none focus:ring-2 focus:ring-[#FCA311]/30"
+                      : "cursor-not-allowed border-border bg-muted/50"
                   }`}
                 />
               </div>
@@ -689,8 +689,8 @@ export function Settings({
                   readOnly={!isEditingProfile}
                   className={`w-full rounded-lg border px-4 py-2.5 text-card-foreground ${
                     isEditingProfile
-                      ? "border-gray-200 focus:border-[#FCA311] focus:outline-none focus:ring-2 focus:ring-[#FCA311]/30"
-                      : "cursor-not-allowed border-gray-200 bg-gray-50"
+                      ? "border-border focus:border-[#FCA311] focus:outline-none focus:ring-2 focus:ring-[#FCA311]/30"
+                      : "cursor-not-allowed border-border bg-muted/50"
                   }`}
                 />
               </div>
@@ -706,8 +706,8 @@ export function Settings({
                   placeholder="Job Seeker"
                   className={`w-full rounded-lg border px-4 py-2.5 text-card-foreground ${
                     isEditingProfile
-                      ? "border-gray-200 focus:border-[#FCA311] focus:outline-none focus:ring-2 focus:ring-[#FCA311]/30"
-                      : "cursor-not-allowed border-gray-200 bg-gray-50"
+                      ? "border-border focus:border-[#FCA311] focus:outline-none focus:ring-2 focus:ring-[#FCA311]/30"
+                      : "cursor-not-allowed border-border bg-muted/50"
                   }`}
                 />
               </div>
@@ -717,7 +717,7 @@ export function Settings({
                     type="button"
                     onClick={handleSaveProfile}
                     disabled={saving}
-                    className="rounded-lg bg-[#14213D] px-4 py-3 font-medium text-white transition-all hover:bg-[#1a2a4f] disabled:opacity-60"
+                    className="rounded-lg bg-primary text-primary-foreground px-4 py-3 font-medium text-white transition-all hover:bg-[#1a2a4f] disabled:opacity-60"
                   >
                     Save
                   </button>
@@ -730,7 +730,7 @@ export function Settings({
                       setIsEditingProfile(false);
                     }}
                     disabled={saving}
-                    className="rounded-lg border border-gray-300 px-4 py-3 font-medium text-card-foreground transition-all hover:bg-gray-100 disabled:opacity-60"
+                    className="rounded-lg border border-border px-4 py-3 font-medium text-card-foreground transition-all hover:bg-muted disabled:opacity-60"
                   >
                     Cancel
                   </button>
@@ -741,7 +741,7 @@ export function Settings({
                   type="button"
                   onClick={() => photoInputRef.current?.click()}
                   disabled={isUploadingPhoto}
-                  className="w-full flex items-center justify-between p-3 rounded-lg bg-gray-50 hover:bg-gray-100 transition-colors border border-gray-100 disabled:opacity-50"
+                  className="w-full flex items-center justify-between p-3 rounded-lg bg-muted/50 hover:bg-muted transition-colors border border-gray-100 disabled:opacity-50"
                 >
                   <div className="flex items-center gap-3">
                     <Camera className="w-5 h-5 text-card-foreground" />
@@ -753,7 +753,7 @@ export function Settings({
                 <button
                   type="button"
                   onClick={onManageResumesOpen}
-                  className="w-full flex items-center justify-between p-3 rounded-lg bg-gray-50 hover:bg-gray-100 transition-colors border border-gray-100"
+                  className="w-full flex items-center justify-between p-3 rounded-lg bg-muted/50 hover:bg-muted transition-colors border border-gray-100"
                 >
                   <div className="flex items-center gap-3">
                     <FileText className="w-5 h-5 text-card-foreground" />
@@ -763,7 +763,7 @@ export function Settings({
                 <button
                   type="button"
                   onClick={onSocialPortfolioOpen}
-                  className="w-full flex items-center justify-between p-3 rounded-lg bg-gray-50 hover:bg-gray-100 transition-colors border border-gray-100"
+                  className="w-full flex items-center justify-between p-3 rounded-lg bg-muted/50 hover:bg-muted transition-colors border border-gray-100"
                 >
                   <div className="flex items-center gap-3">
                     <Link2 className="w-5 h-5 text-card-foreground" />
@@ -779,7 +779,7 @@ export function Settings({
             title="Integrations"
             subtitle="Connect external accounts for automated tracking"
           >
-            <div className="rounded-lg border border-gray-100 bg-gray-50/50 p-4">
+            <div className="rounded-lg border border-gray-100 bg-muted/50/50 p-4">
               <div className="mb-4 flex items-start justify-between gap-4">
                 <div>
                   <h3
@@ -815,7 +815,7 @@ export function Settings({
                   <button
                     type="button"
                     onClick={handleConnectGmail}
-                    className="w-full rounded-lg bg-[#14213D] px-4 py-3 font-medium text-white transition-all hover:bg-[#1a2a4f]"
+                    className="w-full rounded-lg bg-primary text-primary-foreground px-4 py-3 font-medium text-white transition-all hover:bg-[#1a2a4f]"
                   >
                     Connect Gmail Account
                   </button>
@@ -823,7 +823,7 @@ export function Settings({
               </div>
             </div>
 
-            <div className="mt-4 rounded-lg border border-gray-100 bg-gray-50/50 p-4">
+            <div className="mt-4 rounded-lg border border-gray-100 bg-muted/50/50 p-4">
               <div className="mb-4 flex items-start justify-between gap-4">
                 <div>
                   <h3
@@ -850,7 +850,7 @@ export function Settings({
                     <button
                       type="button"
                       onClick={handleSyncGoogleCalendar}
-                      className="w-full rounded-lg border border-gray-300 bg-card px-4 py-3 font-medium text-card-foreground transition-all hover:bg-gray-50"
+                      className="w-full rounded-lg border border-border bg-card px-4 py-3 font-medium text-card-foreground transition-all hover:bg-muted/50"
                     >
                       Sync Now
                     </button>
@@ -866,7 +866,7 @@ export function Settings({
                   <button
                     type="button"
                     onClick={handleConnectGoogleCalendar}
-                    className="w-full rounded-lg bg-[#14213D] px-4 py-3 font-medium text-white transition-all hover:bg-[#1a2a4f]"
+                    className="w-full rounded-lg bg-primary text-primary-foreground px-4 py-3 font-medium text-white transition-all hover:bg-[#1a2a4f]"
                   >
                     Connect Google Calendar
                   </button>
@@ -883,7 +883,7 @@ export function Settings({
             <div className="space-y-3">
               <button
                 type="button"
-                className="w-full flex items-center justify-between p-3 rounded-lg bg-gray-50 hover:bg-gray-100 transition-colors border border-gray-100"
+                className="w-full flex items-center justify-between p-3 rounded-lg bg-muted/50 hover:bg-muted transition-colors border border-gray-100"
               >
                 <div className="flex items-center gap-3">
                   <Moon className="w-5 h-5 text-card-foreground" />
@@ -916,7 +916,7 @@ export function Settings({
               <button
                 type="button"
                 onClick={() => toast.info("Help & Community is coming soon!")}
-                className="w-full flex items-center justify-between p-3 rounded-lg bg-gray-50 hover:bg-gray-100 transition-colors border border-gray-100"
+                className="w-full flex items-center justify-between p-3 rounded-lg bg-muted/50 hover:bg-muted transition-colors border border-gray-100"
               >
                 <div className="flex items-center gap-3">
                   <HelpCircle className="w-5 h-5 text-card-foreground" />
@@ -999,7 +999,7 @@ export function Settings({
                 <button
                   type="button"
                   onClick={handleEnableAllNotifications}
-                  className="w-full rounded-lg bg-[#14213D] px-4 py-3 font-medium text-white hover:bg-[#1a2a4f] transition-colors"
+                  className="w-full rounded-lg bg-primary text-primary-foreground px-4 py-3 font-medium text-white hover:bg-[#1a2a4f] transition-colors"
                 >
                   Enable All Notifications
                 </button>
@@ -1034,7 +1034,7 @@ export function Settings({
               <button
                 type="button"
                 onClick={() => setShowPasswordModal(true)}
-                className="w-full flex items-center justify-between p-3 rounded-lg border border-[#14213D] text-card-foreground hover:bg-[#14213D] hover:text-white transition-colors"
+                className="w-full flex items-center justify-between p-3 rounded-lg border border-[#14213D] text-card-foreground hover:bg-primary text-primary-foreground hover:text-white transition-colors"
               >
                 <div className="flex items-center gap-3">
                   <Lock className="w-5 h-5" />
@@ -1044,7 +1044,7 @@ export function Settings({
               <button
                 type="button"
                 onClick={handleLogoutThisDevice}
-                className="w-full rounded-lg border border-gray-300 px-4 py-3 font-medium text-card-foreground hover:bg-gray-50 transition-colors"
+                className="w-full rounded-lg border border-border px-4 py-3 font-medium text-card-foreground hover:bg-muted/50 transition-colors"
               >
                 Logout on this device
               </button>
@@ -1180,21 +1180,21 @@ function ChangePasswordModal({ onClose }: { onClose: () => void }) {
           value={currentPassword}
           onChange={(event) => setCurrentPassword(event.target.value)}
           placeholder="Current password"
-          className="w-full rounded-lg border border-gray-200 px-4 py-3"
+          className="w-full rounded-lg border border-border px-4 py-3"
         />
         <input
           type="password"
           value={newPassword}
           onChange={(event) => setNewPassword(event.target.value)}
           placeholder="New password"
-          className="w-full rounded-lg border border-gray-200 px-4 py-3"
+          className="w-full rounded-lg border border-border px-4 py-3"
         />
         <input
           type="password"
           value={confirmPassword}
           onChange={(event) => setConfirmPassword(event.target.value)}
           placeholder="Confirm new password"
-          className="w-full rounded-lg border border-gray-200 px-4 py-3"
+          className="w-full rounded-lg border border-border px-4 py-3"
         />
       </div>
       <div className="mt-5 flex justify-end gap-3">

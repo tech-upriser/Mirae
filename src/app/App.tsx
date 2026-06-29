@@ -71,7 +71,11 @@ function AppContent() {
             path="/settings"
             element={(
               <ProtectedRoute>
-                <Settings />
+                <Settings 
+                  onManageResumesOpen={() => setShowManageResumes(true)}
+                  onSocialPortfolioOpen={() => setShowSocialPortfolio(true)}
+                  onLogoutOpen={() => setShowLogoutConfirm(true)}
+                />
               </ProtectedRoute>
             )}
           />

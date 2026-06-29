@@ -69,7 +69,7 @@ export function ExtensionPopup({ onClose, onJobSaved }: Props) {
         className="w-[360px] bg-card rounded-md shadow-2xl overflow-hidden border border-border"
       >
         {/* Header (Unchanged) */}
-        <div className="bg-[#14213D] p-4 flex items-center justify-between">
+        <div className="bg-primary text-primary-foreground p-4 flex items-center justify-between">
           <div className="flex items-center gap-2">
             <BrandLogo className="h-10 w-10 flex-shrink-0" />
             <h1 className="text-xl font-bold" style={{ fontFamily: 'var(--font-display)' }}>
@@ -143,7 +143,7 @@ export function ExtensionPopup({ onClose, onJobSaved }: Props) {
             </div>
             <div className="flex flex-wrap gap-2 justify-center">
               {detectedSkills.map((skill, index) => (
-                <motion.span key={skill} initial={{ scale: 0 }} animate={{ scale: 1 }} transition={{ duration: 0.3, delay: 0.3 + index * 0.1 }} className="px-3 py-1.5 bg-[#14213D] text-white rounded-full text-xs font-medium">
+                <motion.span key={skill} initial={{ scale: 0 }} animate={{ scale: 1 }} transition={{ duration: 0.3, delay: 0.3 + index * 0.1 }} className="px-3 py-1.5 bg-primary text-primary-foreground text-white rounded-full text-xs font-medium">
                   {skill}
                 </motion.span>
               ))}

@@ -24,6 +24,7 @@ interface OpportunityApplication {
 interface Props {
   application: OpportunityApplication;
   onClose: () => void;
+  onStatusChange?: (id: string, newStatus: string) => void;
 }
 
 const formatDeadline = (value?: string) => {
@@ -33,8 +34,23 @@ const formatDeadline = (value?: string) => {
   return date.toLocaleDateString();
 };
 
-export function OpportunityDetail({ application, onClose }: Props) {
+import { useState, useEffect } from 'react';
+
+export function OpportunityDetail({ application, onClose, onStatusChange }: Props) {
   const isHackathon = application.category === 'Hackathons';
+  const [status, setStatus] = useState(application.stage || 'Saved');
+
+  useEffect(() => {
+    setStatus(application.stage || 'Saved');
+  }, [application.stage]);
+
+  const handleStatusChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const newStatus = e.target.value;
+    setStatus(newStatus);
+    if (onStatusChange) {
+      onStatusChange(application.id, newStatus);
+    }
+  };
 
   return (
     <>
@@ -51,7 +67,7 @@ export function OpportunityDetail({ application, onClose }: Props) {
         animate={{ x: 0 }}
         exit={{ x: '100%' }}
         transition={{ type: 'spring', damping: 30, stiffness: 280 }}
-        className="fixed right-0 top-0 z-50 flex h-screen w-[520px] flex-col bg-card shadow-2xl"
+        className="fixed right-0 top-0 z-50 flex h-screen w-[600px] flex-col bg-card shadow-2xl"
       >
         <div className="sticky top-0 border-b border-border bg-card px-6 py-5">
           <div className="flex items-start justify-between gap-4">
@@ -70,13 +86,39 @@ export function OpportunityDetail({ application, onClose }: Props) {
               <p className="mt-2 text-base text-card-foreground">{application.company}</p>
             </div>
 
-            <button
-              type="button"
-              onClick={onClose}
-              className="rounded-md p-2 text-[#6B7280] transition hover:bg-[#F3F4F6] hover:text-card-foreground"
-            >
-              <X className="h-5 w-5" />
-            </button>
+            <div className="flex items-center gap-3">
+              <select
+                value={status}
+                onChange={handleStatusChange}
+                className="px-4 py-2 bg-[#FCA311] text-primary-foreground rounded-md font-semibold hover:bg-[#fdb748] transition-all cursor-pointer outline-none appearance-none pr-8 relative"
+                style={{ backgroundImage: 'url("data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%23000000%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2012.9l128%20127.9c3.6%203.6%207.8%205.4%2012.8%205.4s9.2-1.8%2012.8-5.4L287%2095c3.5-3.5%205.4-7.8%205.4-12.8%200-5-1.9-9.2-5.5-12.8z%22%2F%3E%3C%2Fsvg%3E")', backgroundRepeat: 'no-repeat', backgroundPosition: 'right .7rem top 50%', backgroundSize: '.65rem auto' }}
+              >
+                {isHackathon ? (
+                  <>
+                    <option value="Saved">Saved</option>
+                    <option value="Registered">Registered</option>
+                    <option value="Participated">Participated</option>
+                    <option value="Won">Won</option>
+                    <option value="Completed">Completed</option>
+                  </>
+                ) : (
+                  <>
+                    <option value="Saved">Saved</option>
+                    <option value="Active">Active</option>
+                    <option value="Completed">Completed</option>
+                    <option value="Lost">Lost</option>
+                    <option value="Rejected">Rejected</option>
+                  </>
+                )}
+              </select>
+              <button
+                type="button"
+                onClick={onClose}
+                className="rounded-md p-2 text-muted-foreground transition hover:bg-muted hover:text-card-foreground"
+              >
+                <X className="h-5 w-5" />
+              </button>
+            </div>
           </div>
         </div>
 
@@ -112,7 +154,7 @@ export function OpportunityDetail({ application, onClose }: Props) {
 
             <div className="rounded-lg border border-border bg-card p-4">
               <div className="mb-2 text-sm font-semibold text-card-foreground">Status</div>
-              <p className="text-sm text-foreground">{application.stage || 'Saved'}</p>
+              <p className="text-sm text-foreground">{status}</p>
             </div>
           </div>
 

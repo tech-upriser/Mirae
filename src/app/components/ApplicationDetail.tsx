@@ -191,7 +191,7 @@ export function ApplicationDetail({ application, onClose, onStatusChange, onCont
         className="fixed right-0 top-0 h-screen w-[600px] bg-card shadow-2xl z-50 flex flex-col"
       >
         {/* Header */}
-        <div className="bg-[#14213D] p-6 sticky top-0 z-10">
+        <div className="bg-primary text-primary-foreground p-6 sticky top-0 z-10">
           <div className="flex items-start justify-between mb-4">
             <div className="flex-1">
               <h2 className="text-2xl font-bold text-white mb-1" style={{ fontFamily: 'var(--font-display)' }}>
@@ -301,28 +301,28 @@ export function ApplicationDetail({ application, onClose, onStatusChange, onCont
                   <h3 className="text-lg font-bold text-foreground mb-3">Skill Gap Analysis</h3>
 
                   {!hasUserResumeSkills ? (
-                    <div className="rounded-lg border border-border bg-gray-50 p-4 text-sm text-gray-600">
+                    <div className="rounded-lg border border-border bg-muted/50 p-4 text-sm text-muted-foreground">
                       <p className="font-semibold text-red-600 mb-1">Please upload your resume to enable skill gap analysis.</p>
                     </div>
                   ) : (
                     <>
                       <div className="mb-4">
-                        <p className="text-sm font-semibold text-gray-600 mb-2">Matched Skills</p>
+                        <p className="text-sm font-semibold text-muted-foreground mb-2">Matched Skills</p>
                         <div className="flex flex-wrap gap-2">
                           {finalMatched.length > 0 ? (
                             finalMatched.map((skill, i) => (
-                              <span key={i} className="px-3 py-1.5 bg-[#14213D] text-white rounded-full text-xs font-medium">
+                              <span key={i} className="px-3 py-1.5 bg-primary text-primary-foreground text-white rounded-full text-xs font-medium">
                                 ✓ {skill}
                               </span>
                             ))
                           ) : (
-                            <span className="text-sm text-gray-400 italic">No matched skills were identified.</span>
+                            <span className="text-sm text-muted-foreground italic">No matched skills were identified.</span>
                           )}
                         </div>
                       </div>
 
                       <div className="mb-4">
-                        <p className="text-sm font-semibold text-gray-600 mb-2">Missing Skills</p>
+                        <p className="text-sm font-semibold text-muted-foreground mb-2">Missing Skills</p>
                         <div className="flex flex-wrap gap-2">
                           {finalMissing.length > 0 ? (
                             finalMissing.map((skill: string, i: number) => (
@@ -331,22 +331,22 @@ export function ApplicationDetail({ application, onClose, onStatusChange, onCont
                               </span>
                             ))
                           ) : (
-                            <span className="text-sm text-gray-400 italic">No missing skills were identified.</span>
+                            <span className="text-sm text-muted-foreground italic">No missing skills were identified.</span>
                           )}
                         </div>
                       </div>
 
                       <div>
-                        <p className="text-sm font-semibold text-gray-600 mb-2">All Required</p>
+                        <p className="text-sm font-semibold text-muted-foreground mb-2">All Required</p>
                         <div className="flex flex-wrap gap-2">
                           {finalAll.length > 0 ? (
                             finalAll.map((skill, i) => (
-                              <span key={i} className="px-2 py-1 bg-gray-100 text-gray-600 rounded text-xs">
+                              <span key={i} className="px-2 py-1 bg-muted text-muted-foreground rounded text-xs">
                                 {skill}
                               </span>
                             ))
                           ) : (
-                            <span className="text-sm text-gray-400 italic">No skills were extracted for this posting.</span>
+                            <span className="text-sm text-muted-foreground italic">No skills were extracted for this posting.</span>
                           )}
                         </div>
                       </div>
@@ -365,7 +365,7 @@ export function ApplicationDetail({ application, onClose, onStatusChange, onCont
                     />
                   </svg>
                   <div className="absolute inset-0 flex flex-col items-center justify-center p-2 text-center">
-                    <span className="text-sm font-bold text-gray-500 uppercase tracking-wider mb-0.5">Match</span>
+                    <span className="text-sm font-bold text-muted-foreground uppercase tracking-wider mb-0.5">Match</span>
                     <span className="text-xl font-extrabold text-[#FCA311]">{finalMatchScore !== null ? `${finalMatchScore}%` : 'N/A'}</span>
                   </div>
                 </div>
@@ -375,7 +375,7 @@ export function ApplicationDetail({ application, onClose, onStatusChange, onCont
                 <div className="flex items-center justify-between mb-3">
                   <h3 className="text-lg font-bold text-foreground">Description</h3>
                 </div>
-                <div className="bg-gray-50 border border-gray-200 rounded-lg p-5 text-gray-700 leading-relaxed text-sm whitespace-pre-wrap">
+                <div className="bg-muted/50 border border-border rounded-lg p-5 text-muted-foreground leading-relaxed text-sm whitespace-pre-wrap">
                   {description}
                 </div>
               </div>
@@ -399,9 +399,9 @@ export function ApplicationDetail({ application, onClose, onStatusChange, onCont
                     <div key={`${event.status}-${event.date}-${index}`} className="relative flex gap-4">
                       <div className="relative flex w-7 shrink-0 justify-center">
                         {showConnector && (
-                          <div className="absolute top-8 bottom-[-1.5rem] w-0.5 bg-[#14213D]" />
+                          <div className="absolute top-8 bottom-[-1.5rem] w-0.5 bg-primary text-primary-foreground" />
                         )}
-                        <div className={`relative z-10 flex h-7 w-7 items-center justify-center rounded-full border-2 ${isNewest ? 'border-[#14213D] bg-[#14213D]' : 'border-[#14213D] bg-card'}`}>
+                        <div className={`relative z-10 flex h-7 w-7 items-center justify-center rounded-full border-2 ${isNewest ? 'border-[#14213D] bg-primary text-primary-foreground' : 'border-[#14213D] bg-card'}`}>
                           <Clock className={`h-3.5 w-3.5 ${isNewest ? 'text-white' : 'text-card-foreground'}`} />
                         </div>
                       </div>
@@ -410,7 +410,7 @@ export function ApplicationDetail({ application, onClose, onStatusChange, onCont
                         <p className="font-bold text-card-foreground leading-tight">
                           {isFirstRecordedEvent ? 'Saved to Mirae' : `Moved to: ${event.status}`}
                         </p>
-                        <p className="mt-1 text-sm text-gray-500">{formatTimelineDate(event.date)}</p>
+                        <p className="mt-1 text-sm text-muted-foreground">{formatTimelineDate(event.date)}</p>
                       </div>
                     </div>
                   );
@@ -428,7 +428,7 @@ export function ApplicationDetail({ application, onClose, onStatusChange, onCont
                   href={`https://www.linkedin.com/search/results/people/?keywords=${encodeURIComponent((application.company || '') + ' IIT Patna')}`}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex items-center gap-2 rounded-md border border-gray-300 px-3 py-2 text-xs font-medium text-gray-700 transition-colors hover:bg-gray-50"
+                  className="inline-flex items-center gap-2 rounded-md border border-border px-3 py-2 text-xs font-medium text-muted-foreground transition-colors hover:bg-muted/50"
                 >
                   <Search className="h-3.5 w-3.5" />
                   Find IIT Patna Alumni
@@ -437,22 +437,22 @@ export function ApplicationDetail({ application, onClose, onStatusChange, onCont
 
               <div className="grid grid-cols-2 gap-4 mb-4">
                 <div>
-                  <label className="mb-1 block text-xs font-semibold text-gray-500">Recruiter Name</label>
+                  <label className="mb-1 block text-xs font-semibold text-muted-foreground">Recruiter Name</label>
                   <input
                     type="text"
                     value={recruiterName}
                     onChange={(e) => setRecruiterName(e.target.value)}
-                    className="w-full rounded-md border border-gray-300 p-2 text-sm focus:outline-none focus:ring-1 focus:ring-[#FCA311]"
+                    className="w-full rounded-md border border-border p-2 text-sm focus:outline-none focus:ring-1 focus:ring-[#FCA311]"
                     placeholder="Jane Doe"
                   />
                 </div>
                 <div>
-                  <label className="mb-1 block text-xs font-semibold text-gray-500">Hiring Manager</label>
+                  <label className="mb-1 block text-xs font-semibold text-muted-foreground">Hiring Manager</label>
                   <input
                     type="text"
                     value={hiringManager}
                     onChange={(e) => setHiringManager(e.target.value)}
-                    className="w-full rounded-md border border-gray-300 p-2 text-sm focus:outline-none focus:ring-1 focus:ring-[#FCA311]"
+                    className="w-full rounded-md border border-border p-2 text-sm focus:outline-none focus:ring-1 focus:ring-[#FCA311]"
                     placeholder="John Smith"
                   />
                 </div>
@@ -463,7 +463,7 @@ export function ApplicationDetail({ application, onClose, onStatusChange, onCont
                   type="button"
                   onClick={handleSaveContacts}
                   disabled={isSavingContacts}
-                  className="inline-flex items-center justify-center rounded-md bg-[#14213D] px-4 py-2 text-sm font-semibold text-white transition-colors hover:bg-[#1f335c] disabled:opacity-60"
+                  className="inline-flex items-center justify-center rounded-md bg-primary text-primary-foreground px-4 py-2 text-sm font-semibold text-white transition-colors hover:bg-[#1f335c] disabled:opacity-60"
                 >
                   {isSavingContacts ? 'Saving Contacts...' : 'Save Contacts'}
                 </button>
@@ -479,14 +479,14 @@ export function ApplicationDetail({ application, onClose, onStatusChange, onCont
               <textarea 
                 value={scratchpadText}
                 onChange={(e) => setScratchpadText(e.target.value)}
-                className="flex-1 w-full border border-gray-300 rounded-lg p-4 resize-none focus:outline-none focus:ring-2 focus:ring-[#FCA311] focus:border-transparent text-sm"
+                className="flex-1 w-full border border-border rounded-lg p-4 resize-none focus:outline-none focus:ring-2 focus:ring-[#FCA311] focus:border-transparent text-sm"
                 placeholder="Write down any details, contacts, or thoughts about this application..."
               />
               <button
                 type="button"
                 onClick={handleSaveNote}
                 disabled={isSavingNote}
-                className="mt-4 self-end rounded-lg bg-[#14213D] px-6 py-3 font-bold text-white transition-colors hover:bg-[#0B132B] disabled:opacity-60"
+                className="mt-4 self-end rounded-lg bg-primary text-primary-foreground px-6 py-3 font-bold text-white transition-colors hover:bg-[#0B132B] disabled:opacity-60"
               >
                 {isSavingNote ? 'Saving Note...' : 'Save Note'}
               </button>

@@ -17,7 +17,6 @@ const jobSchema = new mongoose.Schema({
   // 2. Kanban Dashboard Status
   status: {
     type: String,
-    enum: ['Saved', 'Applied', 'Interviewing', 'Offer', 'Rejected'],
     default: 'Saved' // Every new scraped job starts here automatically
   },
 

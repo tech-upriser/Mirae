@@ -142,9 +142,9 @@ export function ManageResumesModal({ onClose }: Props) {
               <div 
                 onClick={() => !isUploading && fileInputRef.current?.click()}
                 className={`cursor-pointer rounded-md border-2 border-dashed p-8 text-center transition-colors 
-                  ${isUploading ? 'border-gray-300 bg-gray-50' : 'border-border hover:border-[#FCA311]'}`}
+                  ${isUploading ? 'border-border bg-muted/50' : 'border-border hover:border-[#FCA311]'}`}
               >
-                <Upload className={`mx-auto mb-3 h-8 w-8 ${isUploading ? 'animate-bounce text-gray-400' : 'text-card-foreground'}`} />
+                <Upload className={`mx-auto mb-3 h-8 w-8 ${isUploading ? 'animate-bounce text-muted-foreground' : 'text-card-foreground'}`} />
                 
                 {/* Hidden File Input */}
                 <input 
@@ -176,7 +176,7 @@ export function ManageResumesModal({ onClose }: Props) {
               <h3 className="mb-3 text-sm font-semibold text-card-foreground">Your Resume</h3>
               
               {loading ? (
-                <div className="py-8 text-center text-sm text-gray-400">Loading...</div>
+                <div className="py-8 text-center text-sm text-muted-foreground">Loading...</div>
               ) : resumeInfo ? (
                 <motion.div
                   initial={{ opacity: 0, y: 10 }}
@@ -195,7 +195,7 @@ export function ManageResumesModal({ onClose }: Props) {
                     <div className="min-w-0 flex-1">
                       <div className="mb-1 truncate font-semibold text-foreground">{resumeInfo.fileName}</div>
                       <div className="flex items-center gap-2">
-                        <span className="rounded bg-[#14213D] px-2 py-1 text-xs text-white">
+                        <span className="rounded bg-primary text-primary-foreground px-2 py-1 text-xs text-white">
                           Scoring Active
                         </span>
                         <span className="text-xs text-[#73766A]">{resumeInfo.uploadedAt}</span>
@@ -214,8 +214,8 @@ export function ManageResumesModal({ onClose }: Props) {
               ) : (
                 <div className="rounded-md border border-dashed border-border py-8 text-center">
                   <FileText className="mx-auto mb-2 h-8 w-8 text-gray-300" />
-                  <p className="text-sm text-gray-400">No resume uploaded yet.</p>
-                  <p className="text-xs text-gray-400 mt-1">Upload a resume to enable Match Scoring on saved jobs.</p>
+                  <p className="text-sm text-muted-foreground">No resume uploaded yet.</p>
+                  <p className="text-xs text-muted-foreground mt-1">Upload a resume to enable Match Scoring on saved jobs.</p>
                 </div>
               )}
             </div>

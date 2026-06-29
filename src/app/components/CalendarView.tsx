@@ -720,7 +720,7 @@ export function CalendarView() {
 
               {loading ? (
                 Array.from({ length: 35 }, (_, index) => (
-                  <div key={index} className="aspect-square border rounded-xl p-3 bg-gray-100 animate-pulse">
+                  <div key={index} className="aspect-square border rounded-xl p-3 bg-muted animate-pulse">
                     <div className="w-4 h-4 bg-gray-300 rounded mb-2"></div>
                   </div>
                 ))
