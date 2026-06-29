@@ -656,7 +656,7 @@ export function Dashboard() {
           <button
             type="button"
             onClick={handleSortToggle}
-            className="inline-flex items-center gap-2 rounded-md border border-[#D5D9E2] bg-card px-4 py-2 text-sm font-semibold text-card-foreground shadow-sm transition-colors hover:border-[#FCA311] hover:bg-[#FFF9F0]"
+            className="inline-flex items-center gap-2 rounded-md border border-[#D5D9E2] dark:border-border bg-card px-4 py-2 text-sm font-semibold text-card-foreground shadow-sm transition-colors hover:border-[#FCA311] hover:bg-[#FFF9F0] dark:hover:bg-[#FCA311]/10"
           >
             <ArrowUpDown className="h-4 w-4 text-[#6B7280]" />
             <span>{sortButtonLabel}</span>

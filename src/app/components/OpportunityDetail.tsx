@@ -6,6 +6,8 @@ import {
   FileText,
   ExternalLink,
   BadgeCheck,
+  ChevronDown,
+  Clock,
 } from 'lucide-react';
 import { motion } from 'motion/react';
 
@@ -19,6 +21,7 @@ interface OpportunityApplication {
   description: string;
   location: string;
   deadline?: string;
+  history?: { status: string; date: string }[];
 }
 
 interface Props {
@@ -34,11 +37,29 @@ const formatDeadline = (value?: string) => {
   return date.toLocaleDateString();
 };
 
+const formatTimelineDate = (dateStr: string) => {
+  const date = new Date(dateStr);
+  if (Number.isNaN(date.getTime())) return dateStr;
+  return new Intl.DateTimeFormat('en-US', {
+    month: 'short',
+    day: 'numeric',
+    year: 'numeric',
+    hour: 'numeric',
+    minute: '2-digit',
+  }).format(date);
+};
+
 import { useState, useEffect } from 'react';
 
 export function OpportunityDetail({ application, onClose, onStatusChange }: Props) {
   const isHackathon = application.category === 'Hackathons';
   const [status, setStatus] = useState(application.stage || 'Saved');
+  const [activeTab, setActiveTab] = useState('overview');
+  const tabs = ['Overview', 'Timeline'];
+  
+  const timelineEvents = [...(application.history || [])].sort(
+    (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()
+  );
 
   useEffect(() => {
     setStatus(application.stage || 'Saved');
@@ -87,30 +108,32 @@ export function OpportunityDetail({ application, onClose, onStatusChange }: Prop
             </div>
 
             <div className="flex items-center gap-3">
-              <select
-                value={status}
-                onChange={handleStatusChange}
-                className="px-4 py-2 bg-secondary-foreground text-secondary rounded-md font-bold hover:bg-secondary-foreground/90 transition-all cursor-pointer outline-none appearance-none pr-8 relative border-none"
-                style={{ backgroundImage: 'url("data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22currentcolor%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2012.9l128%20127.9c3.6%203.6%207.8%205.4%2012.8%205.4s9.2-1.8%2012.8-5.4L287%2095c3.5-3.5%205.4-7.8%205.4-12.8%200-5-1.9-9.2-5.5-12.8z%22%2F%3E%3C%2Fsvg%3E")', backgroundRepeat: 'no-repeat', backgroundPosition: 'right .7rem top 50%', backgroundSize: '.65rem auto' }}
-              >
-                {isHackathon ? (
-                  <>
-                    <option value="Saved">Saved</option>
-                    <option value="Registered">Registered</option>
-                    <option value="Participated">Participated</option>
-                    <option value="Won">Won</option>
-                    <option value="Completed">Completed</option>
-                  </>
-                ) : (
-                  <>
-                    <option value="Saved">Saved</option>
-                    <option value="Active">Active</option>
-                    <option value="Completed">Completed</option>
-                    <option value="Lost">Lost</option>
-                    <option value="Rejected">Rejected</option>
-                  </>
-                )}
-              </select>
+              <div className="relative inline-block">
+                <select
+                  value={status}
+                  onChange={handleStatusChange}
+                  className="px-4 py-2 bg-secondary-foreground text-secondary rounded-md font-bold hover:bg-secondary-foreground/90 transition-all cursor-pointer outline-none appearance-none pr-8 border-none"
+                >
+                  {isHackathon ? (
+                    <>
+                      <option value="Saved">Saved</option>
+                      <option value="Registered">Registered</option>
+                      <option value="Participated">Participated</option>
+                      <option value="Won">Won</option>
+                      <option value="Completed">Completed</option>
+                    </>
+                  ) : (
+                    <>
+                      <option value="Saved">Saved</option>
+                      <option value="Active">Active</option>
+                      <option value="Completed">Completed</option>
+                      <option value="Lost">Lost</option>
+                      <option value="Rejected">Rejected</option>
+                    </>
+                  )}
+                </select>
+                <ChevronDown className="absolute right-2.5 top-1/2 -translate-y-1/2 h-4 w-4 pointer-events-none text-secondary" />
+              </div>
               <button
                 type="button"
                 onClick={onClose}
@@ -120,14 +143,39 @@ export function OpportunityDetail({ application, onClose, onStatusChange }: Prop
               </button>
             </div>
           </div>
+
+          {/* Tabs */}
+          <div className="flex gap-6 border-b border-secondary-foreground/20 mt-6">
+            {tabs.map((tab) => (
+              <button
+                key={tab}
+                onClick={() => setActiveTab(tab.toLowerCase())}
+                className={`pb-3 text-sm font-bold transition-all relative ${
+                  activeTab === tab.toLowerCase()
+                    ? 'text-secondary-foreground'
+                    : 'text-secondary-foreground/60 hover:text-secondary-foreground'
+                }`}
+              >
+                {tab}
+                {activeTab === tab.toLowerCase() && (
+                  <motion.div
+                    layoutId="activeTabOpp"
+                    className="absolute bottom-0 left-0 right-0 h-0.5 bg-secondary-foreground"
+                  />
+                )}
+              </button>
+            ))}
+          </div>
         </div>
 
         <div className="flex-1 overflow-y-auto px-6 py-6">
-          <div className="grid gap-4 sm:grid-cols-2">
-            <div className="rounded-lg border border-border bg-card p-4">
-              <div className="mb-2 flex items-center gap-2 text-sm font-semibold text-card-foreground">
-                <Building2 className="h-4 w-4" />
-                Organizer
+          {activeTab === 'overview' && (
+            <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }}>
+              <div className="grid gap-4 sm:grid-cols-2">
+                <div className="rounded-lg border border-border bg-card p-4">
+                  <div className="mb-2 flex items-center gap-2 text-sm font-semibold text-card-foreground">
+                    <Building2 className="h-4 w-4" />
+                    Organizer
               </div>
               <p className="text-sm text-foreground">{application.company || 'Not shared'}</p>
             </div>
@@ -181,8 +229,50 @@ export function OpportunityDetail({ application, onClose, onStatusChange }: Prop
               </a>
             ) : (
               <p className="text-sm text-muted-foreground">No source link was saved for this card.</p>
-            )}
-          </div>
+              )}
+            </div>
+          </motion.div>
+          )}
+
+          {activeTab === 'timeline' && (
+            <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} className="h-full">
+              <h3 className="text-lg font-bold text-foreground mb-6">Opportunity Journey</h3>
+
+              {timelineEvents.length === 0 ? (
+                <div className="rounded-lg border border-border bg-card p-6 text-center text-sm text-muted-foreground">
+                  No timeline events recorded yet.
+                </div>
+              ) : (
+                <div className="mb-10 ml-2 space-y-6">
+                  {timelineEvents.map((event, index) => {
+                    const isNewest = index === 0;
+                    const isFirstRecordedEvent = index === timelineEvents.length - 1;
+                    const showConnector = index !== timelineEvents.length - 1;
+
+                    return (
+                      <div key={`${event.status}-${event.date}-${index}`} className="relative flex gap-4">
+                        <div className="relative flex w-7 shrink-0 justify-center">
+                          {showConnector && (
+                            <div className="absolute top-8 bottom-[-1.5rem] w-0.5 bg-secondary text-secondary-foreground" />
+                          )}
+                          <div className={`relative z-10 flex h-7 w-7 items-center justify-center rounded-full border-2 ${isNewest ? 'border-[#14213D] bg-secondary text-secondary-foreground' : 'border-[#14213D] bg-card'}`}>
+                            <Clock className={`h-3.5 w-3.5 ${isNewest ? 'text-white' : 'text-card-foreground'}`} />
+                          </div>
+                        </div>
+
+                        <div className="pb-1">
+                          <p className="font-bold text-card-foreground leading-tight">
+                            {isFirstRecordedEvent ? 'Saved to Mirae' : `Moved to: ${event.status}`}
+                          </p>
+                          <p className="mt-1 text-sm text-muted-foreground">{formatTimelineDate(event.date)}</p>
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
+              )}
+            </motion.div>
+          )}
         </div>
       </motion.div>
     </>
