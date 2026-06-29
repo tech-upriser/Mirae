@@ -30,6 +30,13 @@ const getAuthUrl = (req, res) => {
 const handleOAuthCallback = async (req, res) => {
   const { code, state: userId } = req.query;
 
+  // Check if state is a valid Mongo ObjectId
+  const mongoose = require('mongoose');
+  if (!mongoose.Types.ObjectId.isValid(userId)) {
+    // This is the Google Calendar callback which uses a JWT in state
+    return res.redirect(`/api/auth/google/callback?code=${code}&state=${encodeURIComponent(userId)}`);
+  }
+
   try {
     // Exchange the authorization code for actual usable tokens
     const { tokens } = await oauth2Client.getToken(code);
@@ -104,16 +111,7 @@ const getStatus = async (req, res) => {
       return res.status(200).json({ isConnected: false });
     }
 
-    try {
-      oauth2Client.setCredentials(user.gmailTokens);
-      await oauth2Client.getAccessToken();
-      return res.status(200).json({ isConnected: true });
-    } catch (e) {
-      user.isGmailConnected = false;
-      user.gmailTokens = undefined;
-      await user.save();
-      return res.status(200).json({ isConnected: false });
-    }
+    return res.status(200).json({ isConnected: true });
   } catch (error) {
     res.status(500).json({ error: "Server error" });
   }

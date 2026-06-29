@@ -43,6 +43,12 @@ import { setTheme, useTheme } from "../hooks/useTheme";
 import { useUser } from "../contexts/UserContext";
 import api from "../services/api";
 
+const formatUrl = (url: string) => {
+  if (!url) return '#';
+  if (url.startsWith('http://') || url.startsWith('https://')) return url;
+  return `https://${url}`;
+};
+
 const defaultSettings: SettingsData = {
   notifications: {
     followUpReminders: true,
@@ -240,6 +246,9 @@ export function Settings({
             window.removeEventListener('message', messageListener);
             toast.success("Google Calendar connected successfully!");
             // Optionally sync immediately: await handleSyncGoogleCalendar();
+          } else if (event?.data?.type === 'GOOGLE_CALENDAR_FAILED') {
+            window.removeEventListener('message', messageListener);
+            toast.error(event.data.error || "Failed to connect to Google Calendar.");
           }
         };
 
@@ -655,7 +664,7 @@ export function Settings({
                       {user.socialLinks.map((link) => (
                         <a
                           key={link.id}
-                          href={link.url}
+                          href={formatUrl(link.url)}
                           target="_blank"
                           rel="noopener noreferrer"
                           className="inline-flex items-center gap-1.5 rounded-full bg-secondary/60 px-3 py-1 text-xs font-medium text-secondary-foreground hover:bg-secondary transition-colors border border-border"

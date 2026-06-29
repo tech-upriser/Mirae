@@ -19,7 +19,7 @@ const getGoogleCredentials = () => {
   return { clientId, clientSecret, redirectUri };
 };
 
-const buildGoogleRedirectHtml = (message) => {
+const buildGoogleRedirectHtml = (message, success = true) => {
   return `<!DOCTYPE html>
 <html lang="en">
   <head>
@@ -29,13 +29,13 @@ const buildGoogleRedirectHtml = (message) => {
   </head>
   <body style="font-family: sans-serif; display:flex; align-items:center; justify-content:center; min-height:100vh; background:#f7fafc; margin:0;">
     <div style="text-align:center; max-width:420px; padding:24px; background:white; border-radius:16px; box-shadow:0 20px 60px rgba(15,23,42,.08);">
-      <h1 style="margin-bottom:16px; font-size:22px;">Google Calendar Connected</h1>
+      <h1 style="margin-bottom:16px; font-size:22px;">Google Calendar</h1>
       <p style="margin-bottom:24px; color:#334155;">${message}</p>
       <p style="color:#475569; font-size:14px;">You can close this window now.</p>
     </div>
     <script>
       if (window.opener) {
-        window.opener.postMessage({ type: 'GOOGLE_CALENDAR_CONNECTED' }, '*');
+        window.opener.postMessage({ type: '${success ? 'GOOGLE_CALENDAR_CONNECTED' : 'GOOGLE_CALENDAR_FAILED'}', error: '${!success ? message : ''}' }, '*');
       }
       setTimeout(() => { window.close(); }, 1500);
     </script>
@@ -93,11 +93,13 @@ const getValidGoogleAccessToken = async (user) => {
       user.googleTokenExpiry = Date.now() + (refreshed.expires_in || 0) * 1000;
       await user.save();
     } catch (error) {
-      console.error('Failed to refresh token, disconnecting user:', error);
-      user.googleRefreshToken = undefined;
-      user.googleAccessToken = undefined;
-      user.googleTokenExpiry = undefined;
-      await user.save();
+      console.error('Failed to refresh token:', error.message);
+      if (error.message.includes('invalid_grant')) {
+        user.googleRefreshToken = undefined;
+        user.googleAccessToken = undefined;
+        user.googleTokenExpiry = undefined;
+        await user.save();
+      }
       return null;
     }
   }
@@ -259,22 +261,22 @@ const handleGoogleCallback = async (req, res) => {
     const { code, state } = req.query;
 
     if (!code) {
-      return res.status(400).send(buildGoogleRedirectHtml('Google did not return an authorization code.'));
+      return res.status(400).send(buildGoogleRedirectHtml('Google did not return an authorization code.', false));
     }
 
     const decodedToken = parseStateToken(state);
     if (!decodedToken) {
-      return res.status(400).send(buildGoogleRedirectHtml('Google callback state is invalid.'));
+      return res.status(400).send(buildGoogleRedirectHtml('Google callback state is invalid.', false));
     }
 
     const verified = jwt.verify(decodedToken, process.env.JWT_SECRET);
     if (!verified || !verified.id) {
-      return res.status(401).send(buildGoogleRedirectHtml('Unable to verify the user token.'));
+      return res.status(401).send(buildGoogleRedirectHtml('Unable to verify the user token.', false));
     }
 
     const user = await User.findById(verified.id);
     if (!user) {
-      return res.status(404).send(buildGoogleRedirectHtml('User not found.'));
+      return res.status(404).send(buildGoogleRedirectHtml('User not found.', false));
     }
 
     const { clientId, clientSecret, redirectUri } = getGoogleCredentials();
@@ -297,7 +299,7 @@ const handleGoogleCallback = async (req, res) => {
     const tokenPayload = await tokenResponse.json();
     if (!tokenResponse.ok) {
       console.error('Google token exchange failed:', tokenPayload);
-      return res.status(500).send(buildGoogleRedirectHtml('Failed to exchange Google authorization code.'));
+      return res.status(500).send(buildGoogleRedirectHtml('Failed to exchange Google authorization code.', false));
     }
 
     user.googleRefreshToken = tokenPayload.refresh_token || user.googleRefreshToken;
@@ -305,10 +307,10 @@ const handleGoogleCallback = async (req, res) => {
     user.googleTokenExpiry = Date.now() + (tokenPayload.expires_in || 0) * 1000;
     await user.save();
 
-    return res.status(200).send(buildGoogleRedirectHtml('Google Calendar is now connected.'));
+    return res.status(200).send(buildGoogleRedirectHtml('Google Calendar is now connected.', true));
   } catch (error) {
     console.error('Google callback error:', error);
-    return res.status(500).send(buildGoogleRedirectHtml('Google Calendar connection failed.'));
+    return res.status(500).send(buildGoogleRedirectHtml('Google Calendar connection failed.', false));
   }
 };
 
@@ -319,12 +321,7 @@ const getGoogleConnectionStatus = async (req, res) => {
       return res.status(404).json({ error: 'User not found' });
     }
 
-    if (!user.googleRefreshToken) {
-      return res.status(200).json({ connected: false });
-    }
-
-    const validToken = await getValidGoogleAccessToken(user);
-    if (!validToken) {
+    if (!user.googleRefreshToken && !user.googleAccessToken) {
       return res.status(200).json({ connected: false });
     }
 

@@ -4,6 +4,13 @@ import { useEffect, useState } from 'react';
 import { createPortal } from 'react-dom';
 
 import { authService } from '../services/authService';
+import { useUser } from '../contexts/UserContext';
+
+const formatUrl = (url: string) => {
+  if (!url) return '#';
+  if (url.startsWith('http://') || url.startsWith('https://')) return url;
+  return `https://${url}`;
+};
 
 interface Props {
   onClose: () => void;
@@ -28,6 +35,7 @@ const platformIcons = {
 };
 
 export function SocialPortfolioModal({ onClose }: Props) {
+  const { refetchProfile } = useUser();
   const [links, setLinks] = useState<SocialLink[]>([]);
   const [isLoading, setIsLoading] = useState(true);
 
@@ -57,6 +65,7 @@ export function SocialPortfolioModal({ onClose }: Props) {
       
       try {
         await authService.updateSocialLinks(updatedLinks);
+        await refetchProfile();
       } catch (error) {
         console.error("Failed to save link", error);
       }
@@ -68,6 +77,7 @@ export function SocialPortfolioModal({ onClose }: Props) {
     setLinks(updatedLinks);
     try {
       await authService.updateSocialLinks(updatedLinks);
+      await refetchProfile();
     } catch (error) {
       console.error("Failed to delete link", error);
     }
@@ -81,6 +91,7 @@ export function SocialPortfolioModal({ onClose }: Props) {
     setEditingId(null);
     try {
       await authService.updateSocialLinks(updatedLinks);
+      await refetchProfile();
     } catch (error) {
       console.error('Failed to update link', error);
     }
@@ -226,7 +237,7 @@ export function SocialPortfolioModal({ onClose }: Props) {
                             </span>
                           </div>
                           <a
-                            href={link.url}
+                            href={formatUrl(link.url)}
                             target="_blank"
                             rel="noopener noreferrer"
                             className="text-sm text-card-foreground/60 hover:text-[#FCA311] transition-colors flex items-center gap-1 truncate"

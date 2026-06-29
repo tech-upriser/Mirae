@@ -126,7 +126,6 @@ export function ApplicationDetail({ application, onClose, onStatusChange, onCont
 
 
   useEffect(() => {
-    setRecruiterName(application.contacts?.recruiterName || '');
     setNetworkContacts(application.networkContacts || []);
     setScratchpadText(application.notes || '');
     setStatus(normalizeStatusValue(application.stage || 'Saved'));
@@ -136,7 +135,7 @@ export function ApplicationDetail({ application, onClose, onStatusChange, onCont
     try {
       setIsSavingContacts(true);
       const token = localStorage.getItem('token');
-      await fetch(`http://localhost:5000/api/tracker/${application._id}/contacts`, {
+      await fetch(`http://localhost:5000/api/tracker/${application.id}/contacts`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',

@@ -9,6 +9,8 @@ export interface ProfileData {
   is2FAEnabled?: boolean;
   resumeSkills?: string[];
   socialLinks?: Array<{ id: string; platform: string; url: string }>;
+  googleRefreshToken?: string;
+  isGmailConnected?: boolean;
 }
 
 interface ProfileResponse {

@@ -15,13 +15,14 @@ const getAnalyticsOverview = async (req, res) => {
     let offers = 0, rejected = 0, interviewing = 0, applied = 0;
     
     if (category === 'Hackathons') {
-      applied = jobs.filter((job) => job.status === 'Registered').length;
-      interviewing = jobs.filter((job) => job.status === 'Participated').length;
-      offers = jobs.filter((job) => job.status === 'Won' || job.status === 'Completed').length;
+      applied = jobs.filter((job) => ['Registered', 'Applied'].includes(job.status)).length;
+      interviewing = jobs.filter((job) => ['Participated', 'Interviewing'].includes(job.status)).length;
+      offers = jobs.filter((job) => ['Won', 'Completed', 'Offer', 'Offered'].includes(job.status)).length;
+      rejected = jobs.filter((job) => ['Lost', 'Rejected'].includes(job.status)).length;
     } else if (category === 'Others') {
-      applied = jobs.filter((job) => job.status === 'Active').length;
-      offers = jobs.filter((job) => job.status === 'Completed').length;
-      rejected = jobs.filter((job) => job.status === 'Lost' || job.status === 'Rejected').length;
+      applied = jobs.filter((job) => ['Active', 'Applied', 'Registered'].includes(job.status)).length;
+      offers = jobs.filter((job) => ['Completed', 'Won', 'Offer', 'Offered'].includes(job.status)).length;
+      rejected = jobs.filter((job) => ['Lost', 'Rejected'].includes(job.status)).length;
     } else {
       offers = jobs.filter((job) => job.status === 'Offer' || job.status === 'Offered').length;
       rejected = jobs.filter((job) => job.status === 'Rejected').length;
@@ -259,17 +260,18 @@ const getFunnel = async (req, res) => {
     
     let saved = 0, applied = 0, interviewing = 0, offers = 0, rejected = 0;
     
-    // In a funnel, everyone who applied was also saved. 
+    // For funnel to match KPI cards, we report the EXACT count in that stage.
     jobs.forEach(job => {
       if (job.status === 'Saved') saved++;
       else if (category === 'Hackathons') {
-        if (job.status === 'Registered') applied++;
-        else if (job.status === 'Participated') interviewing++;
-        else if (job.status === 'Won' || job.status === 'Completed') offers++;
+        if (['Registered', 'Applied'].includes(job.status)) applied++;
+        else if (['Participated', 'Interviewing'].includes(job.status)) interviewing++;
+        else if (['Won', 'Completed', 'Offer', 'Offered'].includes(job.status)) offers++;
+        else if (['Lost', 'Rejected'].includes(job.status)) rejected++;
       } else if (category === 'Others') {
-        if (job.status === 'Active') applied++;
-        else if (job.status === 'Completed') offers++;
-        else if (job.status === 'Lost' || job.status === 'Rejected') rejected++;
+        if (['Active', 'Applied', 'Registered'].includes(job.status)) applied++;
+        else if (['Completed', 'Won', 'Offer', 'Offered'].includes(job.status)) offers++;
+        else if (['Lost', 'Rejected'].includes(job.status)) rejected++;
       } else {
         if (job.status === 'Applied') applied++;
         else if (job.status === 'Interviewing') interviewing++;
@@ -279,22 +281,29 @@ const getFunnel = async (req, res) => {
     });
 
     const totalOffers = offers;
-    const totalInterviewing = totalOffers + interviewing;
-    const totalApplied = totalInterviewing + rejected + applied;
-    const totalSaved = totalApplied + saved;
+    const totalInterviewing = interviewing;
+    const totalApplied = applied;
+    const totalSaved = saved;
+    const totalJobs = jobs.length;
+
+    // Use cumulative counts for accurate conversion rate calculations
+    const cumulativeOffers = offers;
+    const cumulativeInterviewing = interviewing + offers;
+    const cumulativeApplied = applied + interviewing + offers;
+    const cumulativeSaved = totalJobs;
 
     res.status(200).json({
       funnel: [
-        { stage: 'Total Pipeline', count: totalSaved },
+        { stage: 'Saved', count: totalSaved },
         { stage: 'Applied', count: totalApplied },
         { stage: 'Interviewing', count: totalInterviewing },
         { stage: 'Offer', count: totalOffers }
       ],
       conversionRates: {
-        savedToApplied: totalSaved ? ((totalApplied / totalSaved) * 100).toFixed(1) : 0,
-        appliedToInterview: totalApplied ? ((totalInterviewing / totalApplied) * 100).toFixed(1) : 0,
-        interviewToOffer: totalInterviewing ? ((totalOffers / totalInterviewing) * 100).toFixed(1) : 0,
-        overallOfferRate: totalApplied ? ((totalOffers / totalApplied) * 100).toFixed(1) : 0
+        savedToApplied: cumulativeSaved ? ((cumulativeApplied / cumulativeSaved) * 100).toFixed(1) : 0,
+        appliedToInterview: cumulativeApplied ? ((cumulativeInterviewing / cumulativeApplied) * 100).toFixed(1) : 0,
+        interviewToOffer: cumulativeInterviewing ? ((cumulativeOffers / cumulativeInterviewing) * 100).toFixed(1) : 0,
+        overallOfferRate: cumulativeSaved ? ((cumulativeOffers / cumulativeSaved) * 100).toFixed(1) : 0
       }
     });
   } catch (error) {
@@ -311,11 +320,29 @@ const getResponseTimes = async (req, res) => {
     let totalAppliedToInterviewDays = 0;
     let appliedToInterviewCount = 0;
 
+    let startStatus = 'Applied';
+    let endStatus = 'Interviewing';
+    let endStatusAlt = 'Offer';
+    
+    if (category === 'Hackathons') {
+      startStatus = 'Registered';
+      endStatus = 'Participated';
+      endStatusAlt = 'Won';
+    } else if (category === 'Others') {
+      startStatus = 'Active';
+      endStatus = 'In Progress';
+      endStatusAlt = 'Completed';
+    }
+
     jobs.forEach(job => {
       if (!job.history || job.history.length < 2) return;
       
-      const appliedEvent = job.history.find(h => h.status === 'Applied');
-      const interviewEvent = job.history.find(h => h.status === 'Interviewing');
+      const appliedEvent = job.history.find(h => h.status === startStatus);
+      let interviewEvent = job.history.find(h => h.status === endStatus);
+      
+      if (!interviewEvent) {
+        interviewEvent = job.history.find(h => h.status === endStatusAlt || h.status === 'Completed');
+      }
       
       if (appliedEvent && interviewEvent) {
         const diffTime = Math.abs(new Date(interviewEvent.date) - new Date(appliedEvent.date));
@@ -344,22 +371,26 @@ const getCompanyBreakdown = async (req, res) => {
     
     const companyStats = {};
     
+    const inProgressStatuses = category === 'Hackathons' ? ['Participated', 'Interviewing'] : category === 'Others' ? ['In Progress'] : ['Interviewing'];
+    const successStatuses = category === 'Hackathons' ? ['Won', 'Completed', 'Offer', 'Offered'] : category === 'Others' ? ['Completed', 'Won', 'Offer', 'Offered'] : ['Offer', 'Offered'];
+    const rejectStatuses = category === 'Others' ? ['Lost', 'Rejected'] : ['Rejected'];
+
     jobs.forEach(job => {
       const company = job.company;
       if (!companyStats[company]) {
         companyStats[company] = { total: 0, interviewing: 0, offers: 0, rejected: 0 };
       }
       companyStats[company].total++;
-      if (job.status === 'Interviewing') companyStats[company].interviewing++;
-      if (job.status === 'Offer') companyStats[company].offers++;
-      if (job.status === 'Rejected') companyStats[company].rejected++;
+      if (inProgressStatuses.includes(job.status)) companyStats[company].interviewing++;
+      if (successStatuses.includes(job.status)) companyStats[company].offers++;
+      if (rejectStatuses.includes(job.status)) companyStats[company].rejected++;
     });
 
     const breakdown = Object.entries(companyStats)
       .map(([company, stats]) => ({
         company,
         ...stats,
-        interviewRate: stats.total ? ((stats.interviewing + stats.offers) / stats.total * 100).toFixed(1) : 0
+        interviewRate: stats.total ? ((stats.offers) / stats.total * 100).toFixed(1) : 0
       }))
       .sort((a, b) => b.total - a.total)
       .slice(0, 10); // Top 10 companies

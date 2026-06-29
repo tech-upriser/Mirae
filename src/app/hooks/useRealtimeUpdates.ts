@@ -37,6 +37,14 @@ export function useRealtimeUpdates(onUpdate: () => void) {
       onUpdate();
     });
 
+    socket.on('job_added', (data: any) => {
+      toast.success(`${data.company} saved successfully!`, {
+        description: 'Added via Chrome Extension',
+        duration: 5000,
+      });
+      onUpdate();
+    });
+
     return () => {
       socket.disconnect();
     };

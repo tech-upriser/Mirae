@@ -1,6 +1,7 @@
 const Job = require('../models/Job');
 const User = require('../models/User');
 const Groq = require('groq-sdk');
+const socket = require('../utils/socket');
 
 const groq = new Groq({ apiKey: process.env.GROQ_API_KEY });
 
@@ -157,16 +158,23 @@ const extractJobDetailsWithAI = async (text) => {
   if (!text || text.trim().length < 20) return { skills: [], description: '' };
   
   const systemPrompt = `You are an expert technical recruiter and parser.
-Given the noisy raw text extracted from a job posting webpage, extract:
-1. A clean, professional summary of the core job description (responsibilities, about the role, and requirements). Ignore all website navigation menus, footer links, privacy policies, unrelated ads, and boilerplate company text. Format it cleanly with basic text (no markdown, just newlines for paragraphs).
-2. A precise list of ONLY technical skills required for this job (Programming Languages, Frameworks, Databases, Tools). Ignore soft skills.
+Given the noisy raw text extracted from a webpage, extract:
+1. A clean, professional summary of the core job description (responsibilities, about the role, and requirements). Ignore all website navigation menus, footer links, privacy policies, unrelated ads, and boilerplate company text. Format it cleanly with basic text.
+2. A precise list of ONLY technical skills required (Programming Languages, Frameworks, Databases, Tools). Ignore soft skills.
+3. The category of this opportunity. Must be exactly one of: "Jobs", "Hackathons", or "Others".
+4. The current status of the user's application based on the text. If there is no explicit confirmation of application, default to "Saved". 
+   - For Jobs: "Saved", "Applied", "Interviewing", "Offer", "Rejected".
+   - For Hackathons: "Saved", "Registered", "Participated", "Won", "Lost".
+   - For Others: "Saved", "Active", "In Progress", "Completed", "Lost".
 
 Return ONLY valid JSON.
 
 Format:
 {
   "description": "String containing the cleaned job description...",
-  "skills": ["Skill1", "Skill2"]
+  "skills": ["Skill1", "Skill2"],
+  "category": "Jobs|Hackathons|Others",
+  "status": "String (one of the valid statuses above based on category)"
 }`;
 
   const userMessage = `Job Posting Text:\n${text.substring(0, 25000)}`;
@@ -193,7 +201,9 @@ Format:
       if (parsed) {
         return {
           description: parsed.description || '',
-          skills: Array.isArray(parsed.skills) ? parsed.skills : []
+          skills: Array.isArray(parsed.skills) ? parsed.skills : [],
+          category: parsed.category || null,
+          status: parsed.status || null
         };
       }
     } catch (error) {
@@ -641,7 +651,12 @@ exports.createJob = async (req, res) => {
       rawText.substring(0, 2000)
     ].join(' ');
 
-    const finalCategory = normalizeCategory(incomingData.category, categoryContext);
+    const finalCategory = incomingData.category 
+      ? normalizeCategory(incomingData.category, '') 
+      : (['Jobs', 'Hackathons', 'Others'].includes(extractedData.category) 
+          ? extractedData.category 
+          : normalizeCategory(null, categoryContext));
+
     const finalDeadline = parseDeadline(incomingData.deadline);
 
     const statusContext = [
@@ -657,11 +672,22 @@ exports.createJob = async (req, res) => {
       ? normalizePipelineStatusValue(incomingData.status)
       : null;
 
-    const finalStatus = incomingStatus || inferPipelineStatus({
-      rawStatus: incomingData.status,
-      category: finalCategory,
-      context: statusContext
-    });
+    const validStatuses = ['Saved', 'Applied', 'Registered', 'Interviewing', 'Participated', 'Offer', 'Won', 'Rejected', 'Lost', 'Active', 'In Progress', 'Completed'];
+    const aiStatus = validStatuses.includes(extractedData.status) ? extractedData.status : null;
+
+    let finalStatus = incomingStatus;
+    if (!finalStatus) {
+      if (aiStatus) {
+        finalStatus = normalizePipelineStatusValue(aiStatus);
+      } else {
+        finalStatus = inferPipelineStatus({
+          rawStatus: incomingData.status,
+          category: finalCategory,
+          context: statusContext
+        });
+      }
+    }
+    finalStatus = finalStatus || 'Saved';
 
     const createdAt = new Date();
     const appliedDate = finalStatus === 'Applied' || finalStatus === 'Offer'
@@ -727,6 +753,12 @@ exports.createJob = async (req, res) => {
 
       console.log("♻️ Existing job refreshed successfully! ID:", existingJob._id);
 
+      try {
+        socket.getIO().to(req.user.id.toString()).emit('job_added', existingJob);
+      } catch (err) {
+        console.error("Socket emission failed:", err.message);
+      }
+
       return res.status(200).json({
         message: 'This job was already saved. Mirae refreshed its details.',
         job: existingJob,
@@ -742,6 +774,12 @@ exports.createJob = async (req, res) => {
     await newJob.save();
 
     console.log("✅ Job saved successfully! ID:", newJob._id);
+
+    try {
+      socket.getIO().to(req.user.id.toString()).emit('job_added', newJob);
+    } catch (err) {
+      console.error("Socket emission failed:", err.message);
+    }
 
     res.status(201).json({
       message: "Analysis Complete and Personalized!",
@@ -821,6 +859,35 @@ exports.updateJobStatus = async (req, res) => {
     job.history = Array.isArray(job.history) ? job.history : [];
     job.history.push({ status, date: new Date() });
     await job.save();
+
+    // Automatically create a calendar event for Interviewing or Participated stages
+    if (status === 'Interviewing' || status === 'Participated') {
+      const CalendarEvent = require('../models/CalendarEvent');
+      
+      // Check if an event already exists for this job to prevent duplicates
+      const existingEvent = await CalendarEvent.findOne({ 
+        userId: req.user.id, 
+        title: { $regex: new RegExp(job.company, 'i') },
+        type: 'interview'
+      });
+      
+      if (!existingEvent) {
+        // Create an event for tomorrow at 10 AM by default
+        const tomorrow = new Date();
+        tomorrow.setDate(tomorrow.getDate() + 1);
+        
+        await CalendarEvent.create({
+          title: `Interview: ${job.company} - ${job.title}`,
+          description: `Automatically generated event for ${status} status. Update with exact date and time.`,
+          date: tomorrow,
+          startTime: '10:00 AM',
+          endTime: '11:00 AM',
+          type: 'interview',
+          status: 'pending',
+          userId: req.user.id
+        });
+      }
+    }
 
     res.status(200).json({ message: 'Job status updated successfully', job });
   } catch (error) {

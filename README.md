@@ -51,6 +51,11 @@ Most job trackers require you to manually log every application. Mirae **does it
 
 ### 🖥️ Dashboard
 
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="public/screenshots/dashboard-dark.png">
+  <img alt="Dashboard" src="public/screenshots/dashboard-light.png">
+</picture>
+
 | Capability | Description |
 |---|---|
 | **Multi-Category Tracking** | Track **Jobs**, **Hackathons**, and **Others** (workshops, webinars, fellowships, scholarships) in organized tabs |
@@ -85,6 +90,11 @@ Most job trackers require you to manually log every application. Mirae **does it
 
 ### 📊 Analytics & Insights
 
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="public/screenshots/analytics-dark.png">
+  <img alt="Analytics & Insights" src="public/screenshots/analytics-light.png">
+</picture>
+
 | Capability | Description |
 |---|---|
 | **Category Tabs** | Switch between `Jobs`, `Hackathons`, and `Others` to view category-specific analytics |
@@ -98,6 +108,11 @@ Most job trackers require you to manually log every application. Mirae **does it
 | **Rejection & Offer Breakdown** | Detailed lists of rejected and offered positions with reasons |
 
 ### 📅 Calendar
+
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="public/screenshots/calendar-dark.png">
+  <img alt="Calendar" src="public/screenshots/calendar-light.png">
+</picture>
 
 | Capability | Description |
 |---|---|
@@ -127,6 +142,11 @@ Most job trackers require you to manually log every application. Mirae **does it
 
 ### ⚙️ Settings
 
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="public/screenshots/settings-dark.png">
+  <img alt="Settings" src="public/screenshots/settings-light.png">
+</picture>
+
 | Capability | Description |
 |---|---|
 | **Notifications** | Configure follow-up reminders, deadline alerts, interview reminders, and browser notifications |
@@ -139,6 +159,8 @@ Most job trackers require you to manually log every application. Mirae **does it
 | **Danger Zone** | Account deletion with confirmation modals |
 
 ### 🧩 Chrome Extension (Manifest V3)
+
+![Chrome Extension](public/screenshots/extension.png)
 
 | Capability | Description |
 |---|---|

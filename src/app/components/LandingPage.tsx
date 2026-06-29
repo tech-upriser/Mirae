@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { AnimatePresence, motion } from 'motion/react';
-import { ArrowRight, BarChart3, CalendarDays, CheckCircle2, Sparkles } from 'lucide-react';
+import { ArrowRight, BarChart3, CalendarDays, CheckCircle2, Sparkles, BookOpen, Sun, Moon } from 'lucide-react';
 import { Navigate } from 'react-router';
 import { Button } from './ui/button';
 import {
@@ -13,6 +13,8 @@ import {
 import { LoginModal } from './LoginModal';
 import { SignupModal } from './SignupModal';
 import { BrandLogo } from './BrandLogo';
+import { UserGuideModal } from './UserGuideModal';
+import { useTheme } from '../hooks/useTheme';
 
 const features = [
   {
@@ -50,8 +52,10 @@ const developers = [
 ];
 
 export function LandingPage() {
+  const { theme, toggleTheme } = useTheme();
   const [showLogin, setShowLogin] = useState(false);
   const [showSignup, setShowSignup] = useState(false);
+  const [showUserGuide, setShowUserGuide] = useState(false);
   const isLoggedIn = typeof window !== 'undefined' && window.localStorage.getItem('isLoggedIn') === 'true';
 
   if (isLoggedIn) {
@@ -61,6 +65,17 @@ export function LandingPage() {
   return (
     <div className="min-h-screen bg-background text-foreground">
       <div className="relative overflow-hidden bg-secondary text-secondary-foreground">
+        {/* Theme Toggle */}
+        <div className="absolute top-6 right-6 sm:top-8 sm:right-8 z-50">
+          <button
+            onClick={toggleTheme}
+            className="flex h-11 w-11 items-center justify-center rounded-full bg-background/5 backdrop-blur-md text-secondary-foreground hover:bg-background/15 transition-all border border-secondary-foreground/10 hover:scale-105 active:scale-95"
+            aria-label="Toggle theme"
+            title="Toggle theme"
+          >
+            {theme === 'dark' ? <Sun className="h-5 w-5" /> : <Moon className="h-5 w-5" />}
+          </button>
+        </div>
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,theme(colors.primary/.22),transparent_34%),radial-gradient(circle_at_80%_20%,theme(colors.card/.1),transparent_28%),radial-gradient(circle_at_bottom_right,theme(colors.primary/.14),transparent_30%)]" />
         <div className="absolute inset-x-0 top-0 h-px bg-primary/30" />
         <div className="absolute left-1/2 top-24 h-64 w-64 -translate-x-1/2 rounded-full bg-primary/10 blur-3xl" />
@@ -88,7 +103,7 @@ export function LandingPage() {
               transition={{ duration: 0.45 }}
               className="max-w-4xl"
             >
-              <h1 className="text-5xl font-bold leading-tight tracking-tight text-foreground sm:text-6xl lg:text-7xl">
+              <h1 className="text-5xl font-bold leading-tight tracking-tight text-primary dark:text-black sm:text-6xl lg:text-7xl">
                 Track every opportunity with clarity, rhythm, and calm.
               </h1>
               <p className="mx-auto mt-6 max-w-2xl text-base leading-7 text-secondary-foreground/78 sm:text-lg">
@@ -105,23 +120,14 @@ export function LandingPage() {
             >
               <Button
                 size="lg"
-                className="min-w-[170px] flex-1 shadow-[0_14px_30px_rgba(0,0,0,0.22)] sm:flex-none"
+                className="min-w-[170px] flex-1 bg-primary text-primary-foreground dark:bg-black dark:text-white dark:hover:bg-black/90 shadow-[0_8px_20px_rgba(252,163,17,0.25)] dark:shadow-[0_8px_20px_rgba(0,0,0,0.15)] hover:bg-primary/90 sm:flex-none font-semibold"
                 onClick={() => setShowSignup(true)}
               >
                 Sign Up
               </Button>
               <Button
                 size="lg"
-                variant="outline"
-                className="min-w-[170px] flex-1 border-primary/35 bg-card text-foreground shadow-[0_14px_30px_rgba(0,0,0,0.14)] hover:bg-card sm:flex-none"
-                onClick={() => setShowLogin(true)}
-              >
-                Login
-              </Button>
-              <Button
-                size="lg"
-                variant="secondary"
-                className="min-w-[170px] flex-1 border border-primary/20 shadow-[0_14px_30px_rgba(0,0,0,0.22)] sm:flex-none"
+                className="min-w-[170px] flex-1 bg-primary text-primary-foreground dark:bg-black dark:text-white dark:hover:bg-black/90 shadow-[0_8px_20px_rgba(252,163,17,0.25)] dark:shadow-[0_8px_20px_rgba(0,0,0,0.15)] hover:bg-primary/90 sm:flex-none font-semibold"
                 asChild
               >
                 <a
@@ -130,8 +136,25 @@ export function LandingPage() {
                   rel="noopener noreferrer"
                 >
                   Add Extension
-                  <ArrowRight className="h-4 w-4" />
+                  <ArrowRight className="ml-2 h-4 w-4" />
                 </a>
+              </Button>
+              <Button
+                size="lg"
+                variant="outline"
+                className="min-w-[170px] flex-1 border-2 border-primary text-primary dark:border-black dark:text-black hover:bg-primary hover:text-primary-foreground dark:hover:bg-black dark:hover:text-white sm:flex-none font-semibold bg-transparent"
+                onClick={() => setShowLogin(true)}
+              >
+                Login
+              </Button>
+              <Button
+                size="lg"
+                variant="outline"
+                className="min-w-[170px] flex-1 border-2 border-primary text-primary dark:border-black dark:text-black hover:bg-primary hover:text-primary-foreground dark:hover:bg-black dark:hover:text-white sm:flex-none font-semibold bg-transparent"
+                onClick={() => setShowUserGuide(true)}
+              >
+                <BookOpen className="mr-2 h-4 w-4" />
+                User Manual
               </Button>
             </motion.div>
 
@@ -144,16 +167,6 @@ export function LandingPage() {
               Seamless extension capture, elegant tracking, and a dashboard that keeps your search moving.
             </motion.p>
 
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: 0.2 }}
-              className="mt-16 w-full max-w-5xl rounded-2xl border border-border bg-card p-2 shadow-2xl"
-            >
-              <div className="aspect-[16/9] w-full overflow-hidden rounded-xl bg-muted flex items-center justify-center text-muted-foreground border border-border">
-                <span className="font-medium text-lg">[Hero Dashboard Screenshot Placeholder (Light/Dark)]</span>
-              </div>
-            </motion.div>
           </div>
         </section>
       </div>
@@ -205,116 +218,83 @@ export function LandingPage() {
         </div>
       </section>
 
-      <section className="border-t border-border bg-secondary/5 px-6 py-24 sm:px-8">
-        <div className="mx-auto max-w-6xl space-y-32">
-          
-          {/* Feature 1 */}
-          <div className="grid gap-12 md:grid-cols-2 items-center">
-            <div>
-              <h3 className="text-3xl font-bold text-foreground mb-4">Elegant Pipeline Tracking</h3>
-              <p className="text-lg text-muted-foreground leading-relaxed">
-                Organize roles, applications, and next steps in a polished dashboard designed for focus. Move away from chaotic spreadsheets and manage your career with clarity.
-              </p>
-            </div>
-            <div className="aspect-[4/3] rounded-2xl border border-border bg-muted flex items-center justify-center shadow-lg text-muted-foreground">
-              <span className="font-medium px-4 text-center">[Kanban Dashboard Screenshot Placeholder (Light/Dark)]</span>
-            </div>
-          </div>
-
-          {/* Feature 2 */}
-          <div className="grid gap-12 md:grid-cols-2 items-center md:flex-row-reverse">
-            <div className="aspect-[4/3] rounded-2xl border border-border bg-muted flex items-center justify-center shadow-lg text-muted-foreground md:order-1">
-              <span className="font-medium px-4 text-center">[Analytics Funnel & KPIs Screenshot Placeholder (Light/Dark)]</span>
-            </div>
-            <div className="md:order-2">
-              <h3 className="text-3xl font-bold text-foreground mb-4">Actionable Analytics</h3>
-              <p className="text-lg text-muted-foreground leading-relaxed">
-                Turn your search into a system with visibility into outcomes, bottlenecks, and wins. Track your conversion rates and optimize your applications.
-              </p>
-            </div>
-          </div>
-
-          {/* Feature 3 */}
-          <div className="grid gap-12 md:grid-cols-2 items-center">
-            <div>
-              <h3 className="text-3xl font-bold text-foreground mb-4">One-Click Extension Capture</h3>
-              <p className="text-lg text-muted-foreground leading-relaxed">
-                Pair the app with the browser extension to save promising opportunities the moment you find them. Instantly extracts titles, companies, and job descriptions from any site.
-              </p>
-            </div>
-            <div className="aspect-[4/3] rounded-2xl border border-border bg-muted flex items-center justify-center shadow-lg text-muted-foreground">
-              <span className="font-medium px-4 text-center">[Chrome Extension Screenshot Placeholder (Light/Dark)]</span>
-            </div>
-          </div>
-
-          {/* Feature 4 */}
-          <div className="grid gap-12 md:grid-cols-2 items-center md:flex-row-reverse">
-            <div className="aspect-[4/3] rounded-2xl border border-border bg-muted flex items-center justify-center shadow-lg text-muted-foreground md:order-1">
-              <span className="font-medium px-4 text-center">[Match Percentage & Skill Gap Screenshot Placeholder (Light/Dark)]</span>
-            </div>
-            <div className="md:order-2">
-              <h3 className="text-3xl font-bold text-foreground mb-4">Intelligent Resume Parsing</h3>
-              <p className="text-lg text-muted-foreground leading-relaxed">
-                Upload your resume once. Our AI will automatically analyze your skills against every job description to provide a Match Score and identify exactly what skills you're missing.
-              </p>
-            </div>
-          </div>
-
-          {/* Feature 5 */}
-          <div className="grid gap-12 md:grid-cols-2 items-center">
-            <div>
-              <h3 className="text-3xl font-bold text-foreground mb-4">Master Your Schedule</h3>
-              <p className="text-lg text-muted-foreground leading-relaxed">
-                Sync your Google Calendar to view upcoming interviews and deadlines directly within Mirae. Keep track of all your follow-ups in a beautiful calendar view.
-              </p>
-            </div>
-            <div className="aspect-[4/3] rounded-2xl border border-border bg-muted flex items-center justify-center shadow-lg text-muted-foreground">
-              <span className="font-medium px-4 text-center">[Calendar Page Screenshot Placeholder (Light/Dark)]</span>
-            </div>
-          </div>
-
-          {/* Feature 6 */}
-          <div className="grid gap-12 md:grid-cols-2 items-center md:flex-row-reverse">
-            <div className="aspect-[4/3] rounded-2xl border border-border bg-muted flex items-center justify-center shadow-lg text-muted-foreground md:order-1">
-              <span className="font-medium px-4 text-center">[Settings & Integrations Screenshot Placeholder (Light/Dark)]</span>
-            </div>
-            <div className="md:order-2">
-              <h3 className="text-3xl font-bold text-foreground mb-4">Powerful Integrations</h3>
-              <p className="text-lg text-muted-foreground leading-relaxed">
-                Connect Gmail and Calendar in Settings to enable one-click email capture and seamless interview scheduling. Customize your dark mode and notifications.
-              </p>
-            </div>
-          </div>
-
-          {/* Feature 7 */}
-          <div className="grid gap-12 md:grid-cols-2 items-center">
-            <div>
-              <h3 className="text-3xl font-bold text-foreground mb-4">Comprehensive User Guide</h3>
-              <p className="text-lg text-muted-foreground leading-relaxed">
-                New to Mirae? Access our built-in community and help guide anytime from the settings menu to master your workflows and get the most out of our extension.
-              </p>
-            </div>
-            <div className="aspect-[4/3] rounded-2xl border border-border bg-muted flex items-center justify-center shadow-lg text-muted-foreground">
-              <span className="font-medium px-4 text-center">[User Guide Modal Screenshot Placeholder (Light/Dark)]</span>
-            </div>
-          </div>
-
-        </div>
-      </section>
-
-      <section className="border-t border-border bg-background px-6 py-20 sm:px-8">
-        <div className="mx-auto max-w-4xl text-center">
-          <h2 className="text-4xl font-bold text-foreground mb-6">Ready to take control of your career?</h2>
-          <p className="text-lg text-muted-foreground mb-10">
-            Join Mirae today and bring clarity, rhythm, and calm to your job search and professional networking.
-          </p>
-          <Button
-            size="lg"
-            className="min-w-[200px] shadow-[0_14px_30px_rgba(0,0,0,0.22)]"
-            onClick={() => setShowSignup(true)}
+      <section className="border-t border-border bg-secondary/5 px-6 py-20 sm:px-8">
+        <div className="mx-auto max-w-6xl">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.45 }}
+            viewport={{ once: true, amount: 0.25 }}
+            className="mx-auto max-w-2xl text-center"
           >
-            Get Started for Free
-          </Button>
+            <p className="text-sm font-semibold uppercase tracking-[0.2em] text-secondary">
+              Product Preview
+            </p>
+            <h2 className="mt-3 text-3xl font-bold text-foreground sm:text-4xl">
+              A glimpse inside Mirae.
+            </h2>
+            <p className="mt-4 text-base leading-7 text-muted-foreground">
+              Everything you need in one polished interface.
+            </p>
+          </motion.div>
+
+          <div className="mt-12 space-y-8">
+            <motion.div 
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5 }}
+              viewport={{ once: true, amount: 0.1 }}
+              className="overflow-hidden rounded-2xl border border-border bg-card shadow-[0_20px_50px_rgba(0,0,0,0.12)]"
+            >
+              <img src="/screenshots/dashboard-light.png" alt="Dashboard View" className="w-full object-cover dark:hidden" />
+              <img src="/screenshots/dashboard-dark.png" alt="Dashboard View Dark" className="hidden w-full object-cover dark:block" />
+            </motion.div>
+            
+            <div className="grid gap-8 md:grid-cols-2">
+              <motion.div 
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: 0.1 }}
+                viewport={{ once: true, amount: 0.1 }}
+                className="overflow-hidden rounded-2xl border border-border bg-card shadow-[0_12px_30px_rgba(0,0,0,0.1)]"
+              >
+                <img src="/screenshots/analytics-light.png" alt="Analytics & Insights" className="w-full object-cover dark:hidden" />
+                <img src="/screenshots/analytics-dark.png" alt="Analytics & Insights Dark" className="hidden w-full object-cover dark:block" />
+              </motion.div>
+              <motion.div 
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: 0.2 }}
+                viewport={{ once: true, amount: 0.1 }}
+                className="overflow-hidden rounded-2xl border border-border bg-card shadow-[0_12px_30px_rgba(0,0,0,0.1)]"
+              >
+                <img src="/screenshots/calendar-light.png" alt="Calendar & Reminders" className="w-full object-cover dark:hidden" />
+                <img src="/screenshots/calendar-dark.png" alt="Calendar & Reminders Dark" className="hidden w-full object-cover dark:block" />
+              </motion.div>
+            </div>
+            
+            <div className="grid gap-8 md:grid-cols-2">
+              <motion.div 
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: 0.1 }}
+                viewport={{ once: true, amount: 0.1 }}
+                className="overflow-hidden rounded-2xl border border-border bg-card shadow-[0_12px_30px_rgba(0,0,0,0.1)]"
+              >
+                <img src="/screenshots/settings-light.png" alt="Settings & Notifications" className="w-full object-cover dark:hidden" />
+                <img src="/screenshots/settings-dark.png" alt="Settings & Notifications Dark" className="hidden w-full object-cover dark:block" />
+              </motion.div>
+              <motion.div 
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: 0.2 }}
+                viewport={{ once: true, amount: 0.1 }}
+                className="overflow-hidden rounded-2xl border border-border bg-card shadow-[0_12px_30px_rgba(0,0,0,0.1)]"
+              >
+                <img src="/screenshots/extension.png" alt="Chrome Extension" className="w-full object-cover" />
+              </motion.div>
+            </div>
+          </div>
         </div>
       </section>
 
@@ -373,6 +353,7 @@ export function LandingPage() {
       <AnimatePresence>
         {showLogin && <LoginModal onClose={() => setShowLogin(false)} />}
         {showSignup && <SignupModal onClose={() => setShowSignup(false)} />}
+        {showUserGuide && <UserGuideModal onClose={() => setShowUserGuide(false)} />}
       </AnimatePresence>
     </div>
   );

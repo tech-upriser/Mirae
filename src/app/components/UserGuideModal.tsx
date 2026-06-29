@@ -83,6 +83,10 @@ export function UserGuideModal({ onClose }: Props) {
               {activeTab === 'getting-started' && (
                 <div className="space-y-6">
                   <h3 className="text-2xl font-bold text-foreground">Welcome to Mirae</h3>
+                  <div className="overflow-hidden rounded-xl border border-border shadow-sm">
+                    <img src="/screenshots/dashboard-light.png" alt="Dashboard View" className="w-full h-auto dark:hidden" />
+                    <img src="/screenshots/dashboard-dark.png" alt="Dashboard View Dark" className="hidden w-full h-auto dark:block" />
+                  </div>
                   <p className="text-muted-foreground leading-relaxed">
                     Mirae is your personal Career Command Center. It's designed to bring clarity, rhythm, and calm to your opportunity search. Whether you are applying for jobs, registering for hackathons, or tracking other opportunities, Mirae keeps everything organized in one place.
                   </p>
@@ -90,7 +94,7 @@ export function UserGuideModal({ onClose }: Props) {
                     <h4 className="font-semibold text-foreground mb-4">Core Principles:</h4>
                     <ul className="space-y-3 text-sm text-muted-foreground list-disc pl-5">
                       <li><strong>Capture Quickly:</strong> Use the Chrome Extension to save jobs in one click.</li>
-                      <li><strong>Track Effectively:</strong> Move applications through the pipeline stages (Saved $\rightarrow$ Applied $\rightarrow$ Interviewing $\rightarrow$ Offer).</li>
+                      <li><strong>Track Effectively:</strong> Move applications through the pipeline stages (Saved → Applied → Interviewing → Offer).</li>
                       <li><strong>Measure Progress:</strong> Check the Analytics page to see your funnel conversion rates and skill gaps.</li>
                     </ul>
                   </div>
@@ -100,6 +104,10 @@ export function UserGuideModal({ onClose }: Props) {
               {activeTab === 'pipeline' && (
                 <div className="space-y-6">
                   <h3 className="text-2xl font-bold text-foreground">Pipeline Tracking</h3>
+                  <div className="overflow-hidden rounded-xl border border-border shadow-sm">
+                    <img src="/screenshots/dashboard-light.png" alt="Pipeline Tracking" className="w-full h-auto dark:hidden" />
+                    <img src="/screenshots/dashboard-dark.png" alt="Pipeline Tracking Dark" className="hidden w-full h-auto dark:block" />
+                  </div>
                   <p className="text-muted-foreground leading-relaxed">
                     The Dashboard is your main workspace. It acts as a Kanban board where you can see all your opportunities categorized by their current stage.
                   </p>
@@ -122,6 +130,10 @@ export function UserGuideModal({ onClose }: Props) {
               {activeTab === 'calendar' && (
                 <div className="space-y-6">
                   <h3 className="text-2xl font-bold text-foreground">Calendar & Follow-ups</h3>
+                  <div className="overflow-hidden rounded-xl border border-border shadow-sm">
+                    <img src="/screenshots/calendar-light.png" alt="Calendar View" className="w-full h-auto dark:hidden" />
+                    <img src="/screenshots/calendar-dark.png" alt="Calendar View Dark" className="hidden w-full h-auto dark:block" />
+                  </div>
                   <p className="text-muted-foreground leading-relaxed">
                     The Calendar view helps you visualize your deadlines, interviews, and follow-ups so nothing slips through the cracks.
                   </p>
@@ -136,6 +148,10 @@ export function UserGuideModal({ onClose }: Props) {
               {activeTab === 'analytics' && (
                 <div className="space-y-6">
                   <h3 className="text-2xl font-bold text-foreground">Analytics</h3>
+                  <div className="overflow-hidden rounded-xl border border-border shadow-sm">
+                    <img src="/screenshots/analytics-light.png" alt="Analytics View" className="w-full h-auto dark:hidden" />
+                    <img src="/screenshots/analytics-dark.png" alt="Analytics View Dark" className="hidden w-full h-auto dark:block" />
+                  </div>
                   <p className="text-muted-foreground leading-relaxed">
                     Turn your search into a system with data-driven insights.
                   </p>
@@ -150,6 +166,9 @@ export function UserGuideModal({ onClose }: Props) {
               {activeTab === 'extension' && (
                 <div className="space-y-6">
                   <h3 className="text-2xl font-bold text-foreground">Browser Extension</h3>
+                  <div className="overflow-hidden rounded-xl border border-border shadow-sm">
+                    <img src="/screenshots/extension.png" alt="Browser Extension" className="w-full h-auto" />
+                  </div>
                   <p className="text-muted-foreground leading-relaxed">
                     The Mirae Chrome Extension is the fastest way to populate your pipeline.
                   </p>
@@ -167,6 +186,10 @@ export function UserGuideModal({ onClose }: Props) {
               {activeTab === 'settings' && (
                 <div className="space-y-6">
                   <h3 className="text-2xl font-bold text-foreground">Settings & Configuration</h3>
+                  <div className="overflow-hidden rounded-xl border border-border shadow-sm">
+                    <img src="/screenshots/settings-light.png" alt="Settings View" className="w-full h-auto dark:hidden" />
+                    <img src="/screenshots/settings-dark.png" alt="Settings View Dark" className="hidden w-full h-auto dark:block" />
+                  </div>
                   <p className="text-muted-foreground leading-relaxed">
                     Customize Mirae to work exactly how you want it to.
                   </p>

@@ -106,18 +106,25 @@ export function Analytics() {
   const donutData = useMemo(() => {
     const offers = overview?.offers ?? 0;
     const rejected = overview?.rejected ?? 0;
-    const active =
-      (overview?.saved ?? 0) +
-      (overview?.applied ?? 0) +
-      (overview?.interviewing ?? 0);
+    const interviewing = overview?.interviewing ?? 0;
+    const applied = overview?.applied ?? 0;
+    const saved = overview?.saved ?? 0;
+    
+    const totalJobs = overview?.totalJobs ?? 0;
+    const otherActive = Math.max(0, totalJobs - offers - rejected - interviewing - applied - saved);
 
     const successLabel = activeCategory === 'Hackathons' ? 'Won/Completed' : activeCategory === 'Others' ? 'Completed' : 'Offers';
     const rejectLabel = activeCategory === 'Others' ? 'Lost/Rejected' : 'Rejected';
+    const interviewLabel = activeCategory === 'Hackathons' ? 'Participating' : activeCategory === 'Others' ? 'In Progress' : 'Interviewing';
+    const appliedLabel = activeCategory === 'Hackathons' ? 'Registered' : activeCategory === 'Others' ? 'Active' : 'Applied';
 
     return [
       { name: successLabel, value: offers, color: '#067647' },
+      { name: interviewLabel, value: interviewing, color: '#FCA311' },
+      { name: appliedLabel, value: applied, color: '#2563EB' },
+      { name: 'Saved', value: saved, color: '#6b7280' },
       { name: rejectLabel, value: rejected, color: '#B42318' },
-      { name: 'Active', value: active, color: '#14213D' },
+      ...(otherActive > 0 ? [{ name: 'Other', value: otherActive, color: '#14213D' }] : [])
     ];
   }, [overview, activeCategory]);
 
@@ -150,7 +157,6 @@ export function Analytics() {
   const funnelSteps = useMemo(() => {
     if (funnelData?.funnel) {
       const colors = {
-        'Total Pipeline': '#6b7280',
         'Saved': '#6b7280',
         'Applied': '#14213D',
         'Registered': '#14213D',
@@ -161,7 +167,7 @@ export function Analytics() {
         'Won': '#067647',
         'Completed': '#067647'
       };
-      const total = funnelData.funnel[0]?.count || 1;
+      const total = overview?.totalJobs || 1;
       const labelMap: Record<string, Record<string, string>> = {
         Hackathons: { Applied: 'Registered', Interviewing: 'Participated', Offer: 'Won/Completed' },
         Others: { Applied: 'Active', Interviewing: 'In Progress', Offer: 'Completed' },
@@ -221,14 +227,14 @@ export function Analytics() {
         saved > 0 ? `${formatPercent(saved)} of pipeline saved` : 'No saved records yet',
       applied:
         interviewing > 0
-          ? `${interviewing} in interview stage`
+          ? `${interviewing} in ${activeCategory === 'Hackathons' ? 'participation' : activeCategory === 'Others' ? 'progress' : 'interview stage'}`
           : applied > 0
             ? (activeCategory === 'Jobs' ? 'Awaiting responses' : 'Registered / Applied')
             : (activeCategory === 'Jobs' ? 'No active applications' : 'No active registrations'),
       rejected:
         rejected > 0 ? `${formatPercent(rejected)} closed out` : 'No rejections yet',
       offers:
-        offers > 0 ? `${formatPercent(offers)} reached offer` : 'No offers yet',
+        offers > 0 ? `${formatPercent(offers)} ${activeCategory === 'Hackathons' ? 'won or completed' : activeCategory === 'Others' ? 'completed' : 'reached offer'}` : (activeCategory === 'Hackathons' ? 'No wins yet' : activeCategory === 'Others' ? 'None completed yet' : 'No offers yet'),
     };
   }, [overview, activeCategory]);
 
@@ -295,7 +301,7 @@ export function Analytics() {
             className="bg-card rounded-lg p-5 border border-border border-t-[3px] border-t-[#FCA311] shadow-sm transition-all hover:shadow-[0_8px_16px_rgba(252,163,17,0.15)]"
           >
             <div className="text-xs uppercase tracking-wide text-card-foreground mb-2 font-semibold opacity-60">
-              {activeCategory === 'Jobs' ? 'SAVED' : 'TOTAL PIPELINE'}
+              SAVED
             </div>
             <div className="text-4xl font-bold text-foreground mb-3 leading-none">
               {overview?.saved ?? 0}
@@ -366,12 +372,12 @@ export function Analytics() {
         </div>
 
         <div className="grid grid-cols-2 gap-6">
-          <div className="space-y-6">
+          <div className="h-full">
             <motion.div
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.3, delay: 0.25 }}
-              className="bg-card rounded-lg p-6 border border-border border-t-[3px] border-t-[#FCA311] shadow-sm transition-all hover:shadow-[0_8px_16px_rgba(252,163,17,0.15)]"
+              className="bg-card rounded-lg p-6 border border-border border-t-[3px] border-t-[#FCA311] shadow-sm transition-all hover:shadow-[0_8px_16px_rgba(252,163,17,0.15)] h-full"
             >
               <h3 className="text-lg font-bold text-foreground mb-5">
                 Application Funnel
@@ -407,19 +413,19 @@ export function Analytics() {
             </motion.div>
           </div>
 
-          <div className="space-y-6">
+          <div className="h-full">
             <motion.div
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.3, delay: 0.25 }}
-              className="bg-card rounded-lg p-6 border border-border border-t-[3px] border-t-[#FCA311] shadow-sm transition-all hover:shadow-[0_8px_16px_rgba(252,163,17,0.15)]"
+              className="bg-card rounded-lg p-6 border border-border border-t-[3px] border-t-[#FCA311] shadow-sm transition-all hover:shadow-[0_8px_16px_rgba(252,163,17,0.15)] h-full flex flex-col"
             >
               <div className="flex items-center justify-between mb-4">
                 <h3 className="text-lg font-bold text-foreground">
                   Final Outcomes
                 </h3>
                 <span className="text-sm text-muted-foreground font-medium">
-                  {overview?.totalJobs ?? 0} jobs
+                  {overview?.totalJobs ?? 0} {activeCategory === 'Hackathons' ? 'hackathons' : activeCategory === 'Others' ? 'opportunities' : 'jobs'}
                 </span>
               </div>
 
@@ -447,11 +453,13 @@ export function Analytics() {
                   <div className="text-3xl font-bold text-foreground">
                     {overview?.totalJobs ?? 0}
                   </div>
-                  <div className="text-xs text-muted-foreground">jobs</div>
+                  <div className="text-xs text-muted-foreground">
+                    {activeCategory === 'Hackathons' ? 'hackathons' : activeCategory === 'Others' ? 'opportunities' : 'jobs'}
+                  </div>
                 </div>
               </div>
 
-              <div className="flex items-center justify-center gap-6">
+              <div className="flex flex-wrap items-center justify-center gap-x-4 gap-y-3 mt-4">
                 {donutData.map((item) => (
                   <div key={item.name} className="flex items-center gap-2">
                     <div
@@ -473,107 +481,109 @@ export function Analytics() {
           </div>
         </div>
 
-        <div className="mt-6 grid grid-cols-2 gap-6">
-          <motion.div
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.3, delay: 0.3 }}
-            className="bg-card rounded-lg p-6 border border-border border-t-[3px] border-t-[#FCA311] shadow-sm transition-all hover:shadow-[0_8px_16px_rgba(252,163,17,0.15)]"
-          >
-            <h3 className="text-lg font-bold text-foreground mb-4">
-              Top Skills
-            </h3>
+        {activeCategory === 'Jobs' && (
+          <div className="mt-6 grid grid-cols-2 gap-6">
+            <motion.div
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.3, delay: 0.3 }}
+              className="bg-card rounded-lg p-6 border border-border border-t-[3px] border-t-[#FCA311] shadow-sm transition-all hover:shadow-[0_8px_16px_rgba(252,163,17,0.15)]"
+            >
+              <h3 className="text-lg font-bold text-foreground mb-4">
+                Top Skills
+              </h3>
 
-            <div className="space-y-3">
-              {topSkillBars.length === 0 ? (
-                <p className="text-sm text-muted-foreground">No skill data yet.</p>
-              ) : (
-                topSkillBars.map((skill, index) => {
-                  const widthPercent =
-                    skill.max > 0 ? (skill.count / skill.max) * 100 : 0;
+              <div className="space-y-3">
+                {topSkillBars.length === 0 ? (
+                  <p className="text-sm text-muted-foreground">No skill data yet.</p>
+                ) : (
+                  topSkillBars.map((skill, index) => {
+                    const widthPercent =
+                      skill.max > 0 ? (skill.count / skill.max) * 100 : 0;
 
-                  return (
-                    <div key={skill.skill}>
-                      <div className="mb-2 flex items-center justify-between">
-                        <span className="text-sm font-medium text-card-foreground">
-                          {skill.skill}
-                        </span>
-                        <span className="text-sm font-bold text-foreground">
-                          {skill.count}
-                        </span>
+                    return (
+                      <div key={skill.skill}>
+                        <div className="mb-2 flex items-center justify-between">
+                          <span className="text-sm font-medium text-card-foreground">
+                            {skill.skill}
+                          </span>
+                          <span className="text-sm font-bold text-foreground">
+                            {skill.count}
+                          </span>
+                        </div>
+
+                        <div className="h-2 w-full overflow-hidden rounded-full bg-background">
+                          <motion.div
+                            initial={{ width: 0 }}
+                            animate={{ width: `${widthPercent}%` }}
+                            transition={{
+                              duration: 0.6,
+                              delay: 0.35 + index * 0.05,
+                            }}
+                            className="h-full rounded-full"
+                            style={{
+                              backgroundColor: index === 1 ? '#FCA311' : '#14213D',
+                            }}
+                          />
+                        </div>
                       </div>
+                    );
+                  })
+                )}
+              </div>
+            </motion.div>
 
-                      <div className="h-2 w-full overflow-hidden rounded-full bg-background">
-                        <motion.div
-                          initial={{ width: 0 }}
-                          animate={{ width: `${widthPercent}%` }}
-                          transition={{
-                            duration: 0.6,
-                            delay: 0.35 + index * 0.05,
-                          }}
-                          className="h-full rounded-full"
-                          style={{
-                            backgroundColor: index === 1 ? '#FCA311' : '#14213D',
-                          }}
-                        />
+            <motion.div
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.3, delay: 0.3 }}
+              className="bg-card rounded-lg p-6 border border-border border-t-[3px] border-t-[#FCA311] shadow-sm transition-all hover:shadow-[0_8px_16px_rgba(252,163,17,0.15)]"
+            >
+              <h3 className="text-lg font-bold text-foreground mb-4">
+                Top Missing Skills
+              </h3>
+
+              <div className="space-y-3">
+                {skillGapBars.length === 0 ? (
+                  <p className="text-sm text-muted-foreground">No missing-skill data yet.</p>
+                ) : (
+                  skillGapBars.map((skill, index) => {
+                    const widthPercent =
+                      skill.max > 0 ? (skill.frequency / skill.max) * 100 : 0;
+
+                    return (
+                      <div key={skill.skill}>
+                        <div className="mb-2 flex items-center justify-between">
+                          <span className="text-sm font-medium text-card-foreground">
+                            {skill.skill}
+                          </span>
+                          <span className="text-sm font-bold text-foreground">
+                            {skill.frequency}
+                          </span>
+                        </div>
+
+                        <div className="h-2 w-full overflow-hidden rounded-full bg-[#FDE2E2]">
+                          <motion.div
+                            initial={{ width: 0 }}
+                            animate={{ width: `${widthPercent}%` }}
+                            transition={{
+                              duration: 0.6,
+                              delay: 0.35 + index * 0.05,
+                            }}
+                            className="h-full rounded-full"
+                            style={{
+                              backgroundColor: index === 0 ? '#B42318' : '#FCA311',
+                            }}
+                          />
+                        </div>
                       </div>
-                    </div>
-                  );
-                })
-              )}
-            </div>
-          </motion.div>
-
-          <motion.div
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.3, delay: 0.3 }}
-            className="bg-card rounded-lg p-6 border border-border border-t-[3px] border-t-[#FCA311] shadow-sm transition-all hover:shadow-[0_8px_16px_rgba(252,163,17,0.15)]"
-          >
-            <h3 className="text-lg font-bold text-foreground mb-4">
-              Top Missing Skills
-            </h3>
-
-            <div className="space-y-3">
-              {skillGapBars.length === 0 ? (
-                <p className="text-sm text-muted-foreground">No missing-skill data yet.</p>
-              ) : (
-                skillGapBars.map((skill, index) => {
-                  const widthPercent =
-                    skill.max > 0 ? (skill.frequency / skill.max) * 100 : 0;
-
-                  return (
-                    <div key={skill.skill}>
-                      <div className="mb-2 flex items-center justify-between">
-                        <span className="text-sm font-medium text-card-foreground">
-                          {skill.skill}
-                        </span>
-                        <span className="text-sm font-bold text-foreground">
-                          {skill.frequency}
-                        </span>
-                      </div>
-
-                      <div className="h-2 w-full overflow-hidden rounded-full bg-[#FDE2E2]">
-                        <motion.div
-                          initial={{ width: 0 }}
-                          animate={{ width: `${widthPercent}%` }}
-                          transition={{
-                            duration: 0.6,
-                            delay: 0.35 + index * 0.05,
-                          }}
-                          className="h-full rounded-full"
-                          style={{
-                            backgroundColor: index === 0 ? '#B42318' : '#FCA311',
-                          }}
-                        />
-                      </div>
-                    </div>
-                  );
-                })
-              )}
-            </div>
-          </motion.div>
-        </div>
+                    );
+                  })
+                )}
+              </div>
+            </motion.div>
+          </div>
+        )}
 
         {activeCategory === 'Jobs' && (
         <motion.div
@@ -699,7 +709,8 @@ export function Analytics() {
             </div>
 
             <div className="mt-5 border-t border-border pt-4 text-sm text-muted-foreground">
-              Interview → Offer rate: 25% • Avg. time: 3 weeks
+              {activeCategory === 'Hackathons' ? 'Participated → Won rate: ' : activeCategory === 'Others' ? 'Active → Completed rate: ' : 'Interview → Offer rate: '}
+              {funnelData?.conversionRates?.interviewToOffer || '0'}% • Avg. time: {responseTimes?.avgResponseTime || 0} days
             </div>
           </motion.div>
         </div>
@@ -751,7 +762,7 @@ export function Analytics() {
           >
             <div className="mb-5 flex items-center justify-between">
               <h3 className="text-lg font-bold text-foreground">
-                Top Companies by Volume
+                {activeCategory === 'Hackathons' ? 'Top Organizers by Volume' : activeCategory === 'Others' ? 'Top Sources by Volume' : 'Top Companies by Volume'}
               </h3>
             </div>
 
@@ -759,8 +770,12 @@ export function Analytics() {
               <table className="w-full text-left text-sm">
                 <thead className="border-b border-border bg-secondary-foreground/5 text-xs uppercase text-muted-foreground">
                   <tr>
-                    <th className="px-4 py-3 font-semibold rounded-tl-lg">Company</th>
-                    <th className="px-4 py-3 font-semibold text-center">Total Apps</th>
+                    <th className="px-4 py-3 font-semibold rounded-tl-lg">
+                      {activeCategory === 'Hackathons' ? 'Organizer' : activeCategory === 'Others' ? 'Source' : 'Company'}
+                    </th>
+                    <th className="px-4 py-3 font-semibold text-center">
+                      {activeCategory === 'Hackathons' ? 'Total Registrations' : activeCategory === 'Others' ? 'Total Saved' : 'Total Apps'}
+                    </th>
                     <th className="px-4 py-3 font-semibold text-center">
                       {activeCategory === 'Hackathons' ? 'Participating' : activeCategory === 'Others' ? 'Active' : 'Interviewing'}
                     </th>
