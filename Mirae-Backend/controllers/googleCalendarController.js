@@ -113,15 +113,19 @@ const parseEventTime = (date, time) => {
 
 const buildGoogleEventPayload = (event) => {
   const isInterview = event.type === 'interview';
-  const start = isInterview
-    ? parseEventTime(event.date, event.startTime || '09:00 AM')
-    : parseEventTime(event.date, event.endTime || '11:59 PM');
-  let end = isInterview
-    ? parseEventTime(event.date, event.endTime || '10:00 AM')
-    : new Date(start.getTime() + 15 * 60 * 1000);
+  let start;
+  let end;
 
-  if (end <= start) {
-    end = new Date(start.getTime() + 60 * 60 * 1000);
+  if (isInterview) {
+    start = parseEventTime(event.date, event.startTime || '09:00 AM');
+    end = parseEventTime(event.date, event.endTime || '10:00 AM');
+
+    if (end <= start) {
+      end = new Date(start.getTime() + 60 * 60 * 1000);
+    }
+  } else {
+    start = parseEventTime(event.date, event.endTime || '11:59 PM');
+    end = new Date(start.getTime() + 1 * 60 * 1000);
   }
 
   const descriptionParts = [event.description || ''];
