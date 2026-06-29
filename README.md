@@ -1,31 +1,32 @@
 <p align="center">
-  <img src="mirae-logo.svg" alt="Mirae Logo" width="140" />
+  <img src="mirae-logo.svg" alt="Mirae Logo" width="120" />
 </p>
 
 <h1 align="center">Mirae</h1>
 
 <p align="center">
-  <strong>AI-Powered Career Command Center</strong><br />
-  <em>Save opportunities fast, understand them with AI, and track them in one calm workspace.</em>
+  <strong>Autonomous Career Operating System</strong><br />
+  <em>An event-driven platform that ingests recruiter emails, classifies opportunities with ML, and manages your entire job search pipeline — autonomously.</em>
 </p>
 
 <p align="center">
-  <img src="https://img.shields.io/badge/Frontend-React%20+%20Vite-61DAFB?style=for-the-badge&logo=react&logoColor=white" />
-  <img src="https://img.shields.io/badge/Backend-Node.js%20+%20Express-339933?style=for-the-badge&logo=node.js&logoColor=white" />
-  <img src="https://img.shields.io/badge/Microservice-Python%20FastAPI-009688?style=for-the-badge&logo=fastapi&logoColor=white" />
-  <img src="https://img.shields.io/badge/Realtime-Socket.io-010101?style=for-the-badge&logo=socket.io&logoColor=white" />
-  <img src="https://img.shields.io/badge/Database-MongoDB%20Atlas-47A248?style=for-the-badge&logo=mongodb&logoColor=white" />
-  <img src="https://img.shields.io/badge/ML-Scikit--Learn%20+%20Groq-FF6B35?style=for-the-badge" />
-  <img src="https://img.shields.io/badge/Extension-Chrome%20MV3-4285F4?style=for-the-badge&logo=googlechrome&logoColor=white" />
+  <img src="https://img.shields.io/badge/React_18-TypeScript-61DAFB?style=for-the-badge&logo=react&logoColor=white" />
+  <img src="https://img.shields.io/badge/Express_5-Node.js-339933?style=for-the-badge&logo=node.js&logoColor=white" />
+  <img src="https://img.shields.io/badge/FastAPI-Scikit--Learn-009688?style=for-the-badge&logo=fastapi&logoColor=white" />
+  <img src="https://img.shields.io/badge/Socket.io-Realtime-010101?style=for-the-badge&logo=socket.io&logoColor=white" />
+  <img src="https://img.shields.io/badge/MongoDB_Atlas-Mongoose_9-47A248?style=for-the-badge&logo=mongodb&logoColor=white" />
+  <img src="https://img.shields.io/badge/Gmail_API-Pub%2FSub_Webhooks-EA4335?style=for-the-badge&logo=gmail&logoColor=white" />
+  <img src="https://img.shields.io/badge/Groq-LLaMA_3.3_70B-FF6B35?style=for-the-badge" />
+  <img src="https://img.shields.io/badge/Chrome_Extension-Manifest_V3-4285F4?style=for-the-badge&logo=googlechrome&logoColor=white" />
 </p>
 
 <p align="center">
   <a href="#-features">Features</a> •
-  <a href="#-how-it-works">How It Works</a> •
+  <a href="#-system-architecture">Architecture</a> •
   <a href="#-tech-stack">Tech Stack</a> •
-  <a href="#-project-structure">Project Structure</a> •
-  <a href="#-api-reference">API Reference</a> •
-  <a href="#-getting-started">Getting Started</a> •
+  <a href="#-project-structure">Structure</a> •
+  <a href="#-api-reference">API</a> •
+  <a href="#-getting-started">Setup</a> •
   <a href="#-team">Team</a>
 </p>
 
@@ -33,9 +34,16 @@
 
 ## 📖 Overview
 
-**Mirae** (미래 — Korean for *"future"*) is a full-stack opportunity tracking platform designed for students and professionals navigating their career search. It brings together a polished React dashboard, an intelligent Express + MongoDB backend, and a Chrome extension into one unified workspace.
+**Mirae** (미래 — Korean for *"future"*) is a full-stack, event-driven career management platform that goes far beyond a simple job tracker. It combines a polished React dashboard, an intelligent Node.js backend, a Python ML microservice, Gmail Pub/Sub webhooks, real-time WebSockets, a Recruiter CRM, and a Chrome extension into a single autonomous system.
 
-Mirae doesn't just store your saved jobs — it **understands** them. Using Groq-powered AI (Llama 3.3 70B), every clipped opportunity is automatically analyzed, categorized, skill-matched against your resume, and scored for relevance. The result is a career command center that helps you stay organized, focused, and data-driven.
+### What Makes Mirae Different
+
+Most job trackers require you to manually log every application. Mirae **does it for you**:
+
+1. **Passive Ingestion** — Connect your Gmail and Mirae automatically detects recruiter emails, classifies them (offer? rejection? interview invite?), updates your Kanban board, creates recruiter contacts, and schedules calendar reminders — all without you lifting a finger.
+2. **Active Ingestion** — Right-click any job posting on the web and the Chrome extension scrapes, analyzes, and saves it with AI-extracted metadata in seconds.
+3. **ML-Powered Classification** — A custom Scikit-Learn pipeline (TF-IDF + Logistic Regression) handles email relevance detection, category classification, and status inference locally, ensuring complete data privacy.
+4. **Real-time Sync** — Socket.io WebSockets push every status change to your dashboard instantly. No refreshing.
 
 ---
 
@@ -45,61 +53,77 @@ Mirae doesn't just store your saved jobs — it **understands** them. Using Groq
 
 | Capability | Description |
 |---|---|
-| **Multi-Category Tracking** | Track **Jobs**, **Hackathons/Contests**, and **Others** (workshops, webinars, fellowships, scholarships, etc.) in organized tabs |
-| **Pipeline Management** | Jobs flow through `Saved → Applied / Interviewing → Offers → Rejected` stages |
+| **Multi-Category Tracking** | Track **Jobs**, **Hackathons**, and **Others** (workshops, webinars, fellowships, scholarships) in organized tabs |
+| **Kanban Pipeline** | Jobs flow through `Saved → Applied → Interviewing → Offer → Rejected` with drag-and-drop |
 | **Hackathon Tracking** | Separate `Saved` and `Registered` sections for hackathons and contests |
-| **Dynamic Summary Bar** | Context-aware summary statistics that update based on the active tab |
+| **Dynamic Summary Bar** | Context-aware summary statistics that update based on the active category tab |
 | **Manual Entry** | Add opportunities manually with a structured form when not using the extension |
-| **Card-Level Actions** | Delete records directly from the UI with instant MongoDB sync |
+| **Search & Sort** | Full-text search and multi-criteria sorting across all tracked opportunities |
+| **Duplicate Detection** | Automatic URL-based deduplication prevents saving the same posting twice |
 
-### 🤖 Autonomous Event-Driven Architecture
+### 🤖 Autonomous Event-Driven Pipeline
 
 | Capability | Description |
 |---|---|
-| **Gmail Pub/Sub Webhooks** | Automatically ingests recruiter emails in real-time via Google Cloud Pub/Sub, eliminating the need for slow API polling |
-| **Local ML Microservice** | A standalone Python FastAPI service running a custom Scikit-Learn TF-IDF model for classification, ensuring high performance and 100% data privacy (no sending emails to third-party LLMs) |
-| **Real-time State Sync** | Uses Socket.io WebSockets to instantly push database mutations and new applications from the backend directly to the React dashboard without refreshing |
-| **Background Cron Jobs** | Node-cron service autonomously scans the database to detect stale applications, provision calendar reminders, and manage your pipeline in the background |
-| **Intelligent Extraction** | Automatically extracts title, company, location, salary, deadline, and description from raw page text or emails |
-| **Skill Matching** | Compares required skills against your uploaded resume using a comprehensive 40+ skill library (Powered by Groq Llama 3) |
+| **Gmail Pub/Sub Webhooks** | Ingests recruiter emails in real-time via Google Cloud Pub/Sub push notifications — no polling |
+| **6-Stage Email Processing** | (1) Acknowledge Google, (2) Decode & deduplicate via History ID, (3) Fetch message via Gmail API, (4) ML classification, (5) Kanban status update + Socket.io emit, (6) Auto-create contacts, calendar events, and offer metadata |
+| **Local ML Microservice** | Python FastAPI service running a custom Scikit-Learn TF-IDF pipeline for relevance detection, category classification, and status inference — 100% local, zero data sent to third-party LLMs |
+| **Cosine Similarity Matching** | ML `/match` endpoint uses TF-IDF cosine similarity to link incoming emails to existing job cards on your board |
+| **Real-time WebSockets** | Socket.io pushes every mutation (status changes, new emails, reminders) to the React dashboard without page refresh |
+| **Background Cron Jobs** | Daily at 8 AM: scans for stale "Interviewing" applications (7+ days), auto-creates follow-up calendar reminders, syncs to Google Calendar |
+| **AI Skill Extraction** | Groq LLaMA 3.3 70B extracts technical skills from job descriptions and resumes, then computes match scores |
+| **Privacy-First Design** | Email body text is held in-memory only during processing and is never persisted to the database |
+
+### 👥 Recruiter CRM
+
+| Capability | Description |
+|---|---|
+| **Auto-Created Contacts** | When a recruiter emails you, the system automatically creates a Contact record with their name, email, company, and role |
+| **Interaction History** | Every email interaction is logged with timestamp and subject reference |
+| **Job Linking** | Contacts are automatically linked to the relevant job card on your Kanban board |
+| **Manual Updates** | Edit contact details, add phone/LinkedIn, change role (Recruiter/Hiring Manager/Interviewer) |
 
 ### 📊 Analytics & Insights
 
 | Capability | Description |
 |---|---|
-| **Application Funnel** | Visual breakdown of your pipeline from Saved through to Offers |
-| **Status Distribution** | Pie/bar charts showing where your applications currently stand |
-| **Final Outcomes** | Track acceptance rates and rejection patterns |
-| **Top Skills** | See which skills appear most across your tracked opportunities |
-| **Summary Cards** | At-a-glance counts for saved, applied, rejected, and offer stages |
-
-> **Note:** Analytics is currently scoped to **Jobs** only. Hackathons and Others do not affect analytics calculations.
-
-### 📋 Detail Panels
-
-- **Jobs** → Full `ApplicationDetail` drawer with skill analysis breakdown, match score, description, networking contacts, personal notes, and status controls
-- **Hackathons & Others** → `OpportunityDetail` drawer with organizer, deadline, location, status, description, and source link
+| **Category Tabs** | Switch between `Jobs`, `Hackathons`, and `Others` to view category-specific analytics |
+| **Application Funnel** | Visual breakdown from Saved → Applied → Interviewing → Offer with conversion rates |
+| **Status Distribution** | Donut chart showing Active vs Offers vs Rejected |
+| **Pipeline Velocity** | Average days from application to interview across your tracked responses |
+| **Top Skills** | Most frequently requested skills across all your tracked opportunities |
+| **Skill Gap Analysis** | Top 5 skills you're missing — ranked by how often they appear in job requirements |
+| **Match Insights** | Average match score across all jobs vs jobs that progressed to interview/offer |
+| **Company Breakdown** | Top 10 companies by application volume with per-company success rates |
+| **Rejection & Offer Breakdown** | Detailed lists of rejected and offered positions with reasons |
 
 ### 📅 Calendar
 
 | Capability | Description |
 |---|---|
-| **Event Management** | Create, edit, and delete calendar events for interviews, deadlines, and follow-ups |
-| **Dashboard Sync** | Automatically sync deadlines and important dates from tracked opportunities |
-| **Event Types** | Support for `interview`, `deadline`, `follow-up`, and `other` event categories |
-| **Status Tracking** | Mark events as `pending` or `completed` |
+| **Month / Week / Day Views** | Full calendar interface with multiple view modes |
+| **Event CRUD** | Create, edit, and delete events for interviews, deadlines, and follow-ups |
+| **Dashboard Sync** | One-click sync of deadlines from tracked opportunities to the calendar |
+| **Google Calendar Integration** | Two-way OAuth sync — events created in Mirae appear in Google Calendar and vice versa |
+| **Auto-Created Events** | Interview dates extracted from recruiter emails are automatically added to the calendar |
+| **Event Types** | Support for `interview`, `deadline`, `follow-up`, and `other` categories |
+
+### 📋 Detail Panels
+
+- **Jobs** → Full `ApplicationDetail` drawer with skill analysis, match score, contacts, notes, status history, and deadline
+- **Hackathons & Others** → `OpportunityDetail` drawer with organizer, deadline, location, status, description, and source link
 
 ### 👤 Account & Profile
 
 | Capability | Description |
 |---|---|
-| **JWT Authentication** | Secure registration and login with token-based auth |
-| **Protected Routes** | Frontend route guards ensure authenticated access |
+| **JWT Authentication** | Secure registration and login with token-based auth (bcrypt password hashing) |
+| **Protected Routes** | Frontend route guards ensure authenticated access to all dashboard pages |
 | **Profile Management** | Update name, email, and profile photo |
 | **Password Management** | Change password with current password verification |
-| **Resume Upload** | Upload PDF resumes with automatic text extraction via `pdf-parse` |
+| **Resume Upload** | Upload PDF/TXT resumes with automatic text extraction via `pdf-parse` and AI skill extraction |
 | **Social Portfolio** | Manage links to GitHub, LinkedIn, portfolio sites, and more |
-| **Account Deletion** | Full account removal with data cleanup |
+| **Account Deletion** | Full account removal with cascade data cleanup |
 
 ### ⚙️ Settings
 
@@ -108,57 +132,73 @@ Mirae doesn't just store your saved jobs — it **understands** them. Using Groq
 | **Notifications** | Configure follow-up reminders, deadline alerts, interview reminders, and browser notifications |
 | **Notification Timing** | Choose `1 day`, `3 days`, or custom hours before events |
 | **Appearance** | Toggle between `light` and `dark` themes with accent style and card layout preferences |
+| **Gmail Integration** | Connect/disconnect Gmail for automatic email processing |
+| **Google Calendar** | Connect/disconnect Google Calendar for two-way event sync |
 | **Privacy & Security** | Security activity alerts and profile discoverability controls |
 | **Data Management** | Clear all application data or reset settings to defaults |
-| **Danger Zone** | Account deletion and irreversible data operations with confirmation modals |
+| **Danger Zone** | Account deletion with confirmation modals |
 
-### 🧩 Chrome Extension
+### 🧩 Chrome Extension (Manifest V3)
 
 | Capability | Description |
 |---|---|
 | **One-Click Save** | Right-click → "Save to Mirae" context menu on any webpage |
-| **Intelligent Scraping** | Content script extracts visible page text for AI analysis |
-| **Token Sync** | Seamless authentication sync between the dashboard and extension |
-| **Background Processing** | Service worker handles page clipping and backend communication |
-| **Chrome MV3** | Built on Manifest V3 for modern Chrome compatibility |
+| **Omni-Scraper** | Content script extracts the first 8,000 characters of visible page text for AI analysis |
+| **Token Sync** | Seamless JWT authentication sync between the dashboard and extension via `externally_connectable` |
+| **Popup UI** | Quick-access popup with "Open Dashboard" and "Save to Mirae" buttons |
+| **Deduplication** | In-flight request deduplication prevents double-saving |
 
 ---
 
-## 🔄 How It Works
+## 🏗️ System Architecture
 
 ```text
-┌──────────────┐     ┌──────────────┐
-│  Recruiters  │────▶│    Gmail     │
-│   (Emails)   │     │ (Pub/Sub)    │
-└──────────────┘     └──────────────┘
-                            │ (Webhooks)
-                            ▼
-┌─────────────────┐  ┌──────────────┐      ┌─────────────┐
-│ Chrome Extension│─▶│ Node.js API  │◀────▶│ Python ML   │
-│ (Page Scraper)  │  │ (Express)    │      │ Microservice│
-└─────────────────┘  └──────────────┘      └─────────────┘
-                            │                     │
-                            │ (Socket.io)         ▼
-                            │              ┌─────────────┐
-                            ▼              │ Scikit-Learn│
-┌─────────────────────────────────────┐    │ TF-IDF Model│
-│       React Dashboard (Vite)        │    └─────────────┘
-│ ┌─────────┐ ┌─────────┐ ┌─────────┐ │
-│ │ Tracker │ │ Calendar│ │ Contacts│ │
-│ └─────────┘ └─────────┘ └─────────┘ │
-└─────────────────────────────────────┘
+                    ┌──────────────────┐
+                    │   Google Cloud   │
+                    │    Pub/Sub       │
+                    └────────┬─────────┘
+                             │ (Webhook push)
+                             ▼
+┌─────────────────┐   ┌─────────────────┐   ┌──────────────────┐
+│ Chrome Extension│──▶│   Node.js API   │◀─▶│  Python FastAPI   │
+│ (Omni-Scraper)  │   │   (Express 5)   │   │  ML Microservice  │
+└─────────────────┘   └────────┬────────┘   └──────────────────┘
+                               │                     │
+                    ┌──────────┼──────────┐          │
+                    │          │          │          ▼
+                    ▼          ▼          ▼    ┌──────────────┐
+             ┌──────────┐ ┌────────┐ ┌──────┐ │ Scikit-Learn │
+             │ MongoDB  │ │Socket  │ │ Groq │ │ TF-IDF +     │
+             │ Atlas    │ │.io     │ │ LLaMA│ │ Logistic Reg │
+             └──────────┘ └────────┘ └──────┘ └──────────────┘
+                               │
+                    (Real-time WebSocket)
+                               │
+                               ▼
+             ┌─────────────────────────────────┐
+             │     React Dashboard (Vite)      │
+             │  ┌─────────┐ ┌────────────────┐ │
+             │  │ Kanban  │ │   Analytics    │ │
+             │  │ Board   │ │   (Recharts)   │ │
+             │  ├─────────┤ ├────────────────┤ │
+             │  │Calendar │ │ Recruiter CRM  │ │
+             │  └─────────┘ └────────────────┘ │
+             └─────────────────────────────────┘
 ```
 
 ### End-to-End Event Flow
 
-1. **Passive Ingestion (Gmail):** A recruiter emails you. Google Cloud Pub/Sub detects the new message and fires a webhook to the Node.js backend.
-2. **Active Ingestion (Extension):** You right-click a job posting and hit "Save to Mirae".
-3. **ML Classification:** The Node.js backend forwards the raw text to the **Python FastAPI Microservice**.
-4. **Data Extraction & Scoring:**
-   - The custom **Scikit-Learn TF-IDF model** categorizes the opportunity (Job, Hackathon, Other) and infers the pipeline status (e.g., Offer, Rejected, Applied) with 98%+ accuracy.
-   - **Groq Llama 3** extracts specific technical skills and computes a match score against your uploaded resume.
-5. **Real-time UI Sync:** The enriched record is saved to MongoDB. The Node backend emits a **Socket.io** event, which instantly renders the new job/email on your React dashboard without you needing to refresh the page.
-6. **Autonomous Reminders:** Every hour, a background **Cron Job** scans your pipeline. If it detects you haven't followed up with a recruiter in 7 days, it creates a reminder event in your Calendar.
+1. **Passive Ingestion (Gmail)** — A recruiter emails you. Google Cloud Pub/Sub detects the new message and fires a webhook to the Node.js backend.
+2. **Active Ingestion (Extension)** — You right-click a job posting and hit "Save to Mirae". The content script scrapes the page and sends raw text to the API.
+3. **ML Classification** — The backend forwards text to the Python FastAPI microservice, which runs a 3-stage pipeline:
+   - **Stage 1**: Binary relevance detection (is this a career-related email?)
+   - **Stage 2**: Category classification (Job / Hackathon / Other)
+   - **Stage 3**: Fine-grained status prediction (Applied / OA / Interviewing / Offer / Rejected)
+4. **Card Matching** — For emails, a TF-IDF cosine similarity matcher links the message to the most relevant existing job card on your board.
+5. **AI Skill Extraction** — Groq LLaMA 3.3 70B extracts technical skills from job descriptions and computes a match score against your uploaded resume.
+6. **Real-time UI Sync** — The enriched record is saved to MongoDB. Socket.io emits a `status_update` event, instantly updating the React dashboard.
+7. **Autonomous Side Effects** — The system auto-creates recruiter contacts (CRM), schedules calendar events for interview dates, and saves offer metadata (salary, deadline).
+8. **Background Reminders** — A daily cron job scans for stale "Interviewing" applications and creates follow-up reminders in both Mirae and Google Calendar.
 
 ---
 
@@ -166,47 +206,66 @@ Mirae doesn't just store your saved jobs — it **understands** them. Using Groq
 
 ### Frontend
 
-| Technology | Purpose |
-|---|---|
-| **React 18** | UI component library |
-| **Vite** | Build tool and dev server |
-| **TypeScript** | Type-safe development |
-| **Tailwind CSS 4** | Utility-first styling |
-| **Motion (Framer)** | Animations and transitions |
-| **Recharts** | Analytics charts and visualizations |
-| **Radix UI** | Accessible, unstyled UI primitives |
-| **Lucide React** | Icon library |
-| **React Router 7** | Client-side routing |
-| **Sonner** | Toast notifications |
-| **date-fns** | Date formatting and manipulation |
+| Technology | Version | Purpose |
+|---|---|---|
+| React | 18.3 | UI component library |
+| TypeScript | 5.x | Type-safe development |
+| Vite | 6.4 | Build tool and dev server |
+| Tailwind CSS | 4.1 | Utility-first styling |
+| Radix UI | 16+ primitives | Accessible, unstyled UI components (via shadcn/ui) |
+| MUI | 7.3 | Material Design components |
+| Recharts | 2.15 | Analytics charts and visualizations |
+| Socket.io Client | 4.8 | Real-time WebSocket connection |
+| React Router | 7.13 | Client-side routing |
+| React DnD | 16.0 | Drag-and-drop for Kanban pipeline |
+| Framer Motion | 12.x | Animations and transitions |
+| Sonner | 2.0 | Toast notifications |
+| date-fns | 3.6 | Date formatting and manipulation |
+| Lucide React | 0.487 | Icon library |
 
 ### Backend
 
+| Technology | Version | Purpose |
+|---|---|---|
+| Node.js | 18+ | JavaScript runtime |
+| Express | 5.2 | Web framework and API routing |
+| Mongoose | 9.5 | MongoDB ODM |
+| Socket.io | 4.8 | Real-time WebSocket server |
+| JWT | 9.0 | Token-based authentication |
+| bcrypt | 6.0 | Password hashing |
+| Multer | 2.1 | File upload handling (resumes, photos) |
+| pdf-parse | 1.1 | PDF text extraction for resumes |
+| Groq SDK | 1.1 | AI inference via LLaMA 3.3 70B |
+| googleapis | 173.0 | Gmail API + Google Calendar API |
+| node-cron | 4.5 | Scheduled background jobs |
+| cors | 2.8 | Cross-origin resource sharing |
+
+### ML Microservice
+
 | Technology | Purpose |
 |---|---|
-| **Node.js** | JavaScript runtime |
-| **Express 5** | Web framework and API routing |
-| **Mongoose 9** | MongoDB ODM |
-| **JWT** | Token-based authentication |
-| **bcrypt** | Password hashing |
-| **Multer** | File upload handling (resumes, photos) |
-| **pdf-parse** | PDF text extraction for resumes |
-| **Groq SDK** | AI inference via Llama 3.3 70B |
+| Python 3.10+ | Runtime |
+| FastAPI | REST API framework |
+| Uvicorn | ASGI server |
+| Scikit-Learn | TF-IDF vectorization + Logistic Regression models |
+| Pandas / NumPy | Data processing |
+| spaCy | NLP utilities |
 
 ### Database & AI
 
 | Technology | Purpose |
 |---|---|
-| **MongoDB Atlas** | Cloud-hosted document database |
-| **Groq (Llama 3.3 70B)** | Fast AI extraction, classification, and skill matching |
+| MongoDB Atlas | Cloud-hosted document database |
+| Groq (LLaMA 3.3 70B) | Skill extraction and resume analysis |
+| Scikit-Learn (local) | Email classification, category prediction, status inference, cosine similarity matching |
 
-### Extension
+### Integrations
 
-| Technology | Purpose |
+| Integration | Purpose |
 |---|---|
-| **Chrome MV3** | Extension platform |
-| **Service Worker** | Background page clipping and API communication |
-| **Content Script** | DOM text extraction |
+| Gmail API + Pub/Sub | Real-time email ingestion via webhooks |
+| Google Calendar API | Two-way event sync with OAuth 2.0 |
+| Chrome Extension (MV3) | Web page scraping and one-click save |
 
 ---
 
@@ -214,96 +273,115 @@ Mirae doesn't just store your saved jobs — it **understands** them. Using Groq
 
 ```text
 Mirae/
-├── src/                            # Frontend source
-│   ├── main.tsx                    # App entry point
+├── src/                               # Frontend source
+│   ├── main.tsx                       # App entry point
 │   ├── app/
-│   │   ├── App.tsx                 # Root component with routing
+│   │   ├── App.tsx                    # Root component with routing
 │   │   ├── components/
-│   │   │   ├── LandingPage.tsx     # Public landing page
-│   │   │   ├── Dashboard.tsx       # Main dashboard with tabs
-│   │   │   ├── Analytics.tsx       # Analytics & insights view
-│   │   │   ├── CalendarView.tsx    # Calendar event management
-│   │   │   ├── Settings.tsx        # User settings panel
-│   │   │   ├── ApplicationDetail.tsx   # Job detail side drawer
-│   │   │   ├── OpportunityDetail.tsx   # Hackathon/Other detail drawer
-│   │   │   ├── AddManualModal.tsx      # Manual opportunity entry
-│   │   │   ├── ManageResumesModal.tsx  # Resume upload/management
+│   │   │   ├── Dashboard.tsx          # Main Kanban board with category tabs
+│   │   │   ├── Analytics.tsx          # Analytics with category toggle
+│   │   │   ├── CalendarView.tsx       # Full calendar (month/week/day)
+│   │   │   ├── Settings.tsx           # User settings + integrations
+│   │   │   ├── Contacts.tsx           # Recruiter CRM page
+│   │   │   ├── ApplicationDetail.tsx  # Job detail side drawer
+│   │   │   ├── OpportunityDetail.tsx  # Hackathon/Other detail drawer
+│   │   │   ├── IntegrationStatus.tsx  # Gmail + Calendar connection UI
+│   │   │   ├── AddManualModal.tsx     # Manual opportunity entry
+│   │   │   ├── ManageResumesModal.tsx # Resume upload/management
 │   │   │   ├── SocialPortfolioModal.tsx # Social links manager
-│   │   │   ├── LoginModal.tsx          # Login form
-│   │   │   ├── SignupModal.tsx         # Registration form
-│   │   │   ├── LogoutConfirmModal.tsx  # Logout confirmation
-│   │   │   ├── ProfilePopover.tsx      # Profile quick view
-│   │   │   ├── ExtensionPopup.tsx      # Extension status UI
-│   │   │   ├── ExtensionOnboardingModal.tsx
-│   │   │   ├── BrandLogo.tsx           # Logo component
-│   │   │   ├── Sidebar.tsx             # Navigation sidebar
-│   │   │   ├── ProtectedRoute.tsx      # Auth route guard
-│   │   │   ├── ui/                     # Reusable UI primitives (shadcn)
-│   │   │   └── figma/                  # Figma design components
+│   │   │   ├── LoginModal.tsx         # Login form
+│   │   │   ├── SignupModal.tsx        # Registration form
+│   │   │   ├── LandingPage.tsx        # Public landing page
+│   │   │   ├── Sidebar.tsx            # Navigation sidebar
+│   │   │   ├── ProtectedRoute.tsx     # Auth route guard
+│   │   │   ├── ui/                    # Reusable UI primitives (shadcn)
+│   │   │   └── figma/                 # Design components
 │   │   ├── services/
-│   │   │   ├── api.ts              # HTTP client with auth headers
-│   │   │   ├── authService.ts      # Login/register/logout
-│   │   │   ├── dashboardService.ts # Dashboard data fetching
-│   │   │   ├── analyticsService.ts # Analytics data fetching
-│   │   │   ├── trackerService.ts   # Opportunity CRUD
-│   │   │   ├── profileService.ts   # Profile management
-│   │   │   ├── calendarService.ts  # Calendar event management
-│   │   │   ├── settingsService.ts  # Settings CRUD
-│   │   │   └── googleCalendarService.ts
-│   │   ├── types/
-│   │   │   ├── job.ts              # Job/Opportunity types
-│   │   │   ├── user.ts             # User types
-│   │   │   └── calendar.ts         # Calendar event types
+│   │   │   ├── api.ts                 # HTTP client with auth headers
+│   │   │   ├── authService.ts         # Login / register / logout
+│   │   │   ├── dashboardService.ts    # Dashboard data fetching
+│   │   │   ├── analyticsService.ts    # Analytics data (with category param)
+│   │   │   ├── trackerService.ts      # Opportunity CRUD
+│   │   │   ├── calendarService.ts     # Calendar event management
+│   │   │   ├── contactService.ts      # Recruiter CRM operations
+│   │   │   ├── settingsService.ts     # Settings CRUD
+│   │   │   ├── profileService.ts      # Profile management
+│   │   │   └── googleCalendarService.ts # Google Calendar sync
 │   │   ├── hooks/
-│   │   │   ├── useTheme.ts         # Theme management hook
-│   │   │   ├── useNotificationScheduler.ts
-│   │   │   └── useExtensionDetection.ts
-│   │   └── contexts/
-│   │       └── UserContext.tsx      # Global user state
-│   └── styles/                     # Global CSS and theme tokens
+│   │   │   ├── useRealtimeUpdates.ts  # Socket.io live status listener
+│   │   │   ├── useNotificationScheduler.ts # Client-side reminder cron
+│   │   │   ├── useExtensionDetection.ts # Chrome extension ping
+│   │   │   └── useTheme.ts           # Light/dark theme toggle
+│   │   ├── contexts/
+│   │   │   └── UserContext.tsx        # Global user state
+│   │   └── types/
+│   │       ├── job.ts                 # Job/Opportunity types
+│   │       ├── user.ts                # User types
+│   │       └── calendar.ts           # Calendar event types
+│   └── styles/                        # Global CSS and theme tokens
 │
-├── Mirae-Backend/                  # Backend source
-│   ├── server.js                   # Express app entry point
+├── Mirae-Backend/                     # Backend source
+│   ├── server.js                      # Express entry point + Socket.io init
 │   ├── config/
-│   │   └── db.js                   # MongoDB connection
+│   │   └── db.js                      # MongoDB Atlas connection
 │   ├── controllers/
-│   │   ├── authController.js       # Register/login logic
-│   │   ├── trackerController.js    # AI analysis + CRUD
-│   │   ├── profileController.js    # Profile/resume/social links
-│   │   ├── dashboardController.js  # Dashboard summaries
-│   │   ├── analyticsController.js  # Analytics computations
-│   │   ├── calendarController.js   # Calendar event CRUD
-│   │   ├── settingsController.js   # User settings CRUD
-│   │   └── googleCalendarController.js
-│   ├── middlewares/
-│   │   └── authMiddleware.js       # JWT verification
+│   │   ├── trackerController.js       # AI analysis + skill matching + CRUD
+│   │   ├── gmailWebhookController.js  # 6-stage email processing pipeline
+│   │   ├── gmailAuthController.js     # Gmail OAuth + Pub/Sub watch
+│   │   ├── googleCalendarController.js # Two-way Google Calendar sync
+│   │   ├── analyticsController.js     # 7 analytics endpoints (category-aware)
+│   │   ├── calendarController.js      # Calendar CRUD + deadline sync
+│   │   ├── contactController.js       # Recruiter CRM operations
+│   │   ├── dashboardController.js     # Dashboard summaries
+│   │   ├── profileController.js       # Profile / resume / social links
+│   │   └── settingsController.js      # User settings CRUD
 │   ├── models/
-│   │   ├── User.js                 # User schema
-│   │   ├── Job.js                  # Opportunity schema
-│   │   ├── CalendarEvent.js        # Calendar event schema
-│   │   └── Settings.js             # Settings schema
+│   │   ├── User.js                    # User schema (auth + resume + OAuth tokens)
+│   │   ├── Job.js                     # Opportunity schema (skills + match + history)
+│   │   ├── CalendarEvent.js           # Calendar event schema (Google sync)
+│   │   ├── Contact.js                 # CRM contact schema (interactions)
+│   │   └── Settings.js                # User settings schema
 │   ├── routes/
-│   │   ├── authRoutes.js
-│   │   ├── trackerRoutes.js
-│   │   ├── profileRoutes.js
-│   │   ├── dashboardRoutes.js
-│   │   ├── analyticsRoutes.js
-│   │   ├── calendarRoutes.js
-│   │   ├── settingsRoutes.js
-│   │   └── jobRoutes.js
+│   │   ├── authRoutes.js              # Auth + Google Calendar OAuth
+│   │   ├── trackerRoutes.js           # Tracker CRUD
+│   │   ├── gmailRoutes.js             # Gmail OAuth + webhook
+│   │   ├── profileRoutes.js           # Profile management
+│   │   ├── dashboardRoutes.js         # Dashboard endpoints
+│   │   ├── analyticsRoutes.js         # Analytics endpoints
+│   │   ├── calendarRoutes.js          # Calendar endpoints
+│   │   ├── contactRoutes.js           # CRM endpoints
+│   │   ├── settingsRoutes.js          # Settings endpoints
+│   │   └── jobRoutes.js               # Legacy (returns 410)
+│   ├── services/
+│   │   └── reminderService.js         # Daily cron: follow-up reminders
+│   ├── middlewares/
+│   │   ├── authMiddleware.js          # JWT verification
+│   │   └── uploadMiddleware.js        # Multer file upload config
 │   └── utils/
-│       └── generateToken.js        # JWT token generator
+│       └── socket.js                  # Socket.io server singleton
 │
-├── Mirae-Extension/                # Chrome extension
-│   ├── manifest.json               # MV3 manifest
-│   ├── background.js               # Service worker
-│   ├── content.js                  # Content script (scraper)
-│   ├── popup.html                  # Extension popup UI
-│   └── popup.js                    # Popup logic
+├── Mirae-Classifier/                  # Python ML microservice
+│   ├── main.py                        # FastAPI app (4 endpoints)
+│   ├── train_model.py                 # Model training script
+│   ├── extract_data.py                # Training data generator
+│   ├── training_data.json             # ~327 labeled samples
+│   ├── requirements.txt               # Python dependencies
+│   ├── vectorizer.pkl                 # Shared TF-IDF vectorizer
+│   ├── detector_model.pkl             # Binary relevance classifier
+│   ├── category_model.pkl             # Category classifier
+│   └── status_model.pkl               # Status inference model
 │
-├── package.json
-├── vite.config.ts
-├── index.html
+├── Mirae-Extension/                   # Chrome extension (MV3)
+│   ├── manifest.json                  # Manifest V3 config
+│   ├── background.js                  # Service worker (context menu + API)
+│   ├── content.js                     # Content script (omni-scraper)
+│   ├── popup.html                     # Extension popup UI
+│   ├── popup.js                       # Popup logic
+│   └── icons/                         # Extension icons
+│
+├── package.json                       # Frontend dependencies
+├── vite.config.ts                     # Vite build config
+├── index.html                         # HTML entry point
 └── README.md
 ```
 
@@ -311,7 +389,7 @@ Mirae/
 
 ## 📡 API Reference
 
-All endpoints are prefixed with `/api`. Protected routes require a valid `Authorization: Bearer <token>` header.
+All endpoints are prefixed with `/api`. Protected routes require `Authorization: Bearer <token>`.
 
 ### Authentication
 
@@ -319,17 +397,32 @@ All endpoints are prefixed with `/api`. Protected routes require a valid `Author
 |---|---|---|---|
 | `POST` | `/api/auth/register` | Register a new user | Public |
 | `POST` | `/api/auth/login` | Login and receive JWT | Public |
+| `GET` | `/api/auth/google/url` | Get Google Calendar OAuth URL | 🔒 |
+| `GET` | `/api/auth/google/status` | Check Google Calendar connection | 🔒 |
+| `POST` | `/api/auth/google/sync` | Sync events to Google Calendar | 🔒 |
+| `GET` | `/api/auth/google/callback` | Google OAuth callback handler | Public |
 
 ### Tracker (Opportunities)
 
 | Method | Endpoint | Description | Auth |
 |---|---|---|---|
-| `POST` | `/api/tracker` | Create a new tracked opportunity (AI-analyzed) | 🔒 |
-| `GET` | `/api/tracker` | Get all tracked opportunities for the user | 🔒 |
-| `DELETE` | `/api/tracker/:id` | Delete a tracked opportunity | 🔒 |
-| `PUT` | `/api/tracker/:id/status` | Update opportunity pipeline status | 🔒 |
-| `PUT` | `/api/tracker/:id/contacts` | Save networking contacts for an opportunity | 🔒 |
-| `PUT` | `/api/tracker/:id/notes` | Save personal notes for an opportunity | 🔒 |
+| `POST` | `/api/tracker` | Create tracked opportunity (AI-analyzed) | 🔒 |
+| `GET` | `/api/tracker` | Get all tracked opportunities | 🔒 |
+| `DELETE` | `/api/tracker/:id` | Delete an opportunity | 🔒 |
+| `PUT` | `/api/tracker/:id/status` | Update pipeline status | 🔒 |
+| `PUT` | `/api/tracker/:id/contacts` | Save networking contacts | 🔒 |
+| `PUT` | `/api/tracker/:id/notes` | Save personal notes | 🔒 |
+
+### Gmail Integration
+
+| Method | Endpoint | Description | Auth |
+|---|---|---|---|
+| `GET` | `/api/gmail/auth` | Get Gmail OAuth URL | 🔒 |
+| `GET` | `/api/gmail/oauth/callback` | Gmail OAuth callback handler | Public |
+| `POST` | `/api/gmail/webhook` | Receive Gmail Pub/Sub notifications | Public* |
+| `POST` | `/api/gmail/watch` | Start watching Gmail inbox | 🔒 |
+
+<sup>*Called by Google Cloud Pub/Sub, not by users.</sup>
 
 ### Profile
 
@@ -341,7 +434,7 @@ All endpoints are prefixed with `/api`. Protected routes require a valid `Author
 | `POST` | `/api/profile/upload-photo` | Upload profile photo | 🔒 |
 | `DELETE` | `/api/profile/delete` | Delete user account | 🔒 |
 | `PUT` | `/api/profile/resume` | Update resume text | 🔒 |
-| `POST` | `/api/profile/resume/upload` | Upload PDF resume (auto text extraction) | 🔒 |
+| `POST` | `/api/profile/resume/upload` | Upload PDF/TXT resume (auto-extracted) | 🔒 |
 | `DELETE` | `/api/profile/resume` | Delete uploaded resume | 🔒 |
 | `PUT` | `/api/profile/social-links` | Update social portfolio links | 🔒 |
 
@@ -349,16 +442,22 @@ All endpoints are prefixed with `/api`. Protected routes require a valid `Author
 
 | Method | Endpoint | Description | Auth |
 |---|---|---|---|
-| `GET` | `/api/dashboard/summary` | Get dashboard summary statistics | 🔒 |
-| `GET` | `/api/dashboard/recent` | Get recently tracked opportunities | 🔒 |
+| `GET` | `/api/dashboard/summary` | Dashboard summary statistics | 🔒 |
+| `GET` | `/api/dashboard/recent` | Recent opportunities with search/sort | 🔒 |
 
 ### Analytics
 
+All analytics endpoints accept `?category=Jobs|Hackathons|Others` (defaults to `Jobs`).
+
 | Method | Endpoint | Description | Auth |
 |---|---|---|---|
-| `GET` | `/api/analytics/overview` | Get analytics overview (saved/applied/rejected/offers) | 🔒 |
-| `GET` | `/api/analytics/status-breakdown` | Get status distribution breakdown | 🔒 |
-| `GET` | `/api/analytics/trends` | Get application trends over time | 🔒 |
+| `GET` | `/api/analytics/overview` | Overview stats (counts, avg match, top skills) | 🔒 |
+| `GET` | `/api/analytics/trends` | Application trends over time | 🔒 |
+| `GET` | `/api/analytics/skill-gap` | Top 5 missing skills | 🔒 |
+| `GET` | `/api/analytics/match-insights` | Match score insights + outcomes | 🔒 |
+| `GET` | `/api/analytics/funnel` | Application funnel with conversion rates | 🔒 |
+| `GET` | `/api/analytics/response-times` | Avg days from Applied → Interview | 🔒 |
+| `GET` | `/api/analytics/company-breakdown` | Top 10 companies with stats | 🔒 |
 
 ### Calendar
 
@@ -366,10 +465,18 @@ All endpoints are prefixed with `/api`. Protected routes require a valid `Author
 |---|---|---|---|
 | `GET` | `/api/calendar` | Get all calendar events | 🔒 |
 | `GET` | `/api/calendar/:id` | Get a specific event | 🔒 |
-| `POST` | `/api/calendar` | Create a new calendar event | 🔒 |
-| `PUT` | `/api/calendar/:id` | Update a calendar event | 🔒 |
-| `DELETE` | `/api/calendar/:id` | Delete a calendar event | 🔒 |
+| `POST` | `/api/calendar` | Create a new event | 🔒 |
+| `PUT` | `/api/calendar/:id` | Update an event | 🔒 |
+| `DELETE` | `/api/calendar/:id` | Delete an event | 🔒 |
 | `POST` | `/api/calendar/sync-dashboard-reminders` | Sync deadlines from tracked opportunities | 🔒 |
+
+### Contacts (CRM)
+
+| Method | Endpoint | Description | Auth |
+|---|---|---|---|
+| `GET` | `/api/contacts` | Get all recruiter contacts | 🔒 |
+| `GET` | `/api/contacts/:id` | Get a specific contact | 🔒 |
+| `PUT` | `/api/contacts/:id` | Update contact details | 🔒 |
 
 ### Settings
 
@@ -379,6 +486,15 @@ All endpoints are prefixed with `/api`. Protected routes require a valid `Author
 | `PUT` | `/api/settings` | Update user settings | 🔒 |
 | `POST` | `/api/settings/reset` | Reset settings to defaults | 🔒 |
 | `POST` | `/api/settings/clear-data` | Clear all application data | 🔒 |
+
+### ML Microservice (Python — Port 8000)
+
+| Method | Endpoint | Description |
+|---|---|---|
+| `GET` | `/` | Health check — returns model loaded status |
+| `POST` | `/analyze` | 3-stage classification: relevance → category → status |
+| `POST` | `/match` | TF-IDF cosine similarity matching to existing job cards |
+| `POST` | `/extract` | Regex-based metadata extraction (dates, links, salary, etc.) |
 
 ### Health Check
 
@@ -394,14 +510,16 @@ All endpoints are prefixed with `/api`. Protected routes require a valid `Author
 
 - **Node.js** ≥ 18.x
 - **npm** ≥ 9.x
+- **Python** ≥ 3.10
 - **MongoDB Atlas** account (or local MongoDB instance)
 - **Groq API Key** — [Get one free at console.groq.com](https://console.groq.com)
-- **Google Chrome** (for the extension)
+- **Google Cloud Project** — For Gmail Pub/Sub and Calendar OAuth (optional)
+- **Google Chrome** — For the extension
 
 ### 1. Clone the Repository
 
 ```bash
-git clone https://github.com/vennelajangiti17/Mirae.git
+git clone https://github.com/tech-upriser/Mirae.git
 cd Mirae
 ```
 
@@ -410,15 +528,20 @@ cd Mirae
 Create a `.env` file inside the `Mirae-Backend/` directory:
 
 ```env
+PORT=5000
 MONGO_URI=your_mongodb_atlas_connection_string
 JWT_SECRET=your_secure_jwt_secret
 GROQ_API_KEY=your_groq_api_key
-PORT=5000
+
+# Optional — for Gmail Pub/Sub integration
+GOOGLE_CLIENT_ID=your_google_client_id
+GOOGLE_CLIENT_SECRET=your_google_client_secret
+GOOGLE_REDIRECT_URI=http://localhost:5000/api/gmail/oauth/callback
 ```
 
-> **Important:** The `GROQ_API_KEY` is required for the AI-powered tracker analysis pipeline. Without it, saved opportunities will fall back to URL-based metadata only.
+> **Note:** The `GROQ_API_KEY` is required for AI-powered skill extraction. Gmail and Google Calendar integrations require the Google OAuth credentials.
 
-### 3. Install Dependencies & Set up ML Service
+### 3. Install Dependencies
 
 ```bash
 # Frontend dependencies
@@ -428,43 +551,49 @@ npm install
 cd Mirae-Backend
 npm install
 cd ..
+```
 
-# Python ML Microservice
+### 4. Set Up the Python ML Microservice
+
+```bash
 cd Mirae-Classifier
 python -m venv venv
-.\venv\Scripts\activate   # On Windows
-# source venv/bin/activate # On Mac/Linux
+
+# Activate virtual environment
+.\venv\Scripts\activate     # Windows
+# source venv/bin/activate  # macOS / Linux
+
 pip install -r requirements.txt
 cd ..
 ```
 
-### 4. Start the Node.js Backend Server
+### 5. Start the Node.js Backend
 
 ```bash
 cd Mirae-Backend
 node server.js
 ```
 
-The backend will start on `http://localhost:5000`. You can verify with:
-
+The backend will start on `http://localhost:5000`. Verify:
 ```bash
 curl http://localhost:5000/health
 # → {"message":"Mirae Backend is running perfectly! 🚀"}
 ```
 
-### 5. Start the Python ML Microservice
+### 6. Start the Python ML Microservice
 
-Open a new terminal window:
+Open a **new terminal** window:
 ```bash
 cd Mirae-Classifier
-.\venv\Scripts\activate   # On Windows
+.\venv\Scripts\activate     # Windows
 uvicorn main:app --host 0.0.0.0 --port 8000
 ```
 
-The ML classification service will start on `http://localhost:8000`.
+The ML service will start on `http://localhost:8000`.
 
-### 6. Start the Frontend Dev Server
+### 7. Start the Frontend Dev Server
 
+Open a **new terminal** window:
 ```bash
 # From the project root
 npm run dev
@@ -472,47 +601,46 @@ npm run dev
 
 The frontend will be available at `http://localhost:5173`.
 
-### 7. Load the Chrome Extension
+### 8. Load the Chrome Extension
 
 1. Open `chrome://extensions` in Google Chrome
 2. Enable **Developer Mode** (toggle in the top-right corner)
 3. Click **Load unpacked**
 4. Select the `Mirae-Extension/` directory
 5. Log into the Mirae dashboard — the JWT token will automatically sync to the extension
+6. Right-click any job posting and select **"Save to Mirae"**
 
 ---
 
 ## 🧪 Usage Guide
 
-### Saving an Opportunity via Extension
+### Saving via Chrome Extension
 
 1. Navigate to any job posting, hackathon page, or opportunity listing
 2. Right-click anywhere on the page
 3. Select **"Save to Mirae"** from the context menu
-4. The page will be analyzed by AI and appear in your dashboard within seconds
+4. The page will be analyzed by AI and appear on your dashboard within seconds
 
-### Manual Entry
+### Connecting Gmail (Automatic Tracking)
 
-1. Click the **"+ Add"** button on the dashboard
-2. Fill in the opportunity details (title, company, category, etc.)
-3. The entry will be saved to your account
+1. Go to **Settings** → **Gmail Integration**
+2. Click **Connect Gmail** and complete the OAuth flow
+3. Click **Start Watching** to begin monitoring your inbox
+4. From now on, recruiter emails will automatically update your Kanban board
+
+### Connecting Google Calendar
+
+1. Go to **Settings** → **Google Calendar Integration**
+2. Click **Connect** and complete the OAuth flow
+3. Calendar events will now sync both ways between Mirae and Google Calendar
 
 ### Tracking Your Pipeline
 
 - Use the **dashboard tabs** to switch between Jobs, Hackathons, and Others
+- **Drag and drop** cards to change pipeline status
 - Click any card to open the **detail drawer** for full information
-- Update pipeline status, add notes, and save networking contacts
-- Visit **Analytics** for visual insights into your job search progress
-
----
-
-## 📝 Current Notes & Caveats
-
-- **Analytics scope** — Analytics & Insights is intentionally limited to Jobs only
-- **Category normalization** — All non-job, non-hackathon pages are routed into `Others`
-- **Deadline extraction** — Depends on deadline text being present in the scraped page content
-- **Match scores** — Requires an uploaded resume; without one, match scores show as `null`
-- **Existing records** — Bad records in MongoDB do not auto-fix when classification logic changes
+- Visit **Analytics** for visual insights with category-specific filtering
+- Visit **Contacts** to manage your recruiter CRM
 
 ---
 
@@ -539,5 +667,5 @@ This project uses components from [shadcn/ui](https://ui.shadcn.com/) under the 
 <p align="center">
   <img src="mirae-logo.svg" alt="Mirae" width="40" />
   <br />
-  <em>Built to keep your opportunity pipeline focused and organized.</em>
+  <em>Your career, on autopilot.</em>
 </p>
