@@ -51,6 +51,30 @@
   /* Typography */
   --font-display: 'Playfair Display', serif;
   --font-body: 'Outfit', sans-serif;
+  --app-card-gap: 2rem;
+  --app-card-padding: 1.5rem;
+}
+
+:root[data-accent-style='gold'] {
+  --gold: #FCA311;
+  --accent: #FCA311;
+  --primary: #FCA311;
+}
+
+:root[data-accent-style='soft-gold'] {
+  --gold: #D6B16B;
+  --accent: #D6B16B;
+  --primary: #D6B16B;
+}
+
+:root[data-card-layout='compact'] {
+  --app-card-gap: 1rem;
+  --app-card-padding: 1rem;
+}
+
+:root[data-card-layout='comfortable'] {
+  --app-card-gap: 2rem;
+  --app-card-padding: 1.5rem;
 }
 
 .dark {
@@ -208,6 +232,14 @@
     font-size: var(--text-base);
     font-weight: var(--font-weight-normal);
     line-height: 1.5;
+  }
+
+  .app-card-grid {
+    gap: var(--app-card-gap);
+  }
+
+  .app-card {
+    padding: var(--app-card-padding);
   }
 }
 

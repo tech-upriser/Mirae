@@ -42,7 +42,16 @@ export const trackerService = {
     });
 
     if (!response.ok) {
-      throw new Error('Failed to save job to Mirae backend');
+      let errorPayload: any = null;
+      try {
+        errorPayload = await response.json();
+      } catch {
+        // Ignore parse failures and use fallback below.
+      }
+      const error: any = new Error(errorPayload?.error || 'Failed to save job to Mirae backend');
+      error.code = errorPayload?.code;
+      error.duplicate = errorPayload?.duplicate;
+      throw error;
     }
 
     return response.json();

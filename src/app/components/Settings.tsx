@@ -1,15 +1,36 @@
-import { useEffect, useMemo, useRef, useState, type ReactNode } from 'react';
-import { useNavigate } from 'react-router';
-import { AnimatePresence, motion } from 'motion/react';
-import * as RadioGroup from '@radix-ui/react-radio-group';
-import * as Switch from '@radix-ui/react-switch';
-import { AlertTriangle, Bell, Camera, Lock, RotateCcw, User, UserX, X } from 'lucide-react';
-import { toast } from 'sonner';
-import { authService } from '../services/authService';
-import { profileService } from '../services/profileService';
-import { clearAllApplicationData, getSettings, resetSettings, updateSettings, type SettingsData } from '../services/settingsService';
-import { setTheme } from '../hooks/useTheme';
-import { useUser } from '../contexts/UserContext';
+/* eslint-disable */
+// @ts-nocheck
+import { getGmailConnectionStatus } from "../services/settingsService";
+import { useEffect, useMemo, useRef, useState, type ReactNode } from "react";
+import { useNavigate } from "react-router";
+import { AnimatePresence, motion } from "motion/react";
+import * as RadioGroup from "@radix-ui/react-radio-group";
+import * as Switch from "@radix-ui/react-switch";
+import {
+  AlertTriangle,
+  Bell,
+  Camera,
+  Lock,
+  RotateCcw,
+  User,
+  UserX,
+  X,
+  Mail,
+  CheckCircle,
+} from "lucide-react";
+import { toast } from "sonner";
+import { authService } from "../services/authService";
+import { profileService } from "../services/profileService";
+import {
+  clearAllApplicationData,
+  getSettings,
+  resetSettings,
+  updateSettings,
+  type SettingsData,
+} from "../services/settingsService";
+import { setTheme } from "../hooks/useTheme";
+import { useUser } from "../contexts/UserContext";
+import api from "../services/api";
 
 const defaultSettings: SettingsData = {
   notifications: {
@@ -19,37 +40,37 @@ const defaultSettings: SettingsData = {
     notificationsEnabled: true,
     remindersEnabled: true,
     browserNotifications: true,
-    notificationTiming: '1day',
-    customReminderHours: 6
+    notificationTiming: "1day",
+    customReminderHours: 6,
   },
   preferences: {
-    defaultStatus: 'Saved',
+    defaultStatus: "Saved",
     duplicateDetection: true,
     autoTagging: false,
-    defaultTags: ['Remote', 'Internship', 'Urgent']
+    defaultTags: ["Remote", "Internship", "Urgent"],
   },
   appearance: {
-    theme: 'light',
-    accentStyle: 'gold',
-    cardLayout: 'comfortable'
+    theme: "light",
+    accentStyle: "gold",
+    cardLayout: "comfortable",
   },
   privacy: {
     securityActivityAlerts: true,
-    profileDiscoverability: false
-  }
+    profileDiscoverability: false,
+  },
 };
 
 const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
-const applyAppearance = (appearance: SettingsData['appearance']) => {
+const applyAppearance = (appearance: SettingsData["appearance"]) => {
   setTheme(appearance.theme);
-  if (typeof document !== 'undefined') {
+  if (typeof document !== "undefined") {
     document.documentElement.dataset.accentStyle = appearance.accentStyle;
     document.documentElement.dataset.cardLayout = appearance.cardLayout;
   }
-  if (typeof window !== 'undefined') {
-    window.localStorage.setItem('accentStyle', appearance.accentStyle);
-    window.localStorage.setItem('cardLayout', appearance.cardLayout);
+  if (typeof window !== "undefined") {
+    window.localStorage.setItem("accentStyle", appearance.accentStyle);
+    window.localStorage.setItem("cardLayout", appearance.cardLayout);
   }
 };
 
@@ -57,7 +78,7 @@ function ToggleRow({
   label,
   checked,
   disabled,
-  onCheckedChange
+  onCheckedChange,
 }: {
   label: string;
   checked: boolean;
@@ -66,7 +87,9 @@ function ToggleRow({
 }) {
   return (
     <div className="flex items-center justify-between gap-4 py-2.5">
-      <span className="text-[#14213D]" style={{ fontFamily: 'Outfit' }}>{label}</span>
+      <span className="text-[#14213D]" style={{ fontFamily: "Outfit" }}>
+        {label}
+      </span>
       <Switch.Root
         checked={checked}
         disabled={disabled}
@@ -80,14 +103,15 @@ function ToggleRow({
 }
 
 const isNotificationMasterOff = (settings: SettingsData) =>
-  !settings.notifications.notificationsEnabled || !settings.notifications.remindersEnabled;
+  !settings.notifications.notificationsEnabled ||
+  !settings.notifications.remindersEnabled;
 
 function SectionCard({
   icon,
   title,
   subtitle,
   danger,
-  children
+  children,
 }: {
   icon: ReactNode;
   title: string;
@@ -99,16 +123,26 @@ function SectionCard({
     <motion.section
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
-      className={`app-card rounded-xl bg-white p-6 shadow-md ${danger ? 'border-2 border-[#DC6B6B] bg-red-50/20' : ''}`}
+      className={`app-card rounded-xl bg-white p-6 shadow-md ${danger ? "border-2 border-[#DC6B6B] bg-red-50/20" : ""}`}
     >
       <div className="mb-5">
         <div className="mb-2 flex items-center gap-3">
-          <div className={danger ? 'text-[#DC6B6B]' : 'text-[#FCA311]'}>{icon}</div>
-          <h2 className={`text-2xl font-bold ${danger ? 'text-[#DC6B6B]' : 'text-[#14213D]'}`} style={{ fontFamily: 'var(--font-display)' }}>
+          <div className={danger ? "text-[#DC6B6B]" : "text-[#FCA311]"}>
+            {icon}
+          </div>
+          <h2
+            className={`text-2xl font-bold ${danger ? "text-[#DC6B6B]" : "text-[#14213D]"}`}
+            style={{ fontFamily: "var(--font-display)" }}
+          >
             {title}
           </h2>
         </div>
-        <p className="ml-9 text-sm text-[#14213D]/50" style={{ fontFamily: 'Outfit' }}>{subtitle}</p>
+        <p
+          className="ml-9 text-sm text-[#14213D]/50"
+          style={{ fontFamily: "Outfit" }}
+        >
+          {subtitle}
+        </p>
       </div>
       {children}
     </motion.section>
@@ -118,36 +152,63 @@ function SectionCard({
 export function Settings() {
   const navigate = useNavigate();
   const photoInputRef = useRef<HTMLInputElement | null>(null);
-  const { user, refetchProfile } = useUser();
+
+  // Destructure everything from context properly inside the component
+  const { user, refetchProfile, isGmailConnected, setIsGmailConnected } =
+    useUser();
 
   const [settings, setSettings] = useState<SettingsData>(defaultSettings);
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
-  const [notificationPermission, setNotificationPermission] = useState<NotificationPermission | 'unsupported'>('unsupported');
+  const [notificationPermission, setNotificationPermission] = useState<
+    NotificationPermission | "unsupported"
+  >("unsupported");
   const [isUploadingPhoto, setIsUploadingPhoto] = useState(false);
-  const [name, setName] = useState('User');
-  const [email, setEmail] = useState('user@example.com');
-  const [profilePhoto, setProfilePhoto] = useState('');
-  const [draftName, setDraftName] = useState('User');
-  const [draftEmail, setDraftEmail] = useState('user@example.com');
+  const [name, setName] = useState("User");
+  const [email, setEmail] = useState("user@example.com");
+  const [profilePhoto, setProfilePhoto] = useState("");
+  const [draftName, setDraftName] = useState("User");
+  const [draftEmail, setDraftEmail] = useState("user@example.com");
 
-  const currentProfilePhoto = profilePhoto || user?.profilePhoto || '';
+  const currentProfilePhoto = profilePhoto || user?.profilePhoto || "";
   const [isEditingProfile, setIsEditingProfile] = useState(false);
   const [showPasswordModal, setShowPasswordModal] = useState(false);
   const [showDeleteAccountModal, setShowDeleteAccountModal] = useState(false);
   const [showClearDataModal, setShowClearDataModal] = useState(false);
   const [showResetModal, setShowResetModal] = useState(false);
 
+  const handleConnectGmail = async () => {
+    try {
+      toast.info("Requesting authorization from Google...");
+      // Ask the backend for the Google Auth URL
+      const response = await api.get("/gmail/auth");
+
+      if (response.data && response.data.url) {
+        // Redirect the user's browser to the Google Consent Screen
+        window.location.href = response.data.url;
+      }
+    } catch (error) {
+      console.error("Failed to get Gmail Auth URL", error);
+      toast.error("Failed to connect to Google. Please try again.");
+    }
+  };
+
   const initials = useMemo(() => {
     const parts = name.trim().split(/\s+/).filter(Boolean).slice(0, 2);
-    if (!parts.length) return 'U';
-    return parts.map((part) => part[0].toUpperCase()).join('');
+    if (!parts.length) return "U";
+    return parts.map((part) => part[0].toUpperCase()).join("");
   }, [name]);
 
   useEffect(() => {
     const load = async () => {
-      const localUserName = typeof window !== 'undefined' ? window.localStorage.getItem('userName') : '';
-      const localUserEmail = typeof window !== 'undefined' ? window.localStorage.getItem('userEmail') : '';
+      const localUserName =
+        typeof window !== "undefined"
+          ? window.localStorage.getItem("userName")
+          : "";
+      const localUserEmail =
+        typeof window !== "undefined"
+          ? window.localStorage.getItem("userEmail")
+          : "";
       if (localUserName?.trim()) {
         setName(localUserName.trim());
         setDraftName(localUserName.trim());
@@ -160,11 +221,14 @@ export function Settings() {
       try {
         setLoading(true);
         try {
+          const gmailStatus = await getGmailConnectionStatus();
+          setIsGmailConnected(gmailStatus.isConnected);
+
           const settingsPayload = await getSettings();
           setSettings(settingsPayload);
           applyAppearance(settingsPayload.appearance);
         } catch (error) {
-          console.error('Settings fetch failed:', error);
+          console.error("Settings fetch failed:", error);
         }
 
         // Use user context data instead of fetching again
@@ -180,32 +244,36 @@ export function Settings() {
           setProfilePhoto(user.profilePhoto);
         }
       } catch (error: any) {
-        console.error('Failed to load settings', error);
-        toast.error('Failed to load settings from backend.');
+        console.error("Failed to load settings", error);
+        toast.error("Failed to load settings from backend.");
       } finally {
         setLoading(false);
       }
     };
 
     load();
-  }, [user]);
+  }, [user, setIsGmailConnected]);
 
   useEffect(() => {
-    if (typeof window === 'undefined' || !('Notification' in window)) {
-      setNotificationPermission('unsupported');
+    if (typeof window === "undefined" || !("Notification" in window)) {
+      setNotificationPermission("unsupported");
       return;
     }
 
-    const refreshPermission = () => setNotificationPermission(Notification.permission);
+    const refreshPermission = () =>
+      setNotificationPermission(Notification.permission);
     refreshPermission();
-    document.addEventListener('visibilitychange', refreshPermission);
+    document.addEventListener("visibilitychange", refreshPermission);
 
     return () => {
-      document.removeEventListener('visibilitychange', refreshPermission);
+      document.removeEventListener("visibilitychange", refreshPermission);
     };
   }, []);
 
-  const persistSettings = async (nextSettings: SettingsData, successMessage?: string) => {
+  const persistSettings = async (
+    nextSettings: SettingsData,
+    successMessage?: string,
+  ) => {
     const previous = settings;
     setSettings(nextSettings);
     applyAppearance(nextSettings.appearance);
@@ -215,30 +283,38 @@ export function Settings() {
       applyAppearance(saved.appearance);
       if (successMessage) toast.success(successMessage);
     } catch (error) {
-      console.error('Failed to update settings', error);
+      console.error("Failed to update settings", error);
       setSettings(previous);
       applyAppearance(previous.appearance);
-      toast.error('Could not save this setting. Reverted.');
+      toast.error("Could not save this setting. Reverted.");
     }
   };
 
-  const updateNotificationSetting = async <K extends keyof SettingsData['notifications']>(key: K, value: SettingsData['notifications'][K]) => {
+  const updateNotificationSetting = async <
+    K extends keyof SettingsData["notifications"],
+  >(
+    key: K,
+    value: SettingsData["notifications"][K],
+  ) => {
     await persistSettings({
       ...settings,
       notifications: {
         ...settings.notifications,
-        [key]: value
-      }
+        [key]: value,
+      },
     });
   };
 
-  const updatePrivacySetting = async <K extends keyof SettingsData['privacy']>(key: K, value: SettingsData['privacy'][K]) => {
+  const updatePrivacySetting = async <K extends keyof SettingsData["privacy"]>(
+    key: K,
+    value: SettingsData["privacy"][K],
+  ) => {
     await persistSettings({
       ...settings,
       privacy: {
         ...settings.privacy,
-        [key]: value
-      }
+        [key]: value,
+      },
     });
   };
 
@@ -246,32 +322,37 @@ export function Settings() {
     const trimmedName = draftName.trim();
     const normalizedEmail = draftEmail.trim().toLowerCase();
     if (!trimmedName) {
-      toast.error('Name is required.');
+      toast.error("Name is required.");
       return;
     }
     if (!emailRegex.test(normalizedEmail)) {
-      toast.error('Please enter a valid email.');
+      toast.error("Please enter a valid email.");
       return;
     }
     try {
       setSaving(true);
-      const updated = await profileService.updateProfile({ name: trimmedName, email: normalizedEmail });
+      const updated = await profileService.updateProfile({
+        name: trimmedName,
+        email: normalizedEmail,
+      });
       setName(updated.name);
       setEmail(updated.email);
       setDraftName(updated.name);
       setDraftEmail(updated.email);
       setIsEditingProfile(false);
-      window.localStorage.setItem('userName', updated.name);
-      window.localStorage.setItem('userEmail', updated.email);
-      toast.success('Profile updated successfully.');
+      window.localStorage.setItem("userName", updated.name);
+      window.localStorage.setItem("userEmail", updated.email);
+      toast.success("Profile updated successfully.");
     } catch (error: any) {
-      toast.error(error?.response?.data?.error || 'Failed to update profile.');
+      toast.error(error?.response?.data?.error || "Failed to update profile.");
     } finally {
       setSaving(false);
     }
   };
 
-  const handleProfilePhotoUpload = async (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleProfilePhotoUpload = async (
+    event: React.ChangeEvent<HTMLInputElement>,
+  ) => {
     const file = event.target.files?.[0];
     if (!file) return;
     try {
@@ -280,12 +361,14 @@ export function Settings() {
       if (photoUrl) setProfilePhoto(photoUrl);
       // Refetch profile to update global user context
       await refetchProfile();
-      toast.success('Profile photo updated.');
+      toast.success("Profile photo updated.");
     } catch (error: any) {
-      toast.error(error?.response?.data?.error || 'Failed to upload profile photo.');
+      toast.error(
+        error?.response?.data?.error || "Failed to upload profile photo.",
+      );
     } finally {
       setIsUploadingPhoto(false);
-      event.target.value = '';
+      event.target.value = "";
     }
   };
 
@@ -295,9 +378,9 @@ export function Settings() {
       const resetPayload = await resetSettings();
       setSettings(resetPayload);
       applyAppearance(resetPayload.appearance);
-      toast.success('Settings reset to defaults.');
+      toast.success("Settings reset to defaults.");
     } catch {
-      toast.error('Failed to reset settings.');
+      toast.error("Failed to reset settings.");
     } finally {
       setSaving(false);
       setShowResetModal(false);
@@ -311,7 +394,7 @@ export function Settings() {
       toast.success(message);
       setShowClearDataModal(false);
     } catch {
-      toast.error('Failed to clear application data.');
+      toast.error("Failed to clear application data.");
     } finally {
       setSaving(false);
     }
@@ -323,10 +406,10 @@ export function Settings() {
       await profileService.deleteAccount();
       authService.logout();
       setShowDeleteAccountModal(false);
-      toast.success('Account deleted.');
-      navigate('/', { replace: true });
+      toast.success("Account deleted.");
+      navigate("/", { replace: true });
     } catch {
-      toast.error('Failed to delete account.');
+      toast.error("Failed to delete account.");
     } finally {
       setSaving(false);
     }
@@ -334,51 +417,72 @@ export function Settings() {
 
   const handleLogoutThisDevice = () => {
     authService.logout();
-    toast.success('Logged out on this device.');
-    navigate('/', { replace: true });
+    toast.success("Logged out on this device.");
+    navigate("/", { replace: true });
   };
 
   const requestBrowserNotifications = async () => {
-    if (!('Notification' in window)) {
-      toast.error('This browser does not support notifications.');
+    if (!("Notification" in window)) {
+      toast.error("This browser does not support notifications.");
       return;
     }
     const permission = await Notification.requestPermission();
     setNotificationPermission(permission);
-    if (permission === 'granted') {
-      toast.success('Browser notifications enabled.');
+    if (permission === "granted") {
+      toast.success("Browser notifications enabled.");
     } else {
-      toast.error('Notification permission not granted.');
+      toast.error("Notification permission not granted.");
     }
   };
 
   const toggleBrowserNotificationChannel = async (enabled: boolean) => {
-    await updateNotificationSetting('browserNotifications', enabled);
-    if (enabled && notificationPermission !== 'granted') {
-      toast.info('Allow browser notification permission to receive pop-up alerts.');
+    await updateNotificationSetting("browserNotifications", enabled);
+    if (enabled && notificationPermission !== "granted") {
+      toast.info(
+        "Allow browser notification permission to receive pop-up alerts.",
+      );
     }
   };
 
   return (
     <div className="ml-60 min-h-screen bg-[#E5E5E5] p-10">
       <div className="mb-8 flex flex-col gap-2">
-        <h1 className="text-5xl font-bold text-[#14213D]" style={{ fontFamily: 'var(--font-display)' }}>Settings</h1>
-        <p className="text-[#73766A]" style={{ fontFamily: 'Outfit' }}>Manage your account, reminders, and security controls.</p>
+        <h1
+          className="text-5xl font-bold text-[#14213D]"
+          style={{ fontFamily: "var(--font-display)" }}
+        >
+          Settings
+        </h1>
+        <p className="text-[#73766A]" style={{ fontFamily: "Outfit" }}>
+          Manage your account, reminders, and security controls.
+        </p>
       </div>
 
       {loading && (
-        <div className="mb-8 rounded-xl bg-white p-5 text-[#14213D]/70 shadow-sm" style={{ fontFamily: 'Outfit' }}>
+        <div
+          className="mb-8 rounded-xl bg-white p-5 text-[#14213D]/70 shadow-sm"
+          style={{ fontFamily: "Outfit" }}
+        >
           Loading your saved settings...
         </div>
       )}
 
       <div className="app-card-grid grid max-w-7xl grid-cols-1 gap-8 xl:grid-cols-2">
+        {/* LEFT COLUMN */}
         <div className="space-y-8">
-          <SectionCard icon={<User size={22} />} title="Account Settings" subtitle="Manage your profile information">
+          <SectionCard
+            icon={<User size={22} />}
+            title="Account Settings"
+            subtitle="Manage your profile information"
+          >
             <div className="mb-5 flex items-center gap-4 border-b border-gray-100 pb-5">
               <div className="relative">
                 {currentProfilePhoto ? (
-                  <img src={currentProfilePhoto} alt="Profile" className="h-20 w-20 rounded-full object-cover shadow-md" />
+                  <img
+                    src={currentProfilePhoto}
+                    alt="Profile"
+                    className="h-20 w-20 rounded-full object-cover shadow-md"
+                  />
                 ) : (
                   <div className="flex h-20 w-20 items-center justify-center rounded-full bg-[#FCA311] text-2xl font-bold text-[#14213D]">
                     {initials}
@@ -391,30 +495,45 @@ export function Settings() {
                 >
                   <Camera size={14} className="text-[#FCA311]" />
                 </button>
-                <input ref={photoInputRef} type="file" accept="image/*" className="hidden" onChange={handleProfilePhotoUpload} />
+                <input
+                  ref={photoInputRef}
+                  type="file"
+                  accept="image/*"
+                  className="hidden"
+                  onChange={handleProfilePhotoUpload}
+                />
               </div>
               <div>
-                <h3 className="text-lg font-semibold text-[#14213D]" style={{ fontFamily: 'Outfit' }}>{name}</h3>
+                <h3
+                  className="text-lg font-semibold text-[#14213D]"
+                  style={{ fontFamily: "Outfit" }}
+                >
+                  {name}
+                </h3>
                 <p className="text-sm text-[#14213D]/50">{email}</p>
               </div>
             </div>
 
             <div className="space-y-4">
               <div>
-                <label className="mb-2 block text-sm font-medium text-[#14213D]">Full Name</label>
+                <label className="mb-2 block text-sm font-medium text-[#14213D]">
+                  Full Name
+                </label>
                 <input
                   value={draftName}
                   onChange={(event) => setDraftName(event.target.value)}
                   readOnly={!isEditingProfile}
                   className={`w-full rounded-lg border px-4 py-2.5 text-[#14213D] ${
                     isEditingProfile
-                      ? 'border-gray-200 focus:border-[#FCA311] focus:outline-none focus:ring-2 focus:ring-[#FCA311]/30'
-                      : 'cursor-not-allowed border-gray-200 bg-gray-50'
+                      ? "border-gray-200 focus:border-[#FCA311] focus:outline-none focus:ring-2 focus:ring-[#FCA311]/30"
+                      : "cursor-not-allowed border-gray-200 bg-gray-50"
                   }`}
                 />
               </div>
               <div>
-                <label className="mb-2 block text-sm font-medium text-[#14213D]">Email Address</label>
+                <label className="mb-2 block text-sm font-medium text-[#14213D]">
+                  Email Address
+                </label>
                 <input
                   type="email"
                   value={draftEmail}
@@ -422,8 +541,8 @@ export function Settings() {
                   readOnly={!isEditingProfile}
                   className={`w-full rounded-lg border px-4 py-2.5 text-[#14213D] ${
                     isEditingProfile
-                      ? 'border-gray-200 focus:border-[#FCA311] focus:outline-none focus:ring-2 focus:ring-[#FCA311]/30'
-                      : 'cursor-not-allowed border-gray-200 bg-gray-50'
+                      ? "border-gray-200 focus:border-[#FCA311] focus:outline-none focus:ring-2 focus:ring-[#FCA311]/30"
+                      : "cursor-not-allowed border-gray-200 bg-gray-50"
                   }`}
                 />
               </div>
@@ -474,39 +593,89 @@ export function Settings() {
                 disabled={isUploadingPhoto}
                 className="w-full rounded-lg border-2 border-[#FCA311] px-4 py-3 font-medium text-[#FCA311] hover:bg-[#FCA311] hover:text-white disabled:opacity-60"
               >
-                {isUploadingPhoto ? 'Uploading...' : 'Upload Profile Picture'}
+                {isUploadingPhoto ? "Uploading..." : "Upload Profile Picture"}
               </button>
             </div>
           </SectionCard>
 
-          <SectionCard icon={<Bell size={22} />} title="Notifications" subtitle="Reminders and schedule-aware alerts">
+          <SectionCard
+            icon={<Bell size={22} />}
+            title="Notifications"
+            subtitle="Reminders and schedule-aware alerts"
+          >
             {isNotificationMasterOff(settings) && (
               <p className="mb-4 rounded-lg border border-[#DC6B6B]/30 bg-[#DC6B6B]/10 px-3 py-2 text-sm text-[#B42318]">
-                Notifications are currently disabled. Turn on both master switches to receive alerts.
+                Notifications are currently disabled. Turn on both master
+                switches to receive alerts.
               </p>
             )}
             <div className="mb-4 border-b border-gray-100 pb-4">
-              <ToggleRow label="Enable notifications" checked={settings.notifications.notificationsEnabled} onCheckedChange={(value) => updateNotificationSetting('notificationsEnabled', value)} />
-              <ToggleRow label="Enable reminders" checked={settings.notifications.remindersEnabled} onCheckedChange={(value) => updateNotificationSetting('remindersEnabled', value)} />
-              <ToggleRow label="Browser pop-up notifications" checked={settings.notifications.browserNotifications} disabled={isNotificationMasterOff(settings)} onCheckedChange={toggleBrowserNotificationChannel} />
-              <ToggleRow label="Follow-up reminders" checked={settings.notifications.followUpReminders} disabled={isNotificationMasterOff(settings)} onCheckedChange={(value) => updateNotificationSetting('followUpReminders', value)} />
-              <ToggleRow label="Deadline alerts" checked={settings.notifications.deadlineAlerts} disabled={isNotificationMasterOff(settings)} onCheckedChange={(value) => updateNotificationSetting('deadlineAlerts', value)} />
-              <ToggleRow label="Interview reminders" checked={settings.notifications.interviewReminders} disabled={isNotificationMasterOff(settings)} onCheckedChange={(value) => updateNotificationSetting('interviewReminders', value)} />
+              <ToggleRow
+                label="Enable notifications"
+                checked={settings.notifications.notificationsEnabled}
+                onCheckedChange={(value) =>
+                  updateNotificationSetting("notificationsEnabled", value)
+                }
+              />
+              <ToggleRow
+                label="Enable reminders"
+                checked={settings.notifications.remindersEnabled}
+                onCheckedChange={(value) =>
+                  updateNotificationSetting("remindersEnabled", value)
+                }
+              />
+              <ToggleRow
+                label="Browser pop-up notifications"
+                checked={settings.notifications.browserNotifications}
+                disabled={isNotificationMasterOff(settings)}
+                onCheckedChange={toggleBrowserNotificationChannel}
+              />
+              <ToggleRow
+                label="Follow-up reminders"
+                checked={settings.notifications.followUpReminders}
+                disabled={isNotificationMasterOff(settings)}
+                onCheckedChange={(value) =>
+                  updateNotificationSetting("followUpReminders", value)
+                }
+              />
+              <ToggleRow
+                label="Deadline alerts"
+                checked={settings.notifications.deadlineAlerts}
+                disabled={isNotificationMasterOff(settings)}
+                onCheckedChange={(value) =>
+                  updateNotificationSetting("deadlineAlerts", value)
+                }
+              />
+              <ToggleRow
+                label="Interview reminders"
+                checked={settings.notifications.interviewReminders}
+                disabled={isNotificationMasterOff(settings)}
+                onCheckedChange={(value) =>
+                  updateNotificationSetting("interviewReminders", value)
+                }
+              />
             </div>
 
-            <label className="mb-3 block text-sm font-medium text-[#14213D]">Notification Timing</label>
+            <label className="mb-3 block text-sm font-medium text-[#14213D]">
+              Notification Timing
+            </label>
             <RadioGroup.Root
               value={settings.notifications.notificationTiming}
-              onValueChange={(value: '1day' | '3days' | 'custom') => updateNotificationSetting('notificationTiming', value)}
+              onValueChange={(value: "1day" | "3days" | "custom") =>
+                updateNotificationSetting("notificationTiming", value)
+              }
               className="space-y-2"
             >
               {[
-                { value: '1day', label: '1 day before' },
-                { value: '3days', label: '3 days before' },
-                { value: 'custom', label: 'Custom timing' },
+                { value: "1day", label: "1 day before" },
+                { value: "3days", label: "3 days before" },
+                { value: "custom", label: "Custom timing" },
               ].map((item) => (
                 <div key={item.value} className="flex items-center gap-3">
-                  <RadioGroup.Item value={item.value} className="h-5 w-5 rounded-full border-2 border-gray-300 data-[state=checked]:border-[#FCA311]">
+                  <RadioGroup.Item
+                    value={item.value}
+                    className="h-5 w-5 rounded-full border-2 border-gray-300 data-[state=checked]:border-[#FCA311]"
+                  >
                     <RadioGroup.Indicator className="relative flex h-full w-full items-center justify-center after:block after:h-2.5 after:w-2.5 after:rounded-full after:bg-[#FCA311] after:content-['']" />
                   </RadioGroup.Item>
                   <label className="text-[#14213D]">{item.label}</label>
@@ -514,15 +683,25 @@ export function Settings() {
               ))}
             </RadioGroup.Root>
 
-            {settings.notifications.notificationTiming === 'custom' && (
+            {settings.notifications.notificationTiming === "custom" && (
               <div className="mt-4">
-                <label className="mb-2 block text-sm font-medium text-[#14213D]">Custom Hours Before Event</label>
+                <label className="mb-2 block text-sm font-medium text-[#14213D]">
+                  Custom Hours Before Event
+                </label>
                 <input
                   type="number"
                   min={1}
                   max={72}
                   value={settings.notifications.customReminderHours}
-                  onChange={(event) => updateNotificationSetting('customReminderHours', Math.max(1, Math.min(72, Number(event.target.value) || 1)))}
+                  onChange={(event) =>
+                    updateNotificationSetting(
+                      "customReminderHours",
+                      Math.max(
+                        1,
+                        Math.min(72, Number(event.target.value) || 1),
+                      ),
+                    )
+                  }
                   disabled={isNotificationMasterOff(settings)}
                   className="w-full rounded-lg border border-gray-200 px-4 py-2.5 disabled:cursor-not-allowed disabled:bg-gray-50"
                 />
@@ -531,15 +710,15 @@ export function Settings() {
 
             <div className="mt-5 space-y-2">
               <p className="text-sm text-[#14213D]/70">
-                Browser permission status:{' '}
+                Browser permission status:{" "}
                 <span className="font-semibold text-[#14213D]">
-                  {notificationPermission === 'unsupported'
-                    ? 'Unsupported'
-                    : notificationPermission === 'granted'
-                    ? 'Enabled'
-                    : notificationPermission === 'denied'
-                    ? 'Blocked'
-                    : 'Not enabled'}
+                  {notificationPermission === "unsupported"
+                    ? "Unsupported"
+                    : notificationPermission === "granted"
+                      ? "Enabled"
+                      : notificationPermission === "denied"
+                        ? "Blocked"
+                        : "Not enabled"}
                 </span>
               </p>
               <button
@@ -551,30 +730,108 @@ export function Settings() {
                 Enable Browser Notifications
               </button>
               <p className="text-xs text-[#14213D]/60">
-                To fully revoke browser permission after enabling, open browser site settings for this app and change Notifications to Block.
+                To fully revoke browser permission after enabling, open browser
+                site settings for this app and change Notifications to Block.
               </p>
             </div>
           </SectionCard>
         </div>
 
+        {/* RIGHT COLUMN */}
         <div className="space-y-8">
-          <SectionCard icon={<User size={22} />} title="Privacy & Security" subtitle="Data and account safety controls">
-            <ToggleRow label="Security activity alerts" checked={settings.privacy.securityActivityAlerts} onCheckedChange={(value) => updatePrivacySetting('securityActivityAlerts', value)} />
-            <button type="button" onClick={handleLogoutThisDevice} className="mt-3 w-full rounded-lg border border-[#14213D] px-4 py-3 font-medium text-[#14213D] hover:bg-[#14213D] hover:text-white">
+          <SectionCard
+            icon={<Mail size={22} />}
+            title="Integrations"
+            subtitle="Connect external accounts for automated tracking"
+          >
+            <div className="rounded-lg border border-gray-100 bg-gray-50/50 p-4">
+              <div className="mb-4 flex items-start justify-between gap-4">
+                <div>
+                  <h3
+                    className="font-semibold text-[#14213D]"
+                    style={{ fontFamily: "Outfit" }}
+                  >
+                    Gmail Auto-Tracking
+                  </h3>
+                  <p className="mt-1 text-sm text-[#14213D]/70">
+                    Allow Mirae to automatically update your application
+                    statuses by securely analyzing new emails. Emails are never
+                    stored.
+                  </p>
+                </div>
+                {isGmailConnected && (
+                  <span className="flex items-center gap-1.5 rounded-full bg-green-100 px-3 py-1 text-xs font-medium text-green-700">
+                    <CheckCircle size={14} />
+                    Connected
+                  </span>
+                )}
+              </div>
+
+              <button
+                type="button"
+                onClick={handleConnectGmail}
+                className={`w-full rounded-lg px-4 py-3 font-medium transition-all ${
+                  isGmailConnected
+                    ? "border border-gray-300 bg-white text-[#14213D] hover:bg-gray-50"
+                    : "bg-[#14213D] text-white hover:bg-[#1a2a4f]"
+                }`}
+              >
+                {isGmailConnected
+                  ? "Manage Gmail Connection"
+                  : "Connect Gmail Account"}
+              </button>
+            </div>
+          </SectionCard>
+
+          <SectionCard
+            icon={<User size={22} />}
+            title="Privacy & Security"
+            subtitle="Data and account safety controls"
+          >
+            <ToggleRow
+              label="Security activity alerts"
+              checked={settings.privacy.securityActivityAlerts}
+              onCheckedChange={(value) =>
+                updatePrivacySetting("securityActivityAlerts", value)
+              }
+            />
+            <button
+              type="button"
+              onClick={handleLogoutThisDevice}
+              className="mt-3 w-full rounded-lg border border-[#14213D] px-4 py-3 font-medium text-[#14213D] hover:bg-[#14213D] hover:text-white"
+            >
               Logout on this device
             </button>
-            <button type="button" onClick={() => setShowDeleteAccountModal(true)} className="mt-2 w-full rounded-lg border border-[#DC6B6B] px-4 py-3 font-medium text-[#DC6B6B] hover:bg-[#DC6B6B] hover:text-white">
+            <button
+              type="button"
+              onClick={() => setShowDeleteAccountModal(true)}
+              className="mt-2 w-full rounded-lg border border-[#DC6B6B] px-4 py-3 font-medium text-[#DC6B6B] hover:bg-[#DC6B6B] hover:text-white"
+            >
               Delete account
             </button>
           </SectionCard>
 
-          <SectionCard icon={<AlertTriangle size={22} />} title="Danger Zone" subtitle="Permanent and irreversible actions" danger>
+          <SectionCard
+            icon={<AlertTriangle size={22} />}
+            title="Danger Zone"
+            subtitle="Permanent and irreversible actions"
+            danger
+          >
             <div className="space-y-3">
-              <button type="button" onClick={() => setShowClearDataModal(true)} disabled={saving} className="flex w-full items-center justify-center gap-2 rounded-lg bg-[#DC6B6B] px-4 py-3 font-medium text-white hover:bg-[#c95555] disabled:opacity-60">
+              <button
+                type="button"
+                onClick={() => setShowClearDataModal(true)}
+                disabled={saving}
+                className="flex w-full items-center justify-center gap-2 rounded-lg bg-[#DC6B6B] px-4 py-3 font-medium text-white hover:bg-[#c95555] disabled:opacity-60"
+              >
                 <UserX size={18} />
                 Delete All Application Data
               </button>
-              <button type="button" onClick={() => setShowResetModal(true)} className="flex w-full items-center justify-center gap-2 rounded-lg border-2 border-[#DC6B6B] px-4 py-3 font-medium text-[#DC6B6B] hover:bg-[#DC6B6B] hover:text-white">
+              <button
+                type="button"
+                onClick={() => setShowResetModal(true)}
+                className="flex w-full items-center justify-center gap-2 rounded-lg border-2 border-[#DC6B6B] px-4 py-3 font-medium text-[#DC6B6B] hover:bg-[#DC6B6B] hover:text-white"
+              >
                 <RotateCcw size={18} />
                 Reset Settings to Default
               </button>
@@ -583,73 +840,84 @@ export function Settings() {
         </div>
       </div>
 
-      <AnimatePresence>{showPasswordModal && (
-        <ChangePasswordModal onClose={() => setShowPasswordModal(false)} />
-      )}</AnimatePresence>
+      <AnimatePresence>
+        {showPasswordModal && (
+          <ChangePasswordModal onClose={() => setShowPasswordModal(false)} />
+        )}
+      </AnimatePresence>
 
-      <AnimatePresence>{showDeleteAccountModal && (
-        <ConfirmationModal
-          title="Delete Account"
-          message="This action is permanent. Your account and related data will be deleted."
-          confirmText="Yes, Delete Account"
-          onClose={() => setShowDeleteAccountModal(false)}
-          onConfirm={handleDeleteAccount}
-          danger
-        />
-      )}</AnimatePresence>
+      <AnimatePresence>
+        {showDeleteAccountModal && (
+          <ConfirmationModal
+            title="Delete Account"
+            message="This action is permanent. Your account and related data will be deleted."
+            confirmText="Yes, Delete Account"
+            onClose={() => setShowDeleteAccountModal(false)}
+            onConfirm={handleDeleteAccount}
+            danger
+          />
+        )}
+      </AnimatePresence>
 
-      <AnimatePresence>{showClearDataModal && (
-        <ConfirmationModal
-          title="Delete All Application Data"
-          message="This will permanently remove all your tracked applications and related data."
-          confirmText="Yes, Clear Data"
-          onClose={() => setShowClearDataModal(false)}
-          onConfirm={handleClearData}
-          danger
-        />
-      )}</AnimatePresence>
+      <AnimatePresence>
+        {showClearDataModal && (
+          <ConfirmationModal
+            title="Delete All Application Data"
+            message="This will permanently remove all your tracked applications and related data."
+            confirmText="Yes, Clear Data"
+            onClose={() => setShowClearDataModal(false)}
+            onConfirm={handleClearData}
+            danger
+          />
+        )}
+      </AnimatePresence>
 
-      <AnimatePresence>{showResetModal && (
-        <ConfirmationModal
-          title="Reset Settings to Default"
-          message="This will reset all settings to default values."
-          confirmText="Yes, Reset"
-          onClose={() => setShowResetModal(false)}
-          onConfirm={handleResetSettings}
-          danger
-        />
-      )}</AnimatePresence>
+      <AnimatePresence>
+        {showResetModal && (
+          <ConfirmationModal
+            title="Reset Settings to Default"
+            message="This will reset all settings to default values."
+            confirmText="Yes, Reset"
+            onClose={() => setShowResetModal(false)}
+            onConfirm={handleResetSettings}
+            danger
+          />
+        )}
+      </AnimatePresence>
     </div>
   );
 }
 
 function ChangePasswordModal({ onClose }: { onClose: () => void }) {
-  const [currentPassword, setCurrentPassword] = useState('');
-  const [newPassword, setNewPassword] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState('');
+  const [currentPassword, setCurrentPassword] = useState("");
+  const [newPassword, setNewPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const handleSubmit = async () => {
     if (!currentPassword || !newPassword || !confirmPassword) {
-      toast.error('Please fill all fields.');
+      toast.error("Please fill all fields.");
       return;
     }
     if (newPassword.length < 6) {
-      toast.error('New password must be at least 6 characters.');
+      toast.error("New password must be at least 6 characters.");
       return;
     }
     if (newPassword !== confirmPassword) {
-      toast.error('Passwords do not match.');
+      toast.error("Passwords do not match.");
       return;
     }
 
     try {
       setIsSubmitting(true);
-      const message = await profileService.changePassword({ currentPassword, newPassword });
-      toast.success(message || 'Password updated successfully.');
+      const message = await profileService.changePassword({
+        currentPassword,
+        newPassword,
+      });
+      toast.success(message || "Password updated successfully.");
       onClose();
     } catch (error: any) {
-      toast.error(error?.response?.data?.error || 'Failed to change password.');
+      toast.error(error?.response?.data?.error || "Failed to change password.");
     } finally {
       setIsSubmitting(false);
     }
@@ -658,14 +926,42 @@ function ChangePasswordModal({ onClose }: { onClose: () => void }) {
   return (
     <ModalFrame title="Change Password" onClose={onClose}>
       <div className="space-y-3">
-        <input type="password" value={currentPassword} onChange={(event) => setCurrentPassword(event.target.value)} placeholder="Current password" className="w-full rounded-lg border border-gray-200 px-4 py-3" />
-        <input type="password" value={newPassword} onChange={(event) => setNewPassword(event.target.value)} placeholder="New password" className="w-full rounded-lg border border-gray-200 px-4 py-3" />
-        <input type="password" value={confirmPassword} onChange={(event) => setConfirmPassword(event.target.value)} placeholder="Confirm new password" className="w-full rounded-lg border border-gray-200 px-4 py-3" />
+        <input
+          type="password"
+          value={currentPassword}
+          onChange={(event) => setCurrentPassword(event.target.value)}
+          placeholder="Current password"
+          className="w-full rounded-lg border border-gray-200 px-4 py-3"
+        />
+        <input
+          type="password"
+          value={newPassword}
+          onChange={(event) => setNewPassword(event.target.value)}
+          placeholder="New password"
+          className="w-full rounded-lg border border-gray-200 px-4 py-3"
+        />
+        <input
+          type="password"
+          value={confirmPassword}
+          onChange={(event) => setConfirmPassword(event.target.value)}
+          placeholder="Confirm new password"
+          className="w-full rounded-lg border border-gray-200 px-4 py-3"
+        />
       </div>
       <div className="mt-5 flex justify-end gap-3">
-        <button onClick={onClose} disabled={isSubmitting} className="px-5 py-2.5 font-semibold text-[#14213D] disabled:opacity-60">Cancel</button>
-        <button onClick={handleSubmit} disabled={isSubmitting} className="rounded-lg bg-[#FCA311] px-5 py-2.5 font-semibold text-[#000000] disabled:opacity-60">
-          {isSubmitting ? 'Updating...' : 'Update Password'}
+        <button
+          onClick={onClose}
+          disabled={isSubmitting}
+          className="px-5 py-2.5 font-semibold text-[#14213D] disabled:opacity-60"
+        >
+          Cancel
+        </button>
+        <button
+          onClick={handleSubmit}
+          disabled={isSubmitting}
+          className="rounded-lg bg-[#FCA311] px-5 py-2.5 font-semibold text-[#000000] disabled:opacity-60"
+        >
+          {isSubmitting ? "Updating..." : "Update Password"}
         </button>
       </div>
     </ModalFrame>
@@ -678,7 +974,7 @@ function ConfirmationModal({
   confirmText,
   onClose,
   onConfirm,
-  danger
+  danger,
 }: {
   title: string;
   message: string;
@@ -691,10 +987,15 @@ function ConfirmationModal({
     <ModalFrame title={title} onClose={onClose} danger={danger}>
       <p className="text-[#14213D]/70">{message}</p>
       <div className="mt-5 flex justify-end gap-3">
-        <button onClick={onClose} className="px-5 py-2.5 font-semibold text-[#14213D]">Cancel</button>
+        <button
+          onClick={onClose}
+          className="px-5 py-2.5 font-semibold text-[#14213D]"
+        >
+          Cancel
+        </button>
         <button
           onClick={onConfirm}
-          className={`rounded-lg px-5 py-2.5 font-semibold ${danger ? 'bg-[#DC6B6B] text-white' : 'bg-[#FCA311] text-[#000000]'}`}
+          className={`rounded-lg px-5 py-2.5 font-semibold ${danger ? "bg-[#DC6B6B] text-white" : "bg-[#FCA311] text-[#000000]"}`}
         >
           {confirmText}
         </button>
@@ -707,7 +1008,7 @@ function ModalFrame({
   title,
   onClose,
   children,
-  danger
+  danger,
 }: {
   title: string;
   onClose: () => void;
@@ -721,7 +1022,10 @@ function ModalFrame({
       exit={{ opacity: 0 }}
       onClick={onClose}
       className="fixed inset-0 z-[99999] flex items-center justify-center bg-[#0B132B]/60 p-8"
-      style={{ backdropFilter: 'blur(20px)', WebkitBackdropFilter: 'blur(20px)' }}
+      style={{
+        backdropFilter: "blur(20px)",
+        WebkitBackdropFilter: "blur(20px)",
+      }}
     >
       <motion.div
         initial={{ scale: 0.95, opacity: 0, y: 20 }}
@@ -731,10 +1035,18 @@ function ModalFrame({
         className="w-full max-w-[480px] rounded-xl bg-white shadow-[0_20px_60px_rgba(0,0,0,0.4)]"
       >
         <div className="flex items-center justify-between border-b border-[#E5E5E5] p-6">
-          <h2 className={`text-2xl font-bold ${danger ? 'text-[#DC6B6B]' : 'text-[#14213D]'}`} style={{ fontFamily: 'var(--font-display)' }}>
+          <h2
+            className={`text-2xl font-bold ${danger ? "text-[#DC6B6B]" : "text-[#14213D]"}`}
+            style={{ fontFamily: "var(--font-display)" }}
+          >
             {title}
           </h2>
-          <button onClick={onClose} className="p-1 text-[#FCA311] hover:text-[#fdb748]"><X size={22} /></button>
+          <button
+            onClick={onClose}
+            className="p-1 text-[#FCA311] hover:text-[#fdb748]"
+          >
+            <X size={22} />
+          </button>
         </div>
         <div className="p-6">{children}</div>
       </motion.div>

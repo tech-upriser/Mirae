@@ -1,4 +1,4 @@
-import { LayoutDashboard, BarChart3, Calendar, Settings, User } from 'lucide-react';
+import { LayoutDashboard, BarChart3, Calendar, Settings, User, Users } from 'lucide-react';
 import { Link, useLocation } from 'react-router';
 import { useState } from 'react';
 import { AnimatePresence } from 'motion/react';
@@ -25,6 +25,7 @@ export function Sidebar({
     { name: 'Dashboard', path: '/dashboard', icon: LayoutDashboard },
     { name: 'Analytics', path: '/analytics', icon: BarChart3 },
     { name: 'Calendar', path: '/calendar', icon: Calendar },
+    { name: 'Contacts', path: '/contacts', icon: Users },
     { name: 'Settings', path: '/settings', icon: Settings },
   ];
 

@@ -43,10 +43,14 @@ export function ExtensionPopup({ onClose, onJobSaved }: Props) {
       // Tell the dashboard to refresh, then close the modal
       if (onJobSaved) onJobSaved();
       if (onClose) onClose();
-
     } catch (error) {
       console.error("Failed to save:", error);
-      alert('❌ Failed to save the job. Make sure your backend is running!');
+      const anyError = error as any;
+      if (anyError?.code === 'DUPLICATE_JOB') {
+        alert(`Duplicate detected: ${anyError?.duplicate?.title || role} at ${anyError?.duplicate?.company || company} already exists.`);
+      } else {
+        alert('Failed to save the job. Make sure your backend is running!');
+      }
     } finally {
       setIsSaving(false);
     }
@@ -167,3 +171,4 @@ export function ExtensionPopup({ onClose, onJobSaved }: Props) {
     </div>
   );
 }
+

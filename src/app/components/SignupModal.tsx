@@ -54,7 +54,8 @@ export function SignupModal({ onClose }: SignupModalProps) {
       
       // 🔐 SAVE THE TOKEN & USER NAME
       localStorage.setItem('token', data.token);
-      localStorage.setItem('userName', data.user.name); // Fixes the hardcoded sidebar name!
+      localStorage.setItem('userName', data.user.name);
+      localStorage.setItem('userEmail', data.user.email);
       localStorage.setItem('isLoggedIn', 'true');
       
       // Refresh the global profile immediately after signup
@@ -150,3 +151,4 @@ export function SignupModal({ onClose }: SignupModalProps) {
     document.body,
   );
 }
+

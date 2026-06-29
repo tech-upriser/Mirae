@@ -1,23 +1,35 @@
 // content.js — Mirae Omni-Scraper
 // Instead of guessing CSS selectors for each job board,
-// we grab ALL visible text and let the AI extract the structured data.
+// we grab ALL visible text and let the backend extract the structured data.
 
 document.documentElement.setAttribute('data-mirae-installed', 'true');
 
+let isSavingToMirae = false;
+let lastSaveStartedAt = 0;
+
 const scrapeAndSendToMirae = () => {
+  if (isSavingToMirae && Date.now() - lastSaveStartedAt < 10000) {
+    alert('⏳ Mirae: This page is already being saved. Please wait a moment.');
+    return;
+  }
+
+  isSavingToMirae = true;
+  lastSaveStartedAt = Date.now();
   console.log("Mirae: Extracting raw page text...");
 
   // Grab EVERYTHING visible on the page, collapse whitespace
   let rawText = document.body.innerText.replace(/\s+/g, ' ').trim();
 
-  // Send the first 8000 characters — plenty of context for AI
+  // Send the first 8000 characters — plenty of context for extraction
   // without footer/nav junk overwhelming it
   const jobData = {
     url: window.location.href,
-    rawText: rawText.substring(0, 8000)
+    rawText: rawText.substring(0, 8000),
+    tabTitle: document.title || ''
   };
 
   if (jobData.rawText.length < 100) {
+    isSavingToMirae = false;
     alert("❌ Mirae: Page hasn't fully loaded yet. Please wait and try again.");
     return;
   }
@@ -28,6 +40,7 @@ const scrapeAndSendToMirae = () => {
     { action: "saveJob", data: jobData },
     (response) => {
       if (chrome.runtime.lastError) {
+        isSavingToMirae = false;
         alert("❌ Mirae Error: Extension disconnected. Please refresh the page and try again.");
         return;
       }
@@ -35,13 +48,20 @@ const scrapeAndSendToMirae = () => {
       if (response && response.success) {
         const job = response.data.job;
         const score = job.matchScore;
+        const section = job.category === 'Hackathons' && job.status !== 'Saved'
+          ? 'Registered'
+          : job.status === 'Applied'
+          ? 'Applied / Interviewing'
+          : job.status || 'Saved';
         const scoreMsg = score !== null && score !== undefined
           ? ` with a Match Score of ${score}%`
           : `. Upload your resume on the dashboard to get a Match Score`;
-        alert(`✨ Success! "${job.title}" at ${job.company} saved to Mirae${scoreMsg}!`);
+        alert(`✨ Success! "${job.title}" at ${job.company} added to ${section}${scoreMsg}!`);
       } else {
         alert(`❌ Mirae Error: ${response ? response.error : 'Unknown error occurred.'}`);
       }
+
+      isSavingToMirae = false;
     }
   );
 };

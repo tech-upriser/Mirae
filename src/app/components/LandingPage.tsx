@@ -41,6 +41,14 @@ const features = [
   },
 ];
 
+const developers = [
+  'Shreya Kumari',
+  'Vennela Jangiti',
+  'Hasini Nallan Chakravarthula',
+  'Akshaya Boda',
+  'Sasi Stuthika Adimulapu',
+];
+
 export function LandingPage() {
   const [showLogin, setShowLogin] = useState(false);
   const [showSignup, setShowSignup] = useState(false);
@@ -182,6 +190,48 @@ export function LandingPage() {
                 </Card>
               );
             })}
+          </div>
+        </div>
+      </section>
+
+      <section className="border-t border-border bg-background px-6 py-20 sm:px-8">
+        <div className="mx-auto max-w-6xl">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.45 }}
+            viewport={{ once: true, amount: 0.25 }}
+            className="mx-auto max-w-2xl text-center"
+          >
+            <h2 className="mt-3 text-3xl font-bold text-foreground sm:text-4xl">
+              Meet the Developers
+            </h2>
+            <p className="mt-4 text-base leading-7 text-muted-foreground">
+              Meet the team behind Mirae
+            </p>
+          </motion.div>
+
+          <div className="mt-10 grid gap-6 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-5">
+            {developers.map((developer, index) => (
+              <motion.div
+                key={developer}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.35, delay: index * 0.05 }}
+                viewport={{ once: true, amount: 0.2 }}
+                className="rounded-2xl border border-border bg-background p-6 text-center shadow-[0_12px_28px_rgba(0,0,0,0.08)] transition-all duration-300 hover:scale-[1.02] hover:shadow-[0_18px_36px_rgba(0,0,0,0.12)] dark:bg-card"
+              >
+                <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-muted text-lg font-bold text-foreground">
+                  {developer
+                    .split(' ')
+                    .map((part) => part[0])
+                    .join('')
+                    .slice(0, 2)}
+                </div>
+                <h3 className="mt-4 text-base font-semibold text-foreground">{developer}</h3>
+                <p className="mt-2 text-sm text-muted-foreground">Mirae Developer</p>
+              </motion.div>
+            ))}
           </div>
         </div>
       </section>

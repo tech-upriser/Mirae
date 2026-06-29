@@ -94,7 +94,7 @@ export function ManageResumesModal({ onClose }: Props) {
   };
 
   const handleDelete = async () => {
-    if (!confirm('Are you sure you want to delete your resume? This will disable AI Match Scoring.')) return;
+    if (!confirm('Are you sure you want to delete your resume? This will disable Match Scoring.')) return;
 
     try {
       await authService.deleteResume();
@@ -159,7 +159,7 @@ export function ManageResumesModal({ onClose }: Props) {
                   {isUploading ? 'Parsing & Uploading...' : 'Upload Resume'}
                 </button>
                 <p className="text-xs text-[#73766A]">
-                  Supports <strong>.pdf</strong> and <strong>.txt</strong> files (max 5MB). We extract the text and use it for AI Match Scoring.
+                  Supports <strong>.pdf</strong> and <strong>.txt</strong> files (max 5MB). We extract the text and use it for Match Scoring.
                 </p>
               </div>
             </div>
@@ -196,7 +196,7 @@ export function ManageResumesModal({ onClose }: Props) {
                       <div className="mb-1 truncate font-semibold text-[#000000]">{resumeInfo.fileName}</div>
                       <div className="flex items-center gap-2">
                         <span className="rounded bg-[#14213D] px-2 py-1 text-xs text-white">
-                          AI Active
+                          Scoring Active
                         </span>
                         <span className="text-xs text-[#73766A]">{resumeInfo.uploadedAt}</span>
                         <span className="text-xs text-[#73766A]">•</span>
@@ -215,7 +215,7 @@ export function ManageResumesModal({ onClose }: Props) {
                 <div className="rounded-md border border-dashed border-[#E5E5E5] py-8 text-center">
                   <FileText className="mx-auto mb-2 h-8 w-8 text-gray-300" />
                   <p className="text-sm text-gray-400">No resume uploaded yet.</p>
-                  <p className="text-xs text-gray-400 mt-1">Upload a resume to enable AI Match Scoring on saved jobs.</p>
+                  <p className="text-xs text-gray-400 mt-1">Upload a resume to enable Match Scoring on saved jobs.</p>
                 </div>
               )}
             </div>

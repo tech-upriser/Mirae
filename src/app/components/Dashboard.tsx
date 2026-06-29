@@ -5,6 +5,7 @@ import {
   Clock,
   MoreVertical,
   Trash2,
+  ArrowUpDown,
 } from 'lucide-react';
 import { motion } from 'motion/react';
 import { useEffect, useMemo, useState } from 'react';
@@ -16,8 +17,10 @@ import {
   deleteDashboardJob,
   getDashboardSummary,
   getRecentJobs,
-  updateJobStatus,
+  updateJobContacts,
+  updateJobNotes,
 } from '../services/dashboardService';
+import { useRealtimeUpdates } from '../hooks/useRealtimeUpdates';
 
 type DashboardTab = 'jobs' | 'hackathons' | 'others';
 type SortOption = 'newest' | 'matchScore';
@@ -28,6 +31,11 @@ interface Application {
   company: string;
   role: string;
   matchScore: number | null;
+  matchPercentage?: number | null;
+  matchedSkills?: string[];
+  missingSkills?: string[];
+  jobSkills?: string[];
+  resumeSkills?: string[];
   appliedDate: string;
   stage: string;
   category: string;
@@ -44,6 +52,15 @@ interface Application {
     matched: string[];
     missing: string[];
   };
+  history: {
+    status: string;
+    date: string;
+  }[];
+  contacts?: {
+    recruiterName: string;
+    hiringManager: string;
+  };
+  notes?: string;
 }
 
 interface SectionConfig {
@@ -101,7 +118,12 @@ const mapJobToApplication = (job: any): Application => ({
   id: job._id,
   company: job.company || 'Unknown Company',
   role: job.title || 'Untitled Role',
-  matchScore: job.matchScore ?? null,
+  matchScore: job.matchPercentage !== undefined && job.matchPercentage !== null ? job.matchPercentage : (job.matchScore ?? null),
+  matchPercentage: job.matchPercentage !== undefined && job.matchPercentage !== null ? job.matchPercentage : (job.matchScore ?? null),
+  matchedSkills: job.matchedSkills || job.skills?.matched || [],
+  missingSkills: job.missingSkills || job.skills?.missing || [],
+  jobSkills: job.jobSkills || job.skills?.all || [],
+  resumeSkills: job.resumeSkills || [],
   appliedDate: formatDate(job.appliedDate || job.createdAt),
   stage: job.status || 'Saved',
   category: normalizeDashboardCategory(job.category),
@@ -115,9 +137,22 @@ const mapJobToApplication = (job: any): Application => ({
   salaryRange: job.salary || job.salaryRange || '',
   skills: {
     all: job.skills?.all || [],
-    matched: job.skills?.matched || job.matchedSkills || [],
-    missing: job.skills?.missing || job.missingSkills || []
-  }
+    matched: job.matchedSkills || job.skills?.matched || [],
+    missing: job.missingSkills || job.skills?.missing || []
+  },
+  history: Array.isArray(job.history)
+    ? job.history
+        .filter((event) => event && event.status)
+        .map((event) => ({
+          status: event.status,
+          date: event.date || job.createdAt || new Date().toISOString(),
+        }))
+    : [],
+  contacts: {
+    recruiterName: job.contacts?.recruiterName || '',
+    hiringManager: job.contacts?.hiringManager || '',
+  },
+  notes: job.notes || '',
 });
 
 const buildSummary = (apps: Application[]) => ({
@@ -141,29 +176,34 @@ export function Dashboard() {
   const [deletingId, setDeletingId] = useState<string | null>(null);
   const navigate = useNavigate();
 
+  const loadDashboard = async () => {
+    try {
+      const [, recentJobs] = await Promise.all([
+        getDashboardSummary(),
+        getRecentJobs(sortBy, searchQuery),
+      ]);
+
+      setApplications((recentJobs || []).map(mapJobToApplication));
+    } catch (error) {
+      console.error('[Dashboard] Fetch error:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useRealtimeUpdates(() => {
+    // When a socket event fires, re-fetch the dashboard
+    void loadDashboard();
+  });
+
   useEffect(() => {
-    const loadDashboard = async () => {
-      try {
-        const [, recentJobs] = await Promise.all([
-          getDashboardSummary(),
-          getRecentJobs(sortBy),
-        ]);
-
-        setApplications((recentJobs || []).map(mapJobToApplication));
-      } catch (error) {
-        console.error('[Dashboard] Fetch error:', error);
-      } finally {
-        setLoading(false);
-      }
-    };
-
     const token = localStorage.getItem('token');
     if (token) {
       window.postMessage({ type: 'MIRAE_SYNC_TOKEN', token }, '*');
     }
 
-    loadDashboard();
-  }, [sortBy]);
+    void loadDashboard();
+  }, [sortBy, searchQuery]);
 
   useEffect(() => {
     const closeMenu = () => setMenuOpenId(null);
@@ -208,15 +248,22 @@ export function Dashboard() {
 
   const handleStatusChange = async (appId: string, newStatus: string) => {
     try {
-      await updateJobStatus(appId, newStatus);
+      const response = await updateJobStatus(appId, newStatus);
+      const updatedApp = response?.job ? mapJobToApplication(response.job) : null;
 
       setApplications((currentApps) => {
         const nextApps = currentApps.map((app) =>
-          app.id === appId ? { ...app, stage: newStatus } : app
+          app.id === appId
+            ? updatedApp || { ...app, stage: newStatus }
+            : app
         );
 
         if (selectedApp?.id === appId) {
-          setSelectedApp((prev) => (prev ? { ...prev, stage: newStatus } : null));
+          setSelectedApp((prev) =>
+            prev
+              ? updatedApp || { ...prev, stage: newStatus }
+              : null
+          );
         }
 
         return nextApps;
@@ -227,26 +274,57 @@ export function Dashboard() {
     }
   };
 
+
+  const handleContactsSaved = async (
+    appId: string,
+    recruiterName: string,
+    hiringManager: string
+  ) => {
+    try {
+      const response = await updateJobContacts(appId, recruiterName, hiringManager);
+      const updatedApp = response?.job ? mapJobToApplication(response.job) : null;
+
+      if (!updatedApp) return;
+
+      setApplications((currentApps) =>
+        currentApps.map((app) => (app.id === appId ? updatedApp : app))
+      );
+
+      setSelectedApp((prev) => (prev?.id === appId ? updatedApp : prev));
+    } catch (error) {
+      console.error('[Dashboard] Save contacts error:', error);
+      window.alert('Failed to save contacts. Please try again.');
+    }
+  };
+
+
+  const handleNotesSaved = async (appId: string, notes: string) => {
+    try {
+      const response = await updateJobNotes(appId, notes);
+      const updatedApp = response?.job ? mapJobToApplication(response.job) : null;
+
+      if (!updatedApp) return;
+
+      setApplications((currentApps) =>
+        currentApps.map((app) => (app.id === appId ? updatedApp : app))
+      );
+
+      setSelectedApp((prev) => (prev?.id === appId ? updatedApp : prev));
+    } catch (error) {
+      console.error('[Dashboard] Save notes error:', error);
+      window.alert('Failed to save note. Please try again.');
+    }
+  };
+
   const filteredApps = useMemo(() => {
     return applications.filter((app) => {
-      const matchesTab =
-        activeTab === 'jobs'
-          ? app.category === 'Jobs'
-          : activeTab === 'hackathons'
-          ? app.category === 'Hackathons'
-          : app.category === 'Others';
-
-      if (!matchesTab) return false;
-      if (!searchQuery) return true;
-
-      const q = searchQuery.toLowerCase();
-      return (
-        app.company.toLowerCase().includes(q) ||
-        app.role.toLowerCase().includes(q) ||
-        app.location.toLowerCase().includes(q)
-      );
+      return activeTab === 'jobs'
+        ? app.category === 'Jobs'
+        : activeTab === 'hackathons'
+        ? app.category === 'Hackathons'
+        : app.category === 'Others';
     });
-  }, [applications, activeTab, searchQuery]);
+  }, [applications, activeTab]);
 
   const activeSummary = useMemo(() => buildSummary(filteredApps), [filteredApps]);
 
@@ -310,6 +388,21 @@ export function Dashboard() {
         title: 'Saved',
         apps: filteredApps.filter((app) => app.stage === 'Saved'),
       },
+      {
+        key: 'others-active',
+        title: 'Active',
+        apps: filteredApps.filter(
+          (app) => app.stage === 'Applied' || app.stage === 'Interviewing'
+        ),
+      },
+      {
+        key: 'others-completed',
+        title: 'Completed',
+        apps: filteredApps.filter(
+          (app) => app.stage === 'Offer' || app.stage === 'Rejected'
+        ),
+        variant: 'selected',
+      },
     ],
     [filteredApps]
   );
@@ -323,10 +416,10 @@ export function Dashboard() {
 
   const currentSummaryText =
     activeTab === 'jobs'
-      ? `Total Jobs: ${activeSummary.totalJobs} | Saved: ${activeSummary.saved} | Applied: ${activeSummary.applied} | Interviewing: ${activeSummary.interviewing} | Offers: ${activeSummary.offers} | Rejected: ${activeSummary.rejected}`
+      ? `Total Jobs: ${activeSummary.totalJobs} | Saved: ${activeSummary.saved} | Applied / Interviewing: ${activeSummary.applied + activeSummary.interviewing} | Offers: ${activeSummary.offers} | Rejected: ${activeSummary.rejected}`
       : activeTab === 'hackathons'
       ? `Total Hackathons/Contests: ${filteredApps.length} | Saved: ${hackathonSections[0].apps.length} | Registered: ${hackathonSections[1].apps.length}`
-      : `Total Others: ${filteredApps.length} | Saved: ${othersSections[0].apps.length}`;
+      : `Total Others: ${filteredApps.length} | Saved: ${othersSections[0].apps.length} | Active: ${othersSections[1].apps.length} | Completed: ${othersSections[2].apps.length}`;
 
   const renderCard = (
     app: Application,
@@ -548,9 +641,9 @@ export function Dashboard() {
           <button
             type="button"
             onClick={handleSortToggle}
-            className="inline-flex items-center gap-2 rounded-md bg-[#14213D] px-4 py-2 text-sm font-semibold text-white transition-colors hover:bg-[#1f335c]"
+            className="inline-flex items-center gap-2 rounded-md border border-[#D5D9E2] bg-white px-4 py-2 text-sm font-semibold text-[#14213D] shadow-sm transition-colors hover:border-[#FCA311] hover:bg-[#FFF9F0]"
           >
-            <span>{sortBy === 'newest' ? '✨' : '🕒'}</span>
+            <ArrowUpDown className="h-4 w-4 text-[#6B7280]" />
             <span>{sortButtonLabel}</span>
           </button>
         </div>
@@ -584,6 +677,8 @@ export function Dashboard() {
             application={selectedApp}
             onClose={() => setSelectedApp(null)}
             onStatusChange={handleStatusChange}
+            onContactsSaved={handleContactsSaved}
+            onNotesSaved={handleNotesSaved}
           />
         ) : (
           <OpportunityDetail
@@ -598,7 +693,7 @@ export function Dashboard() {
           onSuccess={() => {
             void (async () => {
               try {
-                const recentJobs = await getRecentJobs(sortBy);
+                const recentJobs = await getRecentJobs(sortBy, searchQuery);
                 setApplications((recentJobs || []).map(mapJobToApplication));
               } catch (err) {
                 console.error("Refresh error:", err);

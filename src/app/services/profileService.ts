@@ -6,6 +6,7 @@ export interface ProfileData {
   email: string;
   profilePhoto?: string;
   is2FAEnabled?: boolean;
+  resumeSkills?: string[];
 }
 
 interface ProfileResponse {

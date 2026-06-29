@@ -2,7 +2,7 @@ const Job = require('../models/Job');
 
 const getDashboardSummary = async (req, res) => {
   try {
-    console.log('[Dashboard API] Summary requested for userId:', req.user.id);
+    // console.log('[Dashboard API] Summary requested for userId:', req.user.id);
     const [
       totalJobs,
       saved,
@@ -18,8 +18,6 @@ const getDashboardSummary = async (req, res) => {
       Job.countDocuments({ userId: req.user.id, status: 'Offer' }),
       Job.countDocuments({ userId: req.user.id, status: 'Rejected' }),
     ]);
-
-    console.log('[Dashboard API] Summary result:', { totalJobs, saved, applied, interviewing, offers, rejected });
 
     res.status(200).json({
       totalJobs,
@@ -37,21 +35,37 @@ const getDashboardSummary = async (req, res) => {
 
 const getRecentJobs = async (req, res) => {
   try {
+    const User = require('../models/User');
+    const trackerController = require('./trackerController');
+    const user = await User.findById(req.user.id);
+
     const sortBy = req.query.sortBy === 'matchScore' ? 'matchScore' : 'newest';
+    const search = typeof req.query.search === 'string' ? req.query.search.trim() : '';
+
+    const query = { userId: req.user.id };
+    if (search) {
+      query.$text = { $search: search };
+    }
+
     const sortField =
       sortBy === 'matchScore'
         ? { status: 1, matchScore: -1, createdAt: -1 }
         : { status: 1, createdAt: -1 };
 
-    const recentJobs = await Job.find({ userId: req.user.id })
+    const recentJobs = await Job.find(query)
       .sort(sortField)
       .limit(50)
       .select(
-        'company title status category url description matchScore skills salary location appliedDate deadline createdAt postedDate'
+        'company title status category url description matchScore skills jobSkills salary location appliedDate deadline createdAt postedDate history contacts notes'
       );
 
-    res.status(200).json(recentJobs);
+    const healedJobs = await Promise.all(
+      recentJobs.map(job => trackerController.ensureJobSkillsAndMatch(job, user))
+    );
+
+    res.status(200).json(healedJobs);
   } catch (error) {
+    console.error('[Dashboard API] Recent jobs error:', error);
     res.status(500).json({ error: 'Failed to fetch recent jobs' });
   }
 };

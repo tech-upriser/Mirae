@@ -8,7 +8,7 @@ document.getElementById('saveBtn').addEventListener('click', () => {
   const saveBtn = document.getElementById('saveBtn');
   const originalText = saveBtn.innerText;
 
-  saveBtn.innerText = 'Analyzing with AI...';
+  saveBtn.innerText = 'Analyzing...';
   saveBtn.style.opacity = '0.7';
   saveBtn.disabled = true;
 

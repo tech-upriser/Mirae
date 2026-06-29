@@ -1,3 +1,5 @@
+const inflightSaveRequests = new Map();
+
 // --- Shared helper: make sure content.js is present on the current tab ---
 async function ensureContentScript(tabId) {
   try {
@@ -28,7 +30,7 @@ async function triggerScrapeOnTab(tab) {
 chrome.runtime.onInstalled.addListener(() => {
   chrome.contextMenus.create({
     id: 'save-to-mirae',
-    title: '✨ Save to Mirae',
+    title: 'Save to Mirae',
     contexts: ['page', 'selection']
   });
 });
@@ -88,11 +90,20 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
   if (request.action === 'saveJob') {
     chrome.storage.local.get(['token'], (result) => {
       const token = result.token;
+      const url = request?.data?.url || 'unknown-url';
+      const saveKey = `${sender?.tab?.id || 'popup'}:${url}`;
 
       if (!token) {
         sendResponse({ error: 'You are not logged in! Please open your Mirae dashboard and log in again.' });
         return;
       }
+
+      if (inflightSaveRequests.has(saveKey)) {
+        sendResponse({ error: 'This page is already being saved. Please wait a moment.' });
+        return;
+      }
+
+      inflightSaveRequests.set(saveKey, Date.now());
 
       fetch('http://localhost:5000/api/tracker', {
         method: 'POST',
@@ -118,6 +129,9 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
         .then((data) => sendResponse({ success: true, data }))
         .catch((err) => {
           sendResponse({ error: err.message || 'Could not connect to Mirae Backend.' });
+        })
+        .finally(() => {
+          inflightSaveRequests.delete(saveKey);
         });
     });
 

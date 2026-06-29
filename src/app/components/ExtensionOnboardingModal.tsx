@@ -4,7 +4,7 @@ export function ExtensionOnboardingModal({ onClose }: { onClose: () => void }) {
       <div className="bg-white p-8 rounded-2xl max-w-lg w-full shadow-2xl">
         <h2 className="text-2xl font-bold mb-4">Install the Mirae Extension</h2>
         <p className="text-gray-600 mb-6">
-          To automatically track job applications and get AI Match Scores, you need our Chrome extension.
+          To automatically track job applications and get Match Scores, you need our Chrome extension.
         </p>
 
         <div className="space-y-4 mb-8">

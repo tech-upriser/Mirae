@@ -22,3 +22,14 @@ Thumbs.db
 .idea/
 node_modules/
 .env
+
+# uploads
+Mirae-Backend/uploads/
+
+# test/debug scripts
+test_*.js
+**/test_*.js
+
+# misc
+*.pem
+*.key

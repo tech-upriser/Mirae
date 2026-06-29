@@ -4,7 +4,8 @@ const mongoose = require('mongoose');
 const getAnalyticsOverview = async (req, res) => {
   try {
     const userId = req.user.id;
-    const jobs = await Job.find({ userId, category: 'Jobs' }).select(
+    const category = req.query.category || 'Jobs';
+    const jobs = await Job.find({ userId, category }).select(
       'status matchScore skills matchedSkills missingSkills company title createdAt'
     );
 
@@ -26,8 +27,9 @@ const getAnalyticsOverview = async (req, res) => {
 
     const skillCounts = {};
     jobs.forEach((job) => {
-      const matched = job.skills?.matched || job.matchedSkills || [];
-      matched.forEach((skill) => {
+      const requiredSkills = job.skills?.all || job.skills?.matched || job.matchedSkills || [];
+      requiredSkills.forEach((skill) => {
+        if (!skill || skill === 'Unknown' || skill === 'Not specified') return;
         skillCounts[skill] = (skillCounts[skill] || 0) + 1;
       });
     });
@@ -52,42 +54,15 @@ const getAnalyticsOverview = async (req, res) => {
   }
 };
 
-const getStatusBreakdown = async (req, res) => {
-  try {
-    const userId = new mongoose.Types.ObjectId(req.user.id);
-    const breakdown = await Job.aggregate([
-      {
-        $match: { userId, category: 'Jobs' },
-      },
-      {
-        $group: {
-          _id: '$status',
-          count: { $sum: 1 },
-        },
-      },
-      {
-        $project: {
-          _id: 0,
-          status: '$_id',
-          count: 1,
-        },
-      },
-    ]);
-
-    res.status(200).json(breakdown);
-  } catch (error) {
-    res.status(500).json({ error: 'Failed to fetch status breakdown' });
-  }
-};
-
 const getTrends = async (req, res) => {
   try {
     const userId = new mongoose.Types.ObjectId(req.user.id);
+    const category = req.query.category || 'Jobs';
     const trends = await Job.aggregate([
       {
         $match: {
           userId,
-          category: 'Jobs',
+          category,
           createdAt: { $ne: null },
         },
       },
@@ -143,9 +118,235 @@ const getTrends = async (req, res) => {
   }
 };
 
+
+const getSkillGapAnalysis = async (req, res) => {
+  try {
+    const userId = new mongoose.Types.ObjectId(req.user.id);
+    const category = req.query.category || 'Jobs';
+    const skillGapData = await Job.aggregate([
+      { $match: { userId, category } },
+      { $unwind: '$skills.missing' },
+      {
+        $match: {
+          'skills.missing': {
+            $type: 'string',
+            $nin: ['', 'Unknown', 'Not specified'],
+          },
+        },
+      },
+      {
+        $group: {
+          _id: '$skills.missing',
+          frequency: { $sum: 1 },
+        },
+      },
+      { $sort: { frequency: -1, _id: 1 } },
+      { $limit: 5 },
+      {
+        $project: {
+          _id: 0,
+          skill: '$_id',
+          frequency: 1,
+        },
+      },
+    ]);
+
+    res.status(200).json(skillGapData);
+  } catch (error) {
+    console.error('[Analytics API] Skill gap error:', error);
+    res.status(500).json({ error: 'Failed to fetch skill gap analysis' });
+  }
+};
+
+const getMatchInsights = async (req, res) => {
+  try {
+    const userId = new mongoose.Types.ObjectId(req.user.id);
+    const category = req.query.category || 'Jobs';
+    const [result] = await Job.aggregate([
+      {
+        $match: {
+          userId,
+          category,
+        },
+      },
+      {
+        $facet: {
+          allJobsAverage: [
+            { $match: { matchScore: { $ne: null } } },
+            { $group: { _id: null, avgScore: { $avg: '$matchScore' } } },
+          ],
+          interviewAverage: [
+            {
+              $match: {
+                status: { $in: ['Interviewing', 'Offer', 'Offered'] },
+                matchScore: { $ne: null },
+              },
+            },
+            { $group: { _id: null, avgScore: { $avg: '$matchScore' } } },
+          ],
+          rejectedJobs: [
+            { $match: { status: 'Rejected' } },
+            { $sort: { updatedAt: -1 } },
+            { $limit: 4 },
+            {
+              $project: {
+                _id: 0,
+                company: 1,
+                title: 1,
+                rejectionReason: 1,
+              },
+            },
+          ],
+          offeredJobs: [
+            { $match: { status: { $in: ['Offer', 'Offered'] } } },
+            { $sort: { updatedAt: -1 } },
+            { $limit: 4 },
+            {
+              $project: {
+                _id: 0,
+                company: 1,
+                title: 1,
+              },
+            },
+          ],
+        },
+      },
+    ]);
+
+    const allJobsAverage = Math.round(result?.allJobsAverage?.[0]?.avgScore || 0);
+    const interviewAverage = Math.round(result?.interviewAverage?.[0]?.avgScore || 0);
+
+    res.status(200).json({
+      allJobsAverage,
+      interviewAverage,
+      rejectedJobs: result?.rejectedJobs || [],
+      offeredJobs: result?.offeredJobs || [],
+    });
+  } catch (error) {
+    console.error('[Analytics API] Match insights error:', error);
+    res.status(500).json({ error: 'Failed to fetch match insights' });
+  }
+};
+
+const getFunnel = async (req, res) => {
+  try {
+    const userId = new mongoose.Types.ObjectId(req.user.id);
+    const category = req.query.category || 'Jobs';
+    const jobs = await Job.find({ userId, category }).select('status');
+    
+    let saved = 0, applied = 0, interviewing = 0, offers = 0, rejected = 0;
+    
+    // In a funnel, everyone who applied was also saved. 
+    // Everyone who is interviewing was also applied.
+    // So we count cumulative progression.
+    jobs.forEach(job => {
+      // Basic counts
+      if (job.status === 'Saved') saved++;
+      else if (job.status === 'Applied') applied++;
+      else if (job.status === 'Interviewing') interviewing++;
+      else if (job.status === 'Offer') offers++;
+      else if (job.status === 'Rejected') rejected++;
+    });
+
+    const totalOffers = offers;
+    const totalInterviewing = totalOffers + interviewing;
+    const totalApplied = totalInterviewing + rejected + applied;
+    const totalSaved = totalApplied + saved;
+
+    res.status(200).json({
+      funnel: [
+        { stage: 'Saved', count: totalSaved },
+        { stage: 'Applied', count: totalApplied },
+        { stage: 'Interviewing', count: totalInterviewing },
+        { stage: 'Offer', count: totalOffers }
+      ],
+      conversionRates: {
+        savedToApplied: totalSaved ? ((totalApplied / totalSaved) * 100).toFixed(1) : 0,
+        appliedToInterview: totalApplied ? ((totalInterviewing / totalApplied) * 100).toFixed(1) : 0,
+        interviewToOffer: totalInterviewing ? ((totalOffers / totalInterviewing) * 100).toFixed(1) : 0,
+        overallOfferRate: totalApplied ? ((totalOffers / totalApplied) * 100).toFixed(1) : 0
+      }
+    });
+  } catch (error) {
+    res.status(500).json({ error: 'Failed to fetch funnel' });
+  }
+};
+
+const getResponseTimes = async (req, res) => {
+  try {
+    const userId = new mongoose.Types.ObjectId(req.user.id);
+    const category = req.query.category || 'Jobs';
+    const jobs = await Job.find({ userId, category }).select('history company');
+    
+    let totalAppliedToInterviewDays = 0;
+    let appliedToInterviewCount = 0;
+
+    jobs.forEach(job => {
+      if (!job.history || job.history.length < 2) return;
+      
+      const appliedEvent = job.history.find(h => h.status === 'Applied');
+      const interviewEvent = job.history.find(h => h.status === 'Interviewing');
+      
+      if (appliedEvent && interviewEvent) {
+        const diffTime = Math.abs(new Date(interviewEvent.date) - new Date(appliedEvent.date));
+        const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+        totalAppliedToInterviewDays += diffDays;
+        appliedToInterviewCount++;
+      }
+    });
+
+    const avgResponseTime = appliedToInterviewCount ? Math.round(totalAppliedToInterviewDays / appliedToInterviewCount) : 0;
+    
+    res.status(200).json({
+      avgResponseTime,
+      totalResponsesMeasured: appliedToInterviewCount
+    });
+  } catch (error) {
+    res.status(500).json({ error: 'Failed to fetch response times' });
+  }
+};
+
+const getCompanyBreakdown = async (req, res) => {
+  try {
+    const userId = new mongoose.Types.ObjectId(req.user.id);
+    const category = req.query.category || 'Jobs';
+    const jobs = await Job.find({ userId, category }).select('company status');
+    
+    const companyStats = {};
+    
+    jobs.forEach(job => {
+      const company = job.company;
+      if (!companyStats[company]) {
+        companyStats[company] = { total: 0, interviewing: 0, offers: 0, rejected: 0 };
+      }
+      companyStats[company].total++;
+      if (job.status === 'Interviewing') companyStats[company].interviewing++;
+      if (job.status === 'Offer') companyStats[company].offers++;
+      if (job.status === 'Rejected') companyStats[company].rejected++;
+    });
+
+    const breakdown = Object.entries(companyStats)
+      .map(([company, stats]) => ({
+        company,
+        ...stats,
+        interviewRate: stats.total ? ((stats.interviewing + stats.offers) / stats.total * 100).toFixed(1) : 0
+      }))
+      .sort((a, b) => b.total - a.total)
+      .slice(0, 10); // Top 10 companies
+
+    res.status(200).json(breakdown);
+  } catch (error) {
+    res.status(500).json({ error: 'Failed to fetch company breakdown' });
+  }
+};
+
 module.exports = {
   getAnalyticsOverview,
-  getStatusBreakdown,
   getTrends,
+  getSkillGapAnalysis,
+  getMatchInsights,
+  getFunnel,
+  getResponseTimes,
+  getCompanyBreakdown
 };
 
