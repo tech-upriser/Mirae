@@ -587,28 +587,42 @@ export function CalendarView() {
   };
 
   return (
-    <div className="ml-60 min-h-screen bg-[#E5E5E5] p-8">
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.4 }}
-      >
-        <div className="mb-8 flex items-start justify-between gap-4">
-          <div>
-            <h1 className="text-4xl font-bold text-[#000000]" style={{ fontFamily: 'var(--font-display)' }}>
-              Calendar & Reminders
-            </h1>
-            <p className="mt-2 text-sm text-[#475467]">
-              Add reminders only for today or upcoming dates. Your next 3 events and past history update automatically.
-            </p>
+    <div className="ml-60 min-h-screen bg-[#E5E5E5]">
+      <div className="bg-white border-b border-[#E5E5E5] sticky top-0 z-20 shadow-sm">
+        <div className="px-8 pt-6 pb-6">
+          <div className="flex items-center justify-between">
+            <div className="flex min-w-0 flex-1 items-center gap-6">
+              <div className="min-w-0">
+                <h1
+                  className="text-3xl font-bold text-[#000000]"
+                  style={{ fontFamily: 'var(--font-display)' }}
+                >
+                  Calendar & Reminders
+                </h1>
+                <p className="text-sm text-[#14213D] opacity-70">
+                  Add reminders only for today or upcoming dates. Your next 3 events and past history update automatically.
+                </p>
+              </div>
+            </div>
+
+            <div className="ml-6 flex items-center gap-3">
+              <button
+                onClick={() => openAddEventModal(undefined, false)}
+                className="flex items-center gap-2 rounded-md bg-[#FCA311] px-6 py-3 font-semibold text-[#000000] shadow-md transition-all hover:bg-[#fdb748] hover:shadow-lg"
+              >
+                {addEventButtonLabel}
+              </button>
+            </div>
           </div>
-          <button
-            onClick={() => openAddEventModal(undefined, false)}
-            className="rounded-xl bg-[#FCA311] px-5 py-3 text-sm font-semibold text-[#000000] shadow-sm transition-colors hover:bg-[#fdb748]"
-          >
-            {addEventButtonLabel}
-          </button>
         </div>
+      </div>
+
+      <div className="p-8">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.4 }}
+        >
 
         <div className="grid grid-cols-[1fr_400px] gap-6">
           <motion.div
@@ -1148,6 +1162,7 @@ export function CalendarView() {
           </div>
         </div>
       </motion.div>
+      </div>
 
       <AnimatePresence>
         {showAddEventModal && selectedDate && (

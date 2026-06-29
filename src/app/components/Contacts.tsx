@@ -44,11 +44,24 @@ export function Contacts() {
 
   return (
     <div className="ml-60 min-h-screen bg-[#E5E5E5] pb-6">
-      <div className="bg-white border-b border-[#E5E5E5] px-8 py-5 sticky top-0 z-10">
-        <h1 className="text-2xl font-bold text-[#000000]" style={{ fontFamily: 'var(--font-display)' }}>
-          Recruiter CRM
-        </h1>
-        <p className="text-sm text-[#6b7280]">Manage your interactions with recruiters, hiring managers, and interviewers.</p>
+      <div className="bg-white border-b border-[#E5E5E5] sticky top-0 z-20 shadow-sm">
+        <div className="px-8 pt-6 pb-6">
+          <div className="flex items-center justify-between">
+            <div className="flex min-w-0 flex-1 items-center gap-6">
+              <div className="min-w-0">
+                <h1
+                  className="text-3xl font-bold text-[#000000]"
+                  style={{ fontFamily: 'var(--font-display)' }}
+                >
+                  Recruiter CRM
+                </h1>
+                <p className="text-sm text-[#14213D] opacity-70">
+                  Manage your interactions with recruiters, hiring managers, and interviewers.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
 
       <div className="px-8 pt-6">

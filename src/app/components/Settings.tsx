@@ -21,6 +21,7 @@ import {
   HelpCircle,
   LogOut,
   Moon,
+  Settings as SettingsIcon,
 } from "lucide-react";
 import { toast } from "sonner";
 import { authService } from "../services/authService";
@@ -112,8 +113,7 @@ function ToggleRow({
 }
 
 const isNotificationMasterOff = (settings: SettingsData) =>
-  !settings.notifications.notificationsEnabled ||
-  !settings.notifications.remindersEnabled;
+  !settings.notifications.notificationsEnabled;
 
 function SectionCard({
   icon,
@@ -530,18 +530,28 @@ export function Settings({
   };
 
   return (
-    <div className="ml-60 min-h-screen bg-[#E5E5E5] p-10">
-      <div className="mb-8 flex flex-col gap-2">
-        <h1
-          className="text-5xl font-bold text-[#14213D]"
-          style={{ fontFamily: "var(--font-display)" }}
-        >
-          Settings
-        </h1>
-        <p className="text-[#73766A]" style={{ fontFamily: "Outfit" }}>
-          Manage your account, reminders, and security controls.
-        </p>
+    <div className="ml-60 min-h-screen bg-[#E5E5E5]">
+      <div className="bg-white border-b border-[#E5E5E5] sticky top-0 z-20 shadow-sm">
+        <div className="px-8 pt-6 pb-6">
+          <div className="flex items-center justify-between">
+            <div className="flex min-w-0 flex-1 items-center gap-6">
+              <div className="min-w-0">
+                <h1
+                  className="text-3xl font-bold text-[#000000]"
+                  style={{ fontFamily: 'var(--font-display)' }}
+                >
+                  Settings
+                </h1>
+                <p className="text-sm text-[#14213D] opacity-70">
+                  Manage your account, reminders, and security controls.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
+
+      <div className="p-8">
 
       {loading && (
         <div
@@ -688,16 +698,6 @@ export function Settings({
               <div className="pt-4 border-t border-gray-100 space-y-3 mt-6">
                 <button
                   type="button"
-                  onClick={() => setShowPasswordModal(true)}
-                  className="w-full flex items-center justify-between p-3 rounded-lg bg-gray-50 hover:bg-gray-100 transition-colors border border-gray-100"
-                >
-                  <div className="flex items-center gap-3">
-                    <Lock className="w-5 h-5 text-[#14213D]" />
-                    <span className="font-medium text-[#14213D]">Change Password</span>
-                  </div>
-                </button>
-                <button
-                  type="button"
                   onClick={() => photoInputRef.current?.click()}
                   disabled={isUploadingPhoto}
                   className="w-full flex items-center justify-between p-3 rounded-lg bg-gray-50 hover:bg-gray-100 transition-colors border border-gray-100 disabled:opacity-50"
@@ -707,30 +707,6 @@ export function Settings({
                     <span className="font-medium text-[#14213D]">
                       {isUploadingPhoto ? "Uploading..." : "Upload Profile Picture"}
                     </span>
-                  </div>
-                </button>
-                <button
-                  type="button"
-                  className="w-full flex items-center justify-between p-3 rounded-lg bg-gray-50 hover:bg-gray-100 transition-colors border border-gray-100"
-                >
-                  <div className="flex items-center gap-3">
-                    <Moon className="w-5 h-5 text-[#14213D]" />
-                    <span className="font-medium text-[#14213D]">Theme (Dark/Light)</span>
-                  </div>
-                  <div
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      toggleTheme();
-                    }}
-                    className={`w-10 h-5 rounded-full transition-all cursor-pointer flex items-center px-0.5 ${
-                      isDarkMode ? 'bg-[#FCA311]' : 'bg-[#E5E5E5]'
-                    }`}
-                  >
-                    <motion.div
-                      animate={{ x: isDarkMode ? 20 : 0 }}
-                      transition={{ type: 'spring', stiffness: 500, damping: 30 }}
-                      className="w-4 h-4 bg-white rounded-full shadow-md"
-                    />
                   </div>
                 </button>
                 <button
@@ -753,170 +729,10 @@ export function Settings({
                     <span className="font-medium text-[#14213D]">Social & Portfolio</span>
                   </div>
                 </button>
-                <button
-                  type="button"
-                  className="w-full flex items-center justify-between p-3 rounded-lg bg-gray-50 hover:bg-gray-100 transition-colors border border-gray-100"
-                >
-                  <div className="flex items-center gap-3">
-                    <HelpCircle className="w-5 h-5 text-[#14213D]" />
-                    <span className="font-medium text-[#14213D]">Help & Community</span>
-                  </div>
-                </button>
-                <button
-                  type="button"
-                  onClick={onLogoutOpen}
-                  className="w-full flex items-center justify-between p-3 rounded-lg bg-red-50 hover:bg-red-100 transition-colors border border-red-100"
-                >
-                  <div className="flex items-center gap-3">
-                    <LogOut className="w-5 h-5 text-[#E11D48]" />
-                    <span className="font-medium text-[#E11D48]">Logout</span>
-                  </div>
-                </button>
               </div>
             </div>
           </SectionCard>
 
-          <SectionCard
-            icon={<Bell size={22} />}
-            title="Notifications"
-            subtitle="Reminders and schedule-aware alerts"
-          >
-            {isNotificationMasterOff(settings) && (
-              <p className="mb-4 rounded-lg border border-[#DC6B6B]/30 bg-[#DC6B6B]/10 px-3 py-2 text-sm text-[#B42318]">
-                Notifications are currently disabled. Turn on both master
-                switches to receive alerts.
-              </p>
-            )}
-            <div className="mb-4 border-b border-gray-100 pb-4">
-              <ToggleRow
-                label="Enable notifications"
-                checked={settings.notifications.notificationsEnabled}
-                onCheckedChange={(value) =>
-                  updateNotificationSetting("notificationsEnabled", value)
-                }
-              />
-              <ToggleRow
-                label="Enable reminders"
-                checked={settings.notifications.remindersEnabled}
-                onCheckedChange={(value) =>
-                  updateNotificationSetting("remindersEnabled", value)
-                }
-              />
-              <ToggleRow
-                label="Browser pop-up notifications"
-                checked={settings.notifications.browserNotifications}
-                disabled={isNotificationMasterOff(settings)}
-                onCheckedChange={toggleBrowserNotificationChannel}
-              />
-              <ToggleRow
-                label="Follow-up reminders"
-                checked={settings.notifications.followUpReminders}
-                disabled={isNotificationMasterOff(settings)}
-                onCheckedChange={(value) =>
-                  updateNotificationSetting("followUpReminders", value)
-                }
-              />
-              <ToggleRow
-                label="Deadline alerts"
-                checked={settings.notifications.deadlineAlerts}
-                disabled={isNotificationMasterOff(settings)}
-                onCheckedChange={(value) =>
-                  updateNotificationSetting("deadlineAlerts", value)
-                }
-              />
-              <ToggleRow
-                label="Interview reminders"
-                checked={settings.notifications.interviewReminders}
-                disabled={isNotificationMasterOff(settings)}
-                onCheckedChange={(value) =>
-                  updateNotificationSetting("interviewReminders", value)
-                }
-              />
-            </div>
-
-            <label className="mb-3 block text-sm font-medium text-[#14213D]">
-              Notification Timing
-            </label>
-            <RadioGroup.Root
-              value={settings.notifications.notificationTiming}
-              onValueChange={(value: "1day" | "3days" | "custom") =>
-                updateNotificationSetting("notificationTiming", value)
-              }
-              className="space-y-2"
-            >
-              {[
-                { value: "1day", label: "1 day before" },
-                { value: "3days", label: "3 days before" },
-                { value: "custom", label: "Custom timing" },
-              ].map((item) => (
-                <div key={item.value} className="flex items-center gap-3">
-                  <RadioGroup.Item
-                    value={item.value}
-                    className="h-5 w-5 rounded-full border-2 border-gray-300 data-[state=checked]:border-[#FCA311]"
-                  >
-                    <RadioGroup.Indicator className="relative flex h-full w-full items-center justify-center after:block after:h-2.5 after:w-2.5 after:rounded-full after:bg-[#FCA311] after:content-['']" />
-                  </RadioGroup.Item>
-                  <label className="text-[#14213D]">{item.label}</label>
-                </div>
-              ))}
-            </RadioGroup.Root>
-
-            {settings.notifications.notificationTiming === "custom" && (
-              <div className="mt-4">
-                <label className="mb-2 block text-sm font-medium text-[#14213D]">
-                  Custom Hours Before Event
-                </label>
-                <input
-                  type="number"
-                  min={1}
-                  max={72}
-                  value={settings.notifications.customReminderHours}
-                  onChange={(event) =>
-                    updateNotificationSetting(
-                      "customReminderHours",
-                      Math.max(
-                        1,
-                        Math.min(72, Number(event.target.value) || 1),
-                      ),
-                    )
-                  }
-                  disabled={isNotificationMasterOff(settings)}
-                  className="w-full rounded-lg border border-gray-200 px-4 py-2.5 disabled:cursor-not-allowed disabled:bg-gray-50"
-                />
-              </div>
-            )}
-
-            <div className="mt-5 space-y-2">
-              <p className="text-sm text-[#14213D]/70">
-                Browser permission status:{" "}
-                <span className="font-semibold text-[#14213D]">
-                  {notificationPermission === "unsupported"
-                    ? "Unsupported"
-                    : notificationPermission === "granted"
-                      ? "Enabled"
-                      : notificationPermission === "denied"
-                        ? "Blocked"
-                        : "Not enabled"}
-                </span>
-              </p>
-              <button
-                type="button"
-                onClick={requestBrowserNotifications}
-                disabled={isNotificationMasterOff(settings)}
-                className="w-full rounded-lg border border-[#14213D] px-4 py-3 font-medium text-[#14213D] hover:bg-[#14213D] hover:text-white"
-              >
-                Enable Browser Notifications
-              </button>
-              <p className="text-xs text-[#14213D]/60">
-                To fully revoke browser permission after enabling, open browser
-                site settings for this app and change Notifications to Block.
-              </p>
-            </div>
-          </SectionCard>
-        </div>
-
-        {/* RIGHT COLUMN */}
-        <div className="space-y-8">
           <SectionCard
             icon={<Mail size={22} />}
             title="Integrations"
@@ -1019,31 +835,174 @@ export function Settings({
           </SectionCard>
 
           <SectionCard
-            icon={<User size={22} />}
+            icon={<SettingsIcon size={22} />}
+            title="General Settings"
+            subtitle="App preferences and general options"
+          >
+            <div className="space-y-3">
+              <button
+                type="button"
+                className="w-full flex items-center justify-between p-3 rounded-lg bg-gray-50 hover:bg-gray-100 transition-colors border border-gray-100"
+              >
+                <div className="flex items-center gap-3">
+                  <Moon className="w-5 h-5 text-[#14213D]" />
+                  <span className="font-medium text-[#14213D]">Theme (Dark/Light)</span>
+                </div>
+                <div
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    toggleTheme();
+                  }}
+                  className={`w-10 h-5 rounded-full transition-all cursor-pointer flex items-center px-0.5 ${
+                    isDarkMode ? 'bg-[#FCA311]' : 'bg-[#E5E5E5]'
+                  }`}
+                >
+                  <motion.div
+                    animate={{ x: isDarkMode ? 20 : 0 }}
+                    transition={{ type: 'spring', stiffness: 500, damping: 30 }}
+                    className="w-4 h-4 bg-white rounded-full shadow-md"
+                  />
+                </div>
+              </button>
+              <button
+                type="button"
+                className="w-full flex items-center justify-between p-3 rounded-lg bg-gray-50 hover:bg-gray-100 transition-colors border border-gray-100"
+              >
+                <div className="flex items-center gap-3">
+                  <HelpCircle className="w-5 h-5 text-[#14213D]" />
+                  <span className="font-medium text-[#14213D]">Help & Community</span>
+                </div>
+              </button>
+              <button
+                type="button"
+                onClick={() => {
+                  window.localStorage.removeItem("token");
+                  window.localStorage.removeItem("userName");
+                  window.localStorage.removeItem("isLoggedIn");
+                  window.location.href = "/";
+                }}
+                className="w-full flex items-center justify-between p-3 rounded-lg bg-red-50 hover:bg-red-100 transition-colors border border-red-100"
+              >
+                <div className="flex items-center gap-3">
+                  <LogOut className="w-5 h-5 text-[#E11D48]" />
+                  <span className="font-medium text-[#E11D48]">Logout</span>
+                </div>
+              </button>
+            </div>
+          </SectionCard>
+        </div>
+
+        {/* RIGHT COLUMN */}
+        <div className="space-y-8">
+          <SectionCard
+            icon={<Bell size={22} />}
+            title="Notifications"
+            subtitle="Reminders and schedule-aware alerts"
+          >
+            {isNotificationMasterOff(settings) && (
+              <p className="mb-4 rounded-lg border border-[#DC6B6B]/30 bg-[#DC6B6B]/10 px-3 py-2 text-sm text-[#B42318]">
+                Notifications are currently disabled. Turn on the master switch to receive alerts.
+              </p>
+            )}
+            <div className="mb-4 border-b border-gray-100 pb-4">
+              <ToggleRow
+                label="Enable notifications"
+                checked={settings.notifications.notificationsEnabled}
+                onCheckedChange={(value) =>
+                  updateNotificationSetting("notificationsEnabled", value)
+                }
+              />
+              <ToggleRow
+                label="Browser pop-up notifications"
+                checked={settings.notifications.browserNotifications}
+                disabled={isNotificationMasterOff(settings)}
+                onCheckedChange={toggleBrowserNotificationChannel}
+              />
+              <ToggleRow
+                label="Follow-up reminders"
+                checked={settings.notifications.followUpReminders}
+                disabled={isNotificationMasterOff(settings)}
+                onCheckedChange={(value) =>
+                  updateNotificationSetting("followUpReminders", value)
+                }
+              />
+              <ToggleRow
+                label="Deadline alerts"
+                checked={settings.notifications.deadlineAlerts}
+                disabled={isNotificationMasterOff(settings)}
+                onCheckedChange={(value) =>
+                  updateNotificationSetting("deadlineAlerts", value)
+                }
+              />
+              <ToggleRow
+                label="Interview reminders"
+                checked={settings.notifications.interviewReminders}
+                disabled={isNotificationMasterOff(settings)}
+                onCheckedChange={(value) =>
+                  updateNotificationSetting("interviewReminders", value)
+                }
+              />
+            </div>
+
+            <div className="mt-5 space-y-2">
+              <p className="text-sm text-[#14213D]/70">
+                Browser permission status:{" "}
+                <span className="font-semibold text-[#14213D]">
+                  {notificationPermission === "unsupported"
+                    ? "Unsupported"
+                    : notificationPermission === "granted"
+                      ? "Enabled"
+                      : notificationPermission === "denied"
+                        ? "Blocked"
+                        : "Not enabled"}
+                </span>
+              </p>
+              <button
+                type="button"
+                onClick={requestBrowserNotifications}
+                disabled={isNotificationMasterOff(settings)}
+                className="w-full rounded-lg border border-[#14213D] px-4 py-3 font-medium text-[#14213D] hover:bg-[#14213D] hover:text-white"
+              >
+                Enable Browser Notifications
+              </button>
+              <p className="text-xs text-[#14213D]/60">
+                To fully revoke browser permission after enabling, open browser
+                site settings for this app and change Notifications to Block.
+              </p>
+            </div>
+          </SectionCard>
+
+          <SectionCard
+            icon={<Lock size={22} />}
             title="Privacy & Security"
             subtitle="Data and account safety controls"
           >
-            <ToggleRow
-              label="Security activity alerts"
-              checked={settings.privacy.securityActivityAlerts}
-              onCheckedChange={(value) =>
-                updatePrivacySetting("securityActivityAlerts", value)
-              }
-            />
-            <button
-              type="button"
-              onClick={handleLogoutThisDevice}
-              className="mt-3 w-full rounded-lg border border-[#14213D] px-4 py-3 font-medium text-[#14213D] hover:bg-[#14213D] hover:text-white"
-            >
-              Logout on this device
-            </button>
-            <button
-              type="button"
-              onClick={() => setShowDeleteAccountModal(true)}
-              className="mt-2 w-full rounded-lg border border-[#DC6B6B] px-4 py-3 font-medium text-[#DC6B6B] hover:bg-[#DC6B6B] hover:text-white"
-            >
-              Delete account
-            </button>
+            <div className="space-y-4">
+              <ToggleRow
+                label="Security activity alerts"
+                checked={settings.privacy.securityActivityAlerts}
+                onCheckedChange={(value) =>
+                  updatePrivacySetting("securityActivityAlerts", value)
+                }
+              />
+              <button
+                type="button"
+                onClick={() => setShowPasswordModal(true)}
+                className="w-full flex items-center justify-between p-3 rounded-lg border border-[#14213D] text-[#14213D] hover:bg-[#14213D] hover:text-white transition-colors"
+              >
+                <div className="flex items-center gap-3">
+                  <Lock className="w-5 h-5" />
+                  <span className="font-medium">Change Password</span>
+                </div>
+              </button>
+              <button
+                type="button"
+                onClick={handleLogoutThisDevice}
+                className="w-full rounded-lg border border-gray-300 px-4 py-3 font-medium text-[#14213D] hover:bg-gray-50 transition-colors"
+              >
+                Logout on this device
+              </button>
+            </div>
           </SectionCard>
 
           <SectionCard
@@ -1064,6 +1023,14 @@ export function Settings({
               </button>
               <button
                 type="button"
+                onClick={() => setShowDeleteAccountModal(true)}
+                className="flex w-full items-center justify-center gap-2 rounded-lg border-2 border-[#DC6B6B] px-4 py-3 font-medium text-[#DC6B6B] hover:bg-[#DC6B6B] hover:text-white"
+              >
+                <AlertTriangle size={18} />
+                Delete Account
+              </button>
+              <button
+                type="button"
                 onClick={() => setShowResetModal(true)}
                 className="flex w-full items-center justify-center gap-2 rounded-lg border-2 border-[#DC6B6B] px-4 py-3 font-medium text-[#DC6B6B] hover:bg-[#DC6B6B] hover:text-white"
               >
@@ -1073,6 +1040,7 @@ export function Settings({
             </div>
           </SectionCard>
         </div>
+      </div>
       </div>
 
       <AnimatePresence>
