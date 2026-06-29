@@ -194,11 +194,11 @@ export function ApplicationDetail({ application, onClose, onStatusChange, onCont
         <div className="bg-secondary text-secondary-foreground p-6 sticky top-0 z-10">
           <div className="flex items-start justify-between mb-4">
             <div className="flex-1">
-              <h2 className="text-2xl font-bold text-white mb-1" style={{ fontFamily: 'var(--font-display)' }}>
+              <h2 className="text-2xl font-bold text-secondary-foreground mb-1" style={{ fontFamily: 'var(--font-display)' }}>
                 {application.role}
               </h2>
               <div className="flex items-center gap-3">
-                <p className="text-[#E5E5E5] text-lg">{application.company}</p>
+                <p className="text-secondary-foreground/80 text-lg font-medium">{application.company}</p>
                 <div className="flex items-center gap-2">
                   <a
                     href={`https://www.glassdoor.com/Search/results.htm?keyword=${encodeURIComponent(application.company)}`}
@@ -222,7 +222,7 @@ export function ApplicationDetail({ application, onClose, onStatusChange, onCont
               </div>
               
               {/* 3. Header Details (Dynamic Data) */}
-              <div className="flex flex-wrap items-center gap-4 mt-3 text-sm text-gray-300">
+              <div className="flex flex-wrap items-center gap-4 mt-3 text-sm text-secondary-foreground/70 font-medium">
                 <div className="flex items-center gap-1">
                   <MapPin className="w-4 h-4" />
                   <span>{location || 'Location not provided'}</span>
@@ -238,7 +238,7 @@ export function ApplicationDetail({ application, onClose, onStatusChange, onCont
                   <span>Deadline: {displayDeadline}</span>
                 </div>
                 {displaySalary && (
-                  <div className="flex items-center gap-1 bg-[#FCA311]/20 text-[#FCA311] px-2 py-0.5 rounded font-medium">
+                  <div className="flex items-center gap-1 bg-secondary-foreground/10 text-secondary-foreground px-2 py-0.5 rounded font-bold">
                     <span>{displaySalary}</span>
                   </div>
                 )}
@@ -250,8 +250,8 @@ export function ApplicationDetail({ application, onClose, onStatusChange, onCont
               <select
                 value={status}
                 onChange={handleStatusChange}
-                className="px-4 py-2 bg-[#FCA311] text-foreground rounded-md font-semibold hover:bg-[#fdb748] transition-all cursor-pointer outline-none appearance-none pr-8 relative"
-                style={{ backgroundImage: 'url("data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%23000000%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2012.9l128%20127.9c3.6%203.6%207.8%205.4%2012.8%205.4s9.2-1.8%2012.8-5.4L287%2095c3.5-3.5%205.4-7.8%205.4-12.8%200-5-1.9-9.2-5.5-12.8z%22%2F%3E%3C%2Fsvg%3E")', backgroundRepeat: 'no-repeat', backgroundPosition: 'right .7rem top 50%', backgroundSize: '.65rem auto' }}
+                className="px-4 py-2 bg-secondary-foreground text-secondary rounded-md font-bold hover:bg-secondary-foreground/90 transition-all cursor-pointer outline-none appearance-none pr-8 relative border-none"
+                style={{ backgroundImage: 'url("data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22currentcolor%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2012.9l128%20127.9c3.6%203.6%207.8%205.4%2012.8%205.4s9.2-1.8%2012.8-5.4L287%2095c3.5-3.5%205.4-7.8%205.4-12.8%200-5-1.9-9.2-5.5-12.8z%22%2F%3E%3C%2Fsvg%3E")', backgroundRepeat: 'no-repeat', backgroundPosition: 'right .7rem top 50%', backgroundSize: '.65rem auto' }}
               >
                 <option value="Saved">Saved</option>
                 <option value="Applied">Applied / Interviewing</option>
@@ -259,29 +259,29 @@ export function ApplicationDetail({ application, onClose, onStatusChange, onCont
                 <option value="Rejected">Rejected</option>
               </select>
               
-              <button onClick={onClose} className="text-white hover:text-[#FCA311] transition-colors p-1">
+              <button onClick={onClose} className="rounded-md p-2 text-secondary-foreground/80 hover:bg-secondary-foreground/10 hover:text-secondary-foreground transition-colors">
                 <X className="w-6 h-6" />
               </button>
             </div>
           </div>
 
           {/* Tabs */}
-          <div className="flex gap-6 border-b border-[rgba(252,163,17,0.2)] mt-6">
+          <div className="flex gap-6 border-b border-secondary-foreground/20 mt-6">
             {tabs.map((tab) => (
               <button
                 key={tab}
                 onClick={() => setActiveTab(tab.toLowerCase().replace(/ & /g, '-'))}
-                className={`pb-3 text-sm font-medium transition-all relative ${
+                className={`pb-3 text-sm font-bold transition-all relative ${
                   activeTab === tab.toLowerCase().replace(/ & /g, '-')
-                    ? 'text-[#FCA311]'
-                    : 'text-[#E5E5E5] hover:text-white'
+                    ? 'text-secondary-foreground'
+                    : 'text-secondary-foreground/60 hover:text-secondary-foreground'
                 }`}
               >
                 {tab}
                 {activeTab === tab.toLowerCase().replace(/ & /g, '-') && (
                   <motion.div
                     layoutId="activeTab"
-                    className="absolute bottom-0 left-0 right-0 h-0.5 bg-[#FCA311]"
+                    className="absolute bottom-0 left-0 right-0 h-0.5 bg-secondary-foreground"
                   />
                 )}
               </button>
@@ -355,8 +355,8 @@ export function ApplicationDetail({ application, onClose, onStatusChange, onCont
                 </div>
 
                 <div className="relative w-32 h-32 flex-shrink-0">
-                  <svg className="w-full h-full transform -rotate-90">
-                    <circle cx="64" cy="64" r="56" stroke="#f3f4f6" strokeWidth="12" fill="none" />
+                  <svg className="w-full h-full transform -rotate-90 overflow-visible" viewBox="0 0 128 128">
+                    <circle cx="64" cy="64" r="56" stroke="#f3f4f6" strokeWidth="12" fill="none" className="dark:stroke-secondary" />
                     <circle
                       cx="64" cy="64" r="56" stroke="#FCA311" strokeWidth="12" fill="none"
                       strokeDasharray={`${2 * Math.PI * 56}`}
