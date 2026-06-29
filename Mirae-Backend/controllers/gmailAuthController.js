@@ -99,7 +99,21 @@ const getStatus = async (req, res) => {
   try {
     const user = await User.findById(req.user.id);
     if (!user) return res.status(404).json({ error: "User not found" });
-    res.status(200).json({ isConnected: !!user.isGmailConnected });
+
+    if (!user.isGmailConnected || !user.gmailTokens) {
+      return res.status(200).json({ isConnected: false });
+    }
+
+    try {
+      oauth2Client.setCredentials(user.gmailTokens);
+      await oauth2Client.getAccessToken();
+      return res.status(200).json({ isConnected: true });
+    } catch (e) {
+      user.isGmailConnected = false;
+      user.gmailTokens = undefined;
+      await user.save();
+      return res.status(200).json({ isConnected: false });
+    }
   } catch (error) {
     res.status(500).json({ error: "Server error" });
   }

@@ -122,7 +122,7 @@ function SectionCard({
   children,
 }: {
   icon: ReactNode;
-  title: string;
+  title: ReactNode;
   subtitle: string;
   danger?: boolean;
   children: ReactNode;
@@ -890,9 +890,17 @@ export function Settings({
                   <span className="font-medium text-[#14213D]">Theme (Dark/Light)</span>
                 </div>
                 <div
-                  onClick={(e) => {
+                  onClick={async (e) => {
                     e.stopPropagation();
                     toggleTheme();
+                    const newTheme = !isDarkMode ? "dark" : "light";
+                    await persistSettings({
+                      ...settings,
+                      appearance: {
+                        ...settings.appearance,
+                        theme: newTheme,
+                      },
+                    });
                   }}
                   className={`w-10 h-5 rounded-full transition-all cursor-pointer flex items-center px-0.5 ${
                     isDarkMode ? 'bg-[#FCA311]' : 'bg-[#E5E5E5]'
@@ -907,6 +915,7 @@ export function Settings({
               </button>
               <button
                 type="button"
+                onClick={() => toast.info("Help & Community is coming soon!")}
                 className="w-full flex items-center justify-between p-3 rounded-lg bg-gray-50 hover:bg-gray-100 transition-colors border border-gray-100"
               >
                 <div className="flex items-center gap-3">
@@ -937,7 +946,23 @@ export function Settings({
         <div className="space-y-8">
           <SectionCard
             icon={<Bell size={22} />}
-            title="Notifications"
+            title={
+              <div className="flex items-center gap-3">
+                <span>Notifications</span>
+                {(settings.notifications.browserNotifications ||
+                  settings.notifications.followUpReminders ||
+                  settings.notifications.deadlineAlerts ||
+                  settings.notifications.interviewReminders) ? (
+                  <span className="rounded-md bg-green-50 px-2.5 py-0.5 text-sm font-medium text-green-600 border border-green-100">
+                    Enabled
+                  </span>
+                ) : (
+                  <span className="rounded-md bg-red-50 px-2.5 py-0.5 text-sm font-medium text-red-600 border border-red-100">
+                    Disabled
+                  </span>
+                )}
+              </div>
+            }
             subtitle="Reminders and schedule-aware alerts"
           >
             <div className="mb-4 border-b border-gray-100 pb-4">
@@ -970,18 +995,6 @@ export function Settings({
             </div>
 
             <div className="mt-5 space-y-2">
-              <p className="text-sm text-[#14213D]/70">
-                Browser permission status:{" "}
-                <span className="font-semibold text-[#14213D]">
-                  {notificationPermission === "unsupported"
-                    ? "Unsupported"
-                    : notificationPermission === "granted"
-                      ? "Enabled"
-                      : notificationPermission === "denied"
-                        ? "Blocked"
-                        : "Not enabled"}
-                </span>
-              </p>
               <div className="flex flex-col gap-2 pt-2">
                 <button
                   type="button"

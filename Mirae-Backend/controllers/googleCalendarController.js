@@ -86,11 +86,20 @@ const getValidGoogleAccessToken = async (user) => {
   const now = Date.now();
 
   if (!accessToken || user.googleTokenExpiry <= now + 60000) {
-    const refreshed = await refreshGoogleAccessToken(user.googleRefreshToken);
-    accessToken = refreshed.access_token;
-    user.googleAccessToken = refreshed.access_token;
-    user.googleTokenExpiry = Date.now() + (refreshed.expires_in || 0) * 1000;
-    await user.save();
+    try {
+      const refreshed = await refreshGoogleAccessToken(user.googleRefreshToken);
+      accessToken = refreshed.access_token;
+      user.googleAccessToken = refreshed.access_token;
+      user.googleTokenExpiry = Date.now() + (refreshed.expires_in || 0) * 1000;
+      await user.save();
+    } catch (error) {
+      console.error('Failed to refresh token, disconnecting user:', error);
+      user.googleRefreshToken = undefined;
+      user.googleAccessToken = undefined;
+      user.googleTokenExpiry = undefined;
+      await user.save();
+      return null;
+    }
   }
 
   return accessToken;
@@ -310,8 +319,16 @@ const getGoogleConnectionStatus = async (req, res) => {
       return res.status(404).json({ error: 'User not found' });
     }
 
-    const isConnected = Boolean(user.googleRefreshToken);
-    return res.status(200).json({ connected: isConnected });
+    if (!user.googleRefreshToken) {
+      return res.status(200).json({ connected: false });
+    }
+
+    const validToken = await getValidGoogleAccessToken(user);
+    if (!validToken) {
+      return res.status(200).json({ connected: false });
+    }
+
+    return res.status(200).json({ connected: true });
   } catch (error) {
     console.error('Google connection status error:', error.message);
     return res.status(500).json({ error: 'Unable to check Google connection status' });
