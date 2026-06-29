@@ -560,12 +560,13 @@ export function CalendarView() {
 
   const futureAgenda = eventsSortedByDate
     .filter((event) => getAgendaStatus(event) === 'active')
-    .slice(0, 3)
+    .slice(0, 10) // Show up to 10 upcoming events instead of 3
     .map(buildAgendaTask);
 
   const pastAgenda = eventsSortedByDate
     .filter((event) => getAgendaStatus(event) !== 'active')
-    .sort((left, right) => right.date.getTime() - left.date.getTime())
+    .reverse() // Correct chronological past sort (newest past to oldest past)
+    .slice(0, 5) // Limit to 5 past items to prevent unbounded list
     .map(buildAgendaTask);
 
   const selectedDetailEvent = selectedDetailEventId
@@ -600,7 +601,7 @@ export function CalendarView() {
                   Calendar & Reminders
                 </h1>
                 <p className="text-sm text-[#14213D] opacity-70">
-                  Add reminders only for today or upcoming dates. Your next 3 events and past history update automatically.
+                  Add reminders only for today or upcoming dates. Your upcoming events and past history update automatically.
                 </p>
               </div>
             </div>
@@ -1045,7 +1046,7 @@ export function CalendarView() {
 
               <div className="max-h-[460px] space-y-4 overflow-y-auto pr-1">
                 <div className="space-y-3">
-                  <div className="text-xs font-semibold uppercase tracking-wide text-[#667085]">Next 3 events</div>
+                  <div className="text-xs font-semibold uppercase tracking-wide text-[#667085]">Upcoming Events</div>
                   {futureAgenda.length === 0 ? (
                     <div className="rounded-xl border border-dashed border-[#D0D5DD] px-4 py-5 text-sm text-[#667085]">
                       No upcoming events yet.
