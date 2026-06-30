@@ -1,8 +1,5 @@
 import { LayoutDashboard, BarChart3, Calendar, Settings, User, Users } from 'lucide-react';
 import { Link, useLocation } from 'react-router';
-import { useState } from 'react';
-import { AnimatePresence } from 'motion/react';
-import { ProfilePopover } from './ProfilePopover';
 import { BrandLogo } from './BrandLogo';
 import { useUser } from '../contexts/UserContext';
 
@@ -18,7 +15,6 @@ export function Sidebar({
   onLogoutOpen,
 }: SidebarProps) {
   const location = useLocation();
-  const [showProfilePopover, setShowProfilePopover] = useState(false);
   const { user } = useUser();
 
   const navItems = [
@@ -73,11 +69,12 @@ export function Sidebar({
       </nav>
 
       <div className="p-4 border-t border-secondary-foreground/20">
-        <div
-          className="w-full flex items-center gap-3 p-3 rounded-md bg-secondary-foreground/5 transition-colors"
+        <Link
+          to="/settings"
+          className="w-full flex items-center gap-3 p-3 rounded-md bg-secondary-foreground/5 hover:bg-secondary-foreground/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-secondary-foreground/30 transition-colors text-left cursor-pointer"
         >
           {/* Profile Avatar */}
-          <div className="w-10 h-10 rounded-full bg-secondary-foreground/20 flex items-center justify-center overflow-hidden">
+          <span className="w-10 h-10 rounded-full bg-secondary-foreground/20 flex items-center justify-center overflow-hidden">
             {user?.profilePhoto ? (
               <img
                 src={user.profilePhoto}
@@ -87,16 +84,16 @@ export function Sidebar({
             ) : (
               <User className="w-5 h-5 text-card-foreground" />
             )}
-          </div>
-          <div className="text-left">
-            <div className="text-sm font-bold text-secondary-foreground">
+          </span>
+          <span className="text-left flex flex-col">
+            <span className="text-sm font-bold text-secondary-foreground">
               {user?.name || 'Mirae User'}
-            </div>
+            </span>
             {(user as any)?.tagline && (
-              <div className="text-xs text-secondary-foreground/80">{(user as any).tagline}</div>
+              <span className="text-xs text-secondary-foreground/80">{(user as any).tagline}</span>
             )}
-          </div>
-        </div>
+          </span>
+        </Link>
       </div>
     </aside>
   );
