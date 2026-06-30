@@ -1,4 +1,4 @@
-import { FileText, Link2, Moon, HelpCircle, LogOut, Camera } from 'lucide-react';
+import { FileText, Link2, Moon, HelpCircle, LogOut, Camera, Settings } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 import { useState } from 'react';
 import { createPortal } from 'react-dom';
@@ -10,9 +10,10 @@ interface Props {
   onManageResumes: () => void;
   onSocialPortfolio: () => void;
   onLogout: () => void;
+  onSettings: () => void;
 }
 
-export function ProfilePopover({ onClose, onManageResumes, onSocialPortfolio, onLogout }: Props) {
+export function ProfilePopover({ onClose, onManageResumes, onSocialPortfolio, onLogout, onSettings }: Props) {
   const [isHoveringAvatar, setIsHoveringAvatar] = useState(false);
   const { theme, toggleTheme } = useTheme();
   const { user } = useUser();
@@ -21,6 +22,7 @@ export function ProfilePopover({ onClose, onManageResumes, onSocialPortfolio, on
   const menuItems = [
     { icon: FileText, label: 'Manage Resumes', onClick: onManageResumes },
     { icon: Link2, label: 'Social & Portfolio', onClick: onSocialPortfolio },
+    { icon: Settings, label: 'Settings', onClick: onSettings },
     { icon: Moon, label: 'Theme (Dark/Light)', hasToggle: true },
     { icon: HelpCircle, label: 'Help & Community', onClick: () => {} },
   ];
