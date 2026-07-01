@@ -58,17 +58,17 @@ jobs = [
     ["sender: hr@meta.com subject: Meta Coding Challenge snippet: Complete this 90-minute coding challenge on HackerRank.", "Online Assessment"],
     ["sender: recruiting@stripe.com subject: Stripe Byteboard Assessment snippet: You've been invited to complete a Byteboard assessment for the Backend role.", "Online Assessment"],
     ["sender: support@codesignal.com subject: Robinhood Coding Assessment snippet: Complete your assessment for the Backend Engineer role.", "Online Assessment"],
-    # Interviewing
-    ["sender: recruiting@google.com subject: Schedule your Google interview snippet: We'd like to invite you for a virtual onsite interview for the SWE role.", "Interviewing"],
-    ["sender: hr@meta.com subject: Meta Phone Screen snippet: Your phone screen with a Meta engineer is scheduled for next Tuesday.", "Interviewing"],
-    ["sender: interviews@apple.com subject: Apple Interview Confirmation snippet: Your technical interview for the iOS Developer role is confirmed for Friday.", "Interviewing"],
-    ["sender: scheduling@amazon.jobs subject: Amazon Virtual Loop snippet: Your 4-round virtual onsite interview for SDE I is scheduled.", "Interviewing"],
-    ["sender: talent@stripe.com subject: Final Round Interview snippet: We're excited to invite you to the final round interviews for the Backend Engineer role.", "Interviewing"],
-    ["sender: recruiting@uber.com subject: Technical Phone Screen snippet: Your technical phone screen for the Software Engineer role is scheduled.", "Interviewing"],
-    ["sender: hr@netflix.com subject: System Design Interview snippet: Your system design interview is confirmed for Wednesday.", "Interviewing"],
-    ["sender: jobs@airbnb.com subject: Behavioral Interview snippet: Your behavioral interview with the hiring manager is confirmed.", "Interviewing"],
-    ["sender: talent@doordash.com subject: Interview Invitation snippet: We'd like to invite you for an interview for the Mobile Engineer role.", "Interviewing"],
-    ["sender: hr@spotify.com subject: Technical Interview Confirmation snippet: Your technical interview for the Web Engineer position is confirmed.", "Interviewing"],
+    # Applied / Interviewing
+    ["sender: recruiting@google.com subject: Schedule your Google interview snippet: We'd like to invite you for a virtual onsite interview for the SWE role.", "Applied / Interviewing"],
+    ["sender: hr@meta.com subject: Meta Phone Screen snippet: Your phone screen with a Meta engineer is scheduled for next Tuesday.", "Applied / Interviewing"],
+    ["sender: interviews@apple.com subject: Apple Interview Confirmation snippet: Your technical interview for the iOS Developer role is confirmed for Friday.", "Applied / Interviewing"],
+    ["sender: scheduling@amazon.jobs subject: Amazon Virtual Loop snippet: Your 4-round virtual onsite interview for SDE I is scheduled.", "Applied / Interviewing"],
+    ["sender: talent@stripe.com subject: Final Round Interview snippet: We're excited to invite you to the final round interviews for the Backend Engineer role.", "Applied / Interviewing"],
+    ["sender: recruiting@uber.com subject: Technical Phone Screen snippet: Your technical phone screen for the Software Engineer role is scheduled.", "Applied / Interviewing"],
+    ["sender: hr@netflix.com subject: System Design Interview snippet: Your system design interview is confirmed for Wednesday.", "Applied / Interviewing"],
+    ["sender: jobs@airbnb.com subject: Behavioral Interview snippet: Your behavioral interview with the hiring manager is confirmed.", "Applied / Interviewing"],
+    ["sender: talent@doordash.com subject: Interview Invitation snippet: We'd like to invite you for an interview for the Mobile Engineer role.", "Applied / Interviewing"],
+    ["sender: hr@spotify.com subject: Technical Interview Confirmation snippet: Your technical interview for the Web Engineer position is confirmed.", "Applied / Interviewing"],
     # Offer
     ["sender: offers@google.com subject: Google Offer Details snippet: We are thrilled to offer you the Software Engineer role! Here are the details.", "Offer"],
     ["sender: hr@meta.com subject: Offer from Meta snippet: Congratulations! We'd like to extend an offer for the Frontend Engineer position.", "Offer"],
@@ -94,118 +94,128 @@ jobs = [
 ]
 
 hackathons = [
-    # Registered
-    ["sender: noreply@devpost.com subject: You're registered for HackMIT snippet: Registration confirmed! Don't forget to join the Discord.", "Registered"],
-    ["sender: hello@unstop.com subject: SIH 2026 Registration snippet: Your registration for Smart India Hackathon is complete.", "Registered"],
-    ["sender: team@mlh.io subject: Welcome to HackUPC snippet: Thanks for registering for HackUPC. We'll see you in Barcelona!", "Registered"],
-    ["sender: noreply@hackerearth.com subject: Registration confirmed snippet: You are registered for the AI Innovation Challenge.", "Registered"],
-    ["sender: admin@ethglobal.com subject: ETHWaterloo Registration snippet: Your application to ETHWaterloo has been received.", "Registered"],
-    ["sender: info@devfolio.co subject: InOut Registration snippet: You have successfully registered for InOut 7.0.", "Registered"],
-    ["sender: hello@taikai.network subject: Registration complete snippet: You are registered for the Web3 Buildathon.", "Registered"],
-    ["sender: noreply@devpost.com subject: PennApps Registration snippet: Your registration for PennApps is confirmed.", "Registered"],
-    ["sender: team@mlh.io subject: Welcome to LA Hacks snippet: Thanks for registering for LA Hacks. We'll see you in Los Angeles!", "Registered"],
-    ["sender: hello@unstop.com subject: Registration confirmed snippet: Your registration for the Flipkart GRiD challenge is complete.", "Registered"],
-    # Shortlisted
-    ["sender: hello@unstop.com subject: SIH 2026 Update: Shortlisted snippet: Congratulations, your team has been shortlisted for the next round of SIH.", "Shortlisted"],
-    ["sender: noreply@hackerearth.com subject: Moving to Round 2 snippet: Your idea has been shortlisted for the AI Innovation Challenge.", "Shortlisted"],
-    ["sender: info@devfolio.co subject: InOut Shortlist snippet: Congrats! Your team is shortlisted to build at InOut 7.0.", "Shortlisted"],
-    ["sender: admin@ethglobal.com subject: ETHWaterloo Acceptance snippet: You've been accepted to participate in ETHWaterloo!", "Shortlisted"],
-    ["sender: noreply@devpost.com subject: HackMIT Acceptance snippet: Congratulations, you've been accepted to attend HackMIT!", "Shortlisted"],
-    ["sender: team@mlh.io subject: LA Hacks Acceptance snippet: You've been accepted to participate in LA Hacks!", "Shortlisted"],
-    ["sender: hello@taikai.network subject: Web3 Buildathon Shortlist snippet: Your team has been shortlisted for the Web3 Buildathon.", "Shortlisted"],
-    ["sender: noreply@devpost.com subject: PennApps Acceptance snippet: Congratulations, you've been accepted to attend PennApps!", "Shortlisted"],
-    ["sender: hello@unstop.com subject: Flipkart GRiD Update: Shortlisted snippet: Congratulations, your team has been shortlisted for Round 2 of Flipkart GRiD.", "Shortlisted"],
-    ["sender: team@mlh.io subject: HackUPC Acceptance snippet: You've been accepted to participate in HackUPC!", "Shortlisted"],
-    # Finalist
-    ["sender: noreply@devpost.com subject: HackMIT Top 10 snippet: Your project is a finalist! Get ready to demo on the main stage.", "Finalist"],
-    ["sender: hello@unstop.com subject: SIH 2026 Grand Finale snippet: You're headed to the Grand Finale! Prepare your final presentation.", "Finalist"],
-    ["sender: admin@ethglobal.com subject: ETHWaterloo Finalist snippet: Your team is one of the top 5 finalists. See you at closing ceremonies.", "Finalist"],
-    ["sender: info@devfolio.co subject: InOut Finalist snippet: Congratulations, your project made it to the finals of InOut 7.0.", "Finalist"],
-    ["sender: noreply@hackerearth.com subject: AI Innovation Challenge Finals snippet: You are a finalist in the AI Innovation Challenge.", "Finalist"],
-    ["sender: team@mlh.io subject: LA Hacks Top 10 snippet: Your project is a finalist! Get ready to demo on the main stage.", "Finalist"],
-    ["sender: hello@taikai.network subject: Web3 Buildathon Finalist snippet: Congratulations, your project made it to the finals of the Web3 Buildathon.", "Finalist"],
-    ["sender: noreply@devpost.com subject: PennApps Top 10 snippet: Your project is a finalist! Get ready to demo on the main stage.", "Finalist"],
-    ["sender: hello@unstop.com subject: Flipkart GRiD Grand Finale snippet: You're headed to the Grand Finale! Prepare your final presentation.", "Finalist"],
-    ["sender: team@mlh.io subject: HackUPC Top 10 snippet: Your project is a finalist! Get ready to demo on the main stage.", "Finalist"],
-    # Winner
-    ["sender: noreply@devpost.com subject: HackMIT Winners snippet: Congratulations, you won the Best Overall Award at HackMIT!", "Winner"],
-    ["sender: hello@unstop.com subject: SIH 2026 Results snippet: Congratulations! You are the winner of the Smart India Hackathon.", "Winner"],
-    ["sender: admin@ethglobal.com subject: ETHWaterloo Prizes snippet: You won the sponsor prize from Polygon! Congratulations.", "Winner"],
-    ["sender: info@devfolio.co subject: InOut Winner snippet: Congratulations on winning 1st place at InOut 7.0.", "Winner"],
-    ["sender: noreply@hackerearth.com subject: Winner Announcement snippet: You have won the AI Innovation Challenge. Claim your prize.", "Winner"],
-    ["sender: team@mlh.io subject: LA Hacks Winners snippet: Congratulations, you won the Best Overall Award at LA Hacks!", "Winner"],
-    ["sender: hello@taikai.network subject: Web3 Buildathon Winner snippet: Congratulations on winning 1st place at the Web3 Buildathon.", "Winner"],
-    ["sender: noreply@devpost.com subject: PennApps Winners snippet: Congratulations, you won the Best Overall Award at PennApps!", "Winner"],
-    ["sender: hello@unstop.com subject: Flipkart GRiD Results snippet: Congratulations! You are the winner of the Flipkart GRiD challenge.", "Winner"],
-    ["sender: team@mlh.io subject: HackUPC Winners snippet: Congratulations, you won the Best Overall Award at HackUPC!", "Winner"],
-    # Rejected
-    ["sender: noreply@devpost.com subject: HackMIT Status Update snippet: Unfortunately, we cannot accommodate you at HackMIT this year.", "Rejected"],
-    ["sender: hello@unstop.com subject: SIH 2026 Update snippet: Your team was not shortlisted for the next round. Keep trying!", "Rejected"],
-    ["sender: admin@ethglobal.com subject: ETHWaterloo Application snippet: We received many applications and unfortunately cannot accept yours.", "Rejected"],
-    ["sender: team@mlh.io subject: HackUPC Update snippet: Unfortunately, we cannot accommodate you at HackUPC this year due to space limits.", "Rejected"],
-    ["sender: noreply@hackerearth.com subject: Challenge Update snippet: Your submission did not qualify for the next round.", "Rejected"],
-    ["sender: info@devfolio.co subject: InOut Status Update snippet: Unfortunately, we cannot accommodate you at InOut 7.0 this year.", "Rejected"],
-    ["sender: hello@taikai.network subject: Buildathon Update snippet: Your submission did not qualify for the next round.", "Rejected"],
-    ["sender: noreply@devpost.com subject: PennApps Status Update snippet: Unfortunately, we cannot accommodate you at PennApps this year.", "Rejected"],
-    ["sender: hello@unstop.com subject: Flipkart GRiD Update snippet: Your team was not shortlisted for the next round. Keep trying!", "Rejected"],
-    ["sender: team@mlh.io subject: LA Hacks Update snippet: Unfortunately, we cannot accommodate you at LA Hacks this year due to space limits.", "Rejected"],
+    # Registered / Participated
+    ["sender: noreply@devpost.com subject: You're registered for HackMIT snippet: Registration confirmed! Don't forget to join the Discord.", "Registered / Participated"],
+    ["sender: hello@unstop.com subject: SIH 2026 Registration snippet: Your registration for Smart India Hackathon is complete.", "Registered / Participated"],
+    ["sender: team@mlh.io subject: Welcome to HackUPC snippet: Thanks for registering for HackUPC. We'll see you in Barcelona!", "Registered / Participated"],
+    ["sender: noreply@hackerearth.com subject: Registration confirmed snippet: You are registered for the AI Innovation Challenge.", "Registered / Participated"],
+    ["sender: admin@ethglobal.com subject: ETHWaterloo Registration snippet: Your application to ETHWaterloo has been received.", "Registered / Participated"],
+    ["sender: info@devfolio.co subject: InOut Registration snippet: You have successfully registered for InOut 7.0.", "Registered / Participated"],
+    ["sender: hello@taikai.network subject: Registration complete snippet: You are registered for the Web3 Buildathon.", "Registered / Participated"],
+    ["sender: noreply@devpost.com subject: PennApps Registration snippet: Your registration for PennApps is confirmed.", "Registered / Participated"],
+    ["sender: team@mlh.io subject: Welcome to LA Hacks snippet: Thanks for registering for LA Hacks. We'll see you in Los Angeles!", "Registered / Participated"],
+    ["sender: hello@unstop.com subject: Registration confirmed snippet: Your registration for the Flipkart GRiD challenge is complete.", "Registered / Participated"],
+    # Won / Completed
+    ["sender: noreply@devpost.com subject: HackMIT Winners snippet: Congratulations, you won the Best Overall Award at HackMIT!", "Won / Completed"],
+    ["sender: hello@unstop.com subject: SIH 2026 Results snippet: Congratulations! You are the winner of the Smart India Hackathon.", "Won / Completed"],
+    ["sender: admin@ethglobal.com subject: ETHWaterloo Prizes snippet: You won the sponsor prize from Polygon! Congratulations.", "Won / Completed"],
+    ["sender: info@devfolio.co subject: InOut Winner snippet: Congratulations on winning 1st place at InOut 7.0.", "Won / Completed"],
+    ["sender: noreply@hackerearth.com subject: Winner Announcement snippet: You have won the AI Innovation Challenge. Claim your prize.", "Won / Completed"],
+    ["sender: team@mlh.io subject: LA Hacks Winners snippet: Congratulations, you won the Best Overall Award at LA Hacks!", "Won / Completed"],
+    ["sender: hello@taikai.network subject: Web3 Buildathon Winner snippet: Congratulations on winning 1st place at the Web3 Buildathon.", "Won / Completed"],
+    ["sender: noreply@devpost.com subject: PennApps Winners snippet: Congratulations, you won the Best Overall Award at PennApps!", "Won / Completed"],
+    ["sender: hello@unstop.com subject: Flipkart GRiD Results snippet: Congratulations! You are the winner of the Flipkart GRiD challenge.", "Won / Completed"],
+    ["sender: team@mlh.io subject: HackUPC Winners snippet: Congratulations, you won the Best Overall Award at HackUPC!", "Won / Completed"],
+    # Lost
+    ["sender: noreply@devpost.com subject: HackMIT Status Update snippet: Unfortunately, we cannot accommodate you at HackMIT this year.", "Lost"],
+    ["sender: hello@unstop.com subject: SIH 2026 Update snippet: Your team was not shortlisted for the next round. Keep trying!", "Lost"],
+    ["sender: admin@ethglobal.com subject: ETHWaterloo Application snippet: We received many applications and unfortunately cannot accept yours.", "Lost"],
+    ["sender: team@mlh.io subject: HackUPC Update snippet: Unfortunately, we cannot accommodate you at HackUPC this year due to space limits.", "Lost"],
+    ["sender: noreply@hackerearth.com subject: Challenge Update snippet: Your submission did not qualify for the next round.", "Lost"],
+    ["sender: info@devfolio.co subject: InOut Status Update snippet: Unfortunately, we cannot accommodate you at InOut 7.0 this year.", "Lost"],
+    ["sender: hello@taikai.network subject: Buildathon Update snippet: Your submission did not qualify for the next round.", "Lost"],
+    ["sender: noreply@devpost.com subject: PennApps Status Update snippet: Unfortunately, we cannot accommodate you at PennApps this year.", "Lost"],
+    ["sender: hello@unstop.com subject: Flipkart GRiD Update snippet: Your team was not shortlisted for the next round. Keep trying!", "Lost"],
+    ["sender: team@mlh.io subject: LA Hacks Update snippet: Unfortunately, we cannot accommodate you at LA Hacks this year due to space limits.", "Lost"],
 ]
 
 others = [
-    # Applied
-    ["sender: fellowships@ycombinator.com subject: YC Application Received snippet: We've received your application for the Y Combinator Fellowship.", "Applied"],
-    ["sender: scholarships@google.com subject: Google Scholarship Application snippet: Thank you for applying to the Google Women Techmakers Scholarship.", "Applied"],
-    ["sender: info@outreachy.org subject: Outreachy Application snippet: Your initial application for Outreachy has been recorded.", "Applied"],
-    ["sender: programs@mlh.io subject: MLH Fellowship Application snippet: We have received your application for the MLH Fellowship.", "Applied"],
-    ["sender: admissions@university.edu subject: MS CS Application snippet: Your application to the MS in Computer Science program is complete.", "Applied"],
-    ["sender: hello@summerofcode.withgoogle.com subject: GSoC Application snippet: Your proposal for Google Summer of Code has been submitted.", "Applied"],
-    ["sender: fellowships@openai.com subject: OpenAI Scholars Application snippet: Thank you for applying to the OpenAI Scholars program.", "Applied"],
-    ["sender: scholarships@microsoft.com subject: Microsoft Scholarship Application snippet: Thank you for applying to the Microsoft Tuition Scholarship.", "Applied"],
-    ["sender: info@lfx.linuxfoundation.org subject: LFX Mentorship Application snippet: Your application for the LFX Mentorship has been recorded.", "Applied"],
-    ["sender: programs@github.com subject: GitHub Campus Experts Application snippet: We have received your application for the GitHub Campus Experts program.", "Applied"],
-    # Under Review
-    ["sender: fellowships@ycombinator.com subject: YC Application Update snippet: Your application is now under review by our partners.", "Under Review"],
-    ["sender: scholarships@google.com subject: Scholarship Application Status snippet: The committee is currently reviewing your scholarship application.", "Under Review"],
-    ["sender: info@outreachy.org subject: Outreachy Contribution Period snippet: You are now approved to start the contribution period.", "Under Review"],
-    ["sender: programs@mlh.io subject: MLH Fellowship Interview snippet: Please schedule an interview for the MLH Fellowship.", "Under Review"],
-    ["sender: admissions@university.edu subject: Application Under Review snippet: The admissions committee is currently reviewing your MS CS application.", "Under Review"],
-    ["sender: hello@summerofcode.withgoogle.com subject: GSoC Proposal Review snippet: Organizations are currently reviewing your GSoC proposal.", "Under Review"],
-    ["sender: fellowships@openai.com subject: OpenAI Scholars Update snippet: Your application is now under review by our researchers.", "Under Review"],
-    ["sender: scholarships@microsoft.com subject: Scholarship Application Status snippet: The committee is currently reviewing your scholarship application.", "Under Review"],
-    ["sender: info@lfx.linuxfoundation.org subject: LFX Mentorship Update snippet: Your application is now under review by the project maintainers.", "Under Review"],
-    ["sender: programs@github.com subject: GitHub Campus Experts Update snippet: Your application is now under review by our team.", "Under Review"],
-    # Accepted
-    ["sender: fellowships@ycombinator.com subject: YC Fellowship Offer snippet: Congratulations! We are excited to offer you a spot in the YC Fellowship.", "Accepted"],
-    ["sender: scholarships@google.com subject: Congratulations! You've been selected snippet: You have been awarded the Google Women Techmakers Scholarship.", "Accepted"],
-    ["sender: info@outreachy.org subject: Accepted as an Outreachy Intern snippet: Congratulations! You have been selected for the Outreachy internship.", "Accepted"],
-    ["sender: programs@mlh.io subject: Welcome to the MLH Fellowship snippet: Congratulations, you're accepted into the MLH Fellowship!", "Accepted"],
-    ["sender: admissions@university.edu subject: Offer of Admission snippet: We are pleased to offer you admission to the MS CS program.", "Accepted"],
-    ["sender: hello@summerofcode.withgoogle.com subject: Accepted for GSoC snippet: Congratulations! Your proposal for Google Summer of Code has been accepted.", "Accepted"],
-    ["sender: fellowships@openai.com subject: OpenAI Scholars Offer snippet: Congratulations! We are excited to offer you a spot in the OpenAI Scholars program.", "Accepted"],
-    ["sender: scholarships@microsoft.com subject: Congratulations! You've been selected snippet: You have been awarded the Microsoft Tuition Scholarship.", "Accepted"],
-    ["sender: info@lfx.linuxfoundation.org subject: Accepted as an LFX Mentee snippet: Congratulations! You have been selected for the LFX Mentorship.", "Accepted"],
-    ["sender: programs@github.com subject: Welcome to GitHub Campus Experts snippet: Congratulations, you're accepted into the GitHub Campus Experts program!", "Accepted"],
-    # Rejected
-    ["sender: fellowships@ycombinator.com subject: Update on YC Fellowship snippet: We had a record number of applications and cannot offer you a spot.", "Rejected"],
-    ["sender: scholarships@google.com subject: Scholarship Application Update snippet: Unfortunately, you were not selected for the scholarship this year.", "Rejected"],
-    ["sender: info@outreachy.org subject: Outreachy Status snippet: Unfortunately, you were not selected for an internship this round.", "Rejected"],
-    ["sender: programs@mlh.io subject: MLH Fellowship Update snippet: We regret to inform you that we cannot offer you a fellowship position.", "Rejected"],
-    ["sender: admissions@university.edu subject: Admission Decision snippet: We are unable to offer you admission to the MS CS program for the Fall.", "Rejected"],
-    ["sender: hello@summerofcode.withgoogle.com subject: GSoC Proposal Update snippet: Unfortunately, your proposal for Google Summer of Code was not selected.", "Rejected"],
-    ["sender: fellowships@openai.com subject: Update on OpenAI Scholars snippet: We had a record number of applications and cannot offer you a spot.", "Rejected"],
-    ["sender: scholarships@microsoft.com subject: Scholarship Application Update snippet: Unfortunately, you were not selected for the scholarship this year.", "Rejected"],
-    ["sender: info@lfx.linuxfoundation.org subject: LFX Mentorship Status snippet: Unfortunately, you were not selected for a mentorship this round.", "Rejected"],
-    ["sender: programs@github.com subject: GitHub Campus Experts Update snippet: We regret to inform you that we cannot offer you a position in the program.", "Rejected"],
+    # Active / In Progress
+    ["sender: fellowships@ycombinator.com subject: YC Application Received snippet: We've received your application for the Y Combinator Fellowship.", "Active / In Progress"],
+    ["sender: scholarships@google.com subject: Google Scholarship Application snippet: Thank you for applying to the Google Women Techmakers Scholarship.", "Active / In Progress"],
+    ["sender: info@outreachy.org subject: Outreachy Application snippet: Your initial application for Outreachy has been recorded.", "Active / In Progress"],
+    ["sender: programs@mlh.io subject: MLH Fellowship Application snippet: We have received your application for the MLH Fellowship.", "Active / In Progress"],
+    ["sender: admissions@university.edu subject: MS CS Application snippet: Your application to the MS in Computer Science program is complete.", "Active / In Progress"],
+    ["sender: hello@summerofcode.withgoogle.com subject: GSoC Application snippet: Your proposal for Google Summer of Code has been submitted.", "Active / In Progress"],
+    ["sender: fellowships@openai.com subject: OpenAI Scholars Application snippet: Thank you for applying to the OpenAI Scholars program.", "Active / In Progress"],
+    ["sender: scholarships@microsoft.com subject: Microsoft Scholarship Application snippet: Thank you for applying to the Microsoft Tuition Scholarship.", "Active / In Progress"],
+    ["sender: info@lfx.linuxfoundation.org subject: LFX Mentorship Application snippet: Your application for the LFX Mentorship has been recorded.", "Active / In Progress"],
+    ["sender: programs@github.com subject: GitHub Campus Experts Application snippet: We have received your application for the GitHub Campus Experts program.", "Active / In Progress"],
+    # Active / In Progress
+    ["sender: fellowships@ycombinator.com subject: YC Application Update snippet: Your application is now under review by our partners.", "Active / In Progress"],
+    ["sender: scholarships@google.com subject: Scholarship Application Status snippet: The committee is currently reviewing your scholarship application.", "Active / In Progress"],
+    ["sender: info@outreachy.org subject: Outreachy Contribution Period snippet: You are now approved to start the contribution period.", "Active / In Progress"],
+    ["sender: programs@mlh.io subject: MLH Fellowship Interview snippet: Please schedule an interview for the MLH Fellowship.", "Active / In Progress"],
+    ["sender: admissions@university.edu subject: Application Under Review snippet: The admissions committee is currently reviewing your MS CS application.", "Active / In Progress"],
+    ["sender: hello@summerofcode.withgoogle.com subject: GSoC Proposal Review snippet: Organizations are currently reviewing your GSoC proposal.", "Active / In Progress"],
+    ["sender: fellowships@openai.com subject: OpenAI Scholars Update snippet: Your application is now under review by our researchers.", "Active / In Progress"],
+    ["sender: scholarships@microsoft.com subject: Scholarship Application Status snippet: The committee is currently reviewing your scholarship application.", "Active / In Progress"],
+    ["sender: info@lfx.linuxfoundation.org subject: LFX Mentorship Update snippet: Your application is now under review by the project maintainers.", "Active / In Progress"],
+    ["sender: programs@github.com subject: GitHub Campus Experts Update snippet: Your application is now under review by our team.", "Active / In Progress"],
+    # Completed
+    ["sender: fellowships@ycombinator.com subject: YC Fellowship Offer snippet: Congratulations! We are excited to offer you a spot in the YC Fellowship.", "Completed"],
+    ["sender: scholarships@google.com subject: Congratulations! You've been selected snippet: You have been awarded the Google Women Techmakers Scholarship.", "Completed"],
+    ["sender: info@outreachy.org subject: Accepted as an Outreachy Intern snippet: Congratulations! You have been selected for the Outreachy internship.", "Completed"],
+    ["sender: programs@mlh.io subject: Welcome to the MLH Fellowship snippet: Congratulations, you're accepted into the MLH Fellowship!", "Completed"],
+    ["sender: admissions@university.edu subject: Offer of Admission snippet: We are pleased to offer you admission to the MS CS program.", "Completed"],
+    ["sender: hello@summerofcode.withgoogle.com subject: Accepted for GSoC snippet: Congratulations! Your proposal for Google Summer of Code has been accepted.", "Completed"],
+    ["sender: fellowships@openai.com subject: OpenAI Scholars Offer snippet: Congratulations! We are excited to offer you a spot in the OpenAI Scholars program.", "Completed"],
+    ["sender: scholarships@microsoft.com subject: Congratulations! You've been selected snippet: You have been awarded the Microsoft Tuition Scholarship.", "Completed"],
+    ["sender: info@lfx.linuxfoundation.org subject: Accepted as an LFX Mentee snippet: Congratulations! You have been selected for the LFX Mentorship.", "Completed"],
+    ["sender: programs@github.com subject: Welcome to GitHub Campus Experts snippet: Congratulations, you're accepted into the GitHub Campus Experts program!", "Completed"],
+    # Lost
+    ["sender: fellowships@ycombinator.com subject: Update on YC Fellowship snippet: We had a record number of applications and cannot offer you a spot.", "Lost"],
+    ["sender: scholarships@google.com subject: Scholarship Application Update snippet: Unfortunately, you were not selected for the scholarship this year.", "Lost"],
+    ["sender: info@outreachy.org subject: Outreachy Status snippet: Unfortunately, you were not selected for an internship this round.", "Lost"],
+    ["sender: programs@mlh.io subject: MLH Fellowship Update snippet: We regret to inform you that we cannot offer you a fellowship position.", "Lost"],
+    ["sender: admissions@university.edu subject: Admission Decision snippet: We are unable to offer you admission to the MS CS program for the Fall.", "Lost"],
+    ["sender: hello@summerofcode.withgoogle.com subject: GSoC Proposal Update snippet: Unfortunately, your proposal for Google Summer of Code was not selected.", "Lost"],
+    ["sender: fellowships@openai.com subject: Update on OpenAI Scholars snippet: We had a record number of applications and cannot offer you a spot.", "Lost"],
+    ["sender: scholarships@microsoft.com subject: Scholarship Application Update snippet: Unfortunately, you were not selected for the scholarship this year.", "Lost"],
+    ["sender: info@lfx.linuxfoundation.org subject: LFX Mentorship Status snippet: Unfortunately, you were not selected for a mentorship this round.", "Lost"],
+    ["sender: programs@github.com subject: GitHub Campus Experts Update snippet: We regret to inform you that we cannot offer you a position in the program.", "Lost"],
 ]
 
 # Duplicate the datasets to ensure enough examples for the models to learn from, just slightly modifying them.
 # The ML model expects a decent volume.
 
-for i in range(3):
-    jobs.extend([[x[0].replace("Google", f"Company{i}"), x[1]] for x in jobs[:10]])
-    hackathons.extend([[x[0].replace("HackMIT", f"Hackathon{i}"), x[1]] for x in hackathons[:10]])
-    others.extend([[x[0].replace("YC", f"Program{i}"), x[1]] for x in others[:10]])
-    non_relevant.extend([x.replace("newsletter", f"news{i}") for x in non_relevant[:10]])
+import random
+
+companies = ["Tesla", "Airbnb", "Databricks", "Snowflake", "Palantir", "Robinhood", "Coinbase", "Roku", "Spotify", "Snap", "ByteDance", "Twilio", "Dropbox"]
+roles = ["Frontend Developer", "Backend Engineer", "Data Analyst", "Product Manager", "UX Designer", "DevOps Engineer", "Machine Learning Engineer", "Security Researcher", "Full Stack Developer", "QA Automation Engineer"]
+hackathon_names = ["HackTheNorth", "CalHacks", "TreeHacks", "HackNYU", "HackTX", "VTHacks", "BoilerMake", "HackGT", "SwampHacks"]
+other_programs = ["DeepMind Scholarship", "Bessemer Fellowship", "Sequoia Mentorship", "Linux Foundation Course", "Google Research Program", "Meta University", "a16z Fellowship"]
+filler_words = ["Great news", "Update on", "Status of", "Regarding", "Action required", "Your application to", "Next steps for", "Following up on"]
+
+# Generate hundreds of unique synthetic training examples to make the TF-IDF vectorizer highly robust
+original_jobs = list(jobs)
+original_hackathons = list(hackathons)
+original_others = list(others)
+original_non_relevant = list(non_relevant)
+
+for i in range(25):
+    for x in original_jobs:
+        base_text = x[0]
+        c = random.choice(companies)
+        r = random.choice(roles)
+        f = random.choice(filler_words)
+        new_text = base_text.replace("Google", c).replace("Meta", c).replace("Apple", c).replace("Amazon", c).replace("Stripe", c).replace("Uber", c).replace("Netflix", c).replace("Software Engineer", r).replace("SWE role", r).replace("Frontend Engineer", r).replace("Update on", f)
+        jobs.append([new_text + f" {i}", x[1]])
+        
+    for x in original_hackathons:
+        base_text = x[0]
+        h = random.choice(hackathon_names)
+        new_text = base_text.replace("HackMIT", h).replace("SIH 2026", h).replace("HackUPC", h).replace("ETHWaterloo", h).replace("PennApps", h).replace("LA Hacks", h)
+        hackathons.append([new_text + f" {i}", x[1]])
+        
+    for x in original_others:
+        base_text = x[0]
+        p = random.choice(other_programs)
+        new_text = base_text.replace("YC", p).replace("Google Scholarship", p).replace("Outreachy", p).replace("MLH Fellowship", p).replace("OpenAI Scholars", p).replace("GSoC", p)
+        others.append([new_text + f" {i}", x[1]])
+        
+    for x in original_non_relevant:
+        non_relevant.append(x + f" snippet{i}")
 
 data = {
     "NON_RELEVANT": non_relevant,

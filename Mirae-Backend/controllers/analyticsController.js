@@ -192,7 +192,7 @@ const getMatchInsights = async (req, res) => {
           interviewAverage: [
             {
               $match: {
-                status: { $in: ['Interviewing', 'Offer', 'Offered'] },
+                status: { $in: ['Applied / Interviewing', 'Offer', 'Offered', 'Active / In Progress', 'Completed', 'Registered / Participated', 'Won / Completed'] },
                 matchScore: { $ne: null },
               },
             },
@@ -237,8 +237,8 @@ const getMatchInsights = async (req, res) => {
       },
     ]);
 
-    const allJobsAverage = Math.round(result?.allJobsAverage?.[0]?.avgScore || 0);
-    const interviewAverage = Math.round(result?.interviewAverage?.[0]?.avgScore || 0);
+    const allJobsAverage = result?.allJobsAverage?.[0]?.avgScore != null ? Math.round(result.allJobsAverage[0].avgScore) : null;
+    const interviewAverage = result?.interviewAverage?.[0]?.avgScore != null ? Math.round(result.interviewAverage[0].avgScore) : null;
 
     res.status(200).json({
       allJobsAverage,
@@ -297,7 +297,8 @@ const getFunnel = async (req, res) => {
         { stage: 'Saved', count: totalSaved },
         { stage: 'Applied', count: totalApplied },
         { stage: 'Interviewing', count: totalInterviewing },
-        { stage: 'Offer', count: totalOffers }
+        { stage: 'Offer', count: totalOffers },
+        { stage: 'Rejected', count: rejected }
       ],
       conversionRates: {
         savedToApplied: cumulativeSaved ? ((cumulativeApplied / cumulativeSaved) * 100).toFixed(1) : 0,
@@ -371,7 +372,7 @@ const getCompanyBreakdown = async (req, res) => {
     
     const companyStats = {};
     
-    const inProgressStatuses = category === 'Hackathons' ? ['Participated', 'Interviewing'] : category === 'Others' ? ['In Progress'] : ['Interviewing'];
+    const inProgressStatuses = category === 'Hackathons' ? ['Participated', 'Interviewing'] : category === 'Others' ? ['In Progress'] : ['Applied', 'Interviewing'];
     const successStatuses = category === 'Hackathons' ? ['Won', 'Completed', 'Offer', 'Offered'] : category === 'Others' ? ['Completed', 'Won', 'Offer', 'Offered'] : ['Offer', 'Offered'];
     const rejectStatuses = category === 'Others' ? ['Lost', 'Rejected'] : ['Rejected'];
 

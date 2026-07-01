@@ -114,14 +114,12 @@ export function Analytics() {
     const otherActive = Math.max(0, totalJobs - offers - rejected - interviewing - applied - saved);
 
     const successLabel = activeCategory === 'Hackathons' ? 'Won/Completed' : activeCategory === 'Others' ? 'Completed' : 'Offers';
-    const rejectLabel = activeCategory === 'Others' ? 'Lost/Rejected' : 'Rejected';
-    const interviewLabel = activeCategory === 'Hackathons' ? 'Participating' : activeCategory === 'Others' ? 'In Progress' : 'Interviewing';
-    const appliedLabel = activeCategory === 'Hackathons' ? 'Registered' : activeCategory === 'Others' ? 'Active' : 'Applied';
+    const rejectLabel = activeCategory === 'Jobs' ? 'Rejected' : 'Lost';
+    const midLabel = activeCategory === 'Hackathons' ? 'Registered / Participated' : activeCategory === 'Others' ? 'Active / In Progress' : 'Applied / Interviewing';
 
     return [
       { name: successLabel, value: offers, color: '#067647' },
-      { name: interviewLabel, value: interviewing, color: '#FCA311' },
-      { name: appliedLabel, value: applied, color: '#2563EB' },
+      { name: midLabel, value: applied + interviewing, color: '#2563EB' },
       { name: 'Saved', value: saved, color: '#6b7280' },
       { name: rejectLabel, value: rejected, color: '#B42318' },
       ...(otherActive > 0 ? [{ name: 'Other', value: otherActive, color: '#14213D' }] : [])
@@ -159,33 +157,41 @@ export function Analytics() {
       const colors = {
         'Saved': '#6b7280',
         'Applied': '#14213D',
-        'Registered': '#14213D',
+        'Registered / Participated': '#14213D',
         'Active': '#14213D',
         'Interviewing': '#FCA311',
         'Participated': '#FCA311',
         'Offer': '#067647',
         'Won': '#067647',
-        'Completed': '#067647'
+        'Completed': '#067647',
+        'Rejected': '#ef4444',
+        'Lost': '#ef4444'
       };
+      
+      const savedCount = funnelData.funnel.find(s => s.stage === 'Saved')?.count || 0;
+      const appliedCount = funnelData.funnel.find(s => s.stage === 'Applied')?.count || 0;
+      const interviewingCount = funnelData.funnel.find(s => s.stage === 'Interviewing')?.count || 0;
+      const offerCount = funnelData.funnel.find(s => s.stage === 'Offer')?.count || 0;
+      const rejectedCount = funnelData.funnel.find(s => s.stage === 'Rejected')?.count || 0;
       const total = overview?.totalJobs || 1;
-      const labelMap: Record<string, Record<string, string>> = {
-        Hackathons: { Applied: 'Registered', Interviewing: 'Participated', Offer: 'Won/Completed' },
-        Others: { Applied: 'Active', Interviewing: 'In Progress', Offer: 'Completed' },
-      };
-      const remap = labelMap[activeCategory] || {};
-      return funnelData.funnel.map(step => ({
-        label: remap[step.stage] || step.stage,
-        value: step.count,
-        percent: Math.round((step.count / total) * 100),
-        color: colors[(remap[step.stage] || step.stage) as keyof typeof colors] || colors[step.stage as keyof typeof colors] || '#FCA311'
-      }));
+      
+      const midLabel = activeCategory === 'Hackathons' ? 'Registered / Participated' : activeCategory === 'Others' ? 'Active / In Progress' : 'Applied / Interviewing';
+      const successLabel = activeCategory === 'Hackathons' ? 'Won/Completed' : activeCategory === 'Others' ? 'Completed' : 'Offer';
+      const rejectLabel = activeCategory === 'Jobs' ? 'Rejected' : 'Lost';
+
+      return [
+        { label: 'Saved', value: savedCount, percent: Math.round((savedCount / total) * 100), color: colors['Saved'] },
+        { label: midLabel, value: appliedCount + interviewingCount, percent: Math.round(((appliedCount + interviewingCount) / total) * 100), color: colors['Applied'] },
+        { label: successLabel, value: offerCount, percent: Math.round((offerCount / total) * 100), color: colors['Offer'] },
+        { label: rejectLabel, value: rejectedCount, percent: Math.round((rejectedCount / total) * 100), color: colors['Rejected'] }
+      ];
     }
     // Fallback if API fails
     const total = overview?.totalJobs ?? 0;
     const calcPercent = (value: number) =>
       total > 0 ? Math.round((value / total) * 100) : 0;
 
-    const label2 = activeCategory === 'Hackathons' ? 'Registered' : activeCategory === 'Others' ? 'Active' : 'Applied / Interviewing';
+    const label2 = activeCategory === 'Hackathons' ? 'Registered / Participated' : activeCategory === 'Others' ? 'Active / In Progress' : 'Applied / Interviewing';
     const label3 = activeCategory === 'Hackathons' ? 'Won/Completed' : activeCategory === 'Others' ? 'Completed' : 'Offer';
 
     return [
@@ -206,6 +212,12 @@ export function Analytics() {
         value: overview?.offers ?? 0,
         percent: calcPercent(overview?.offers ?? 0),
         color: '#067647',
+      },
+      {
+        label: activeCategory === 'Jobs' ? 'Rejected' : 'Lost',
+        value: overview?.rejected ?? 0,
+        percent: calcPercent(overview?.rejected ?? 0),
+        color: '#ef4444',
       },
     ];
   }, [overview, funnelData, activeCategory]);
@@ -320,10 +332,10 @@ export function Analytics() {
             className="bg-card rounded-lg p-5 border border-border border-t-[3px] border-t-[#FCA311] shadow-sm transition-all hover:shadow-[0_8px_16px_rgba(252,163,17,0.15)]"
           >
             <div className="text-xs uppercase tracking-wide text-card-foreground mb-2 font-semibold opacity-60">
-              {activeCategory === 'Hackathons' ? 'REGISTERED' : activeCategory === 'Others' ? 'ACTIVE' : 'APPLIED'}
+              {activeCategory === 'Hackathons' ? 'REG / PARTICIPATING' : activeCategory === 'Others' ? 'ACTIVE / IN PROGRESS' : 'APPLIED / INTERVIEWING'}
             </div>
             <div className="text-4xl font-bold text-foreground mb-3 leading-none">
-              {overview?.applied ?? 0}
+              {(overview?.applied ?? 0) + (overview?.interviewing ?? 0)}
             </div>
             <div className="inline-flex items-center px-3 py-1.5 bg-[#FEF3C7] rounded-full">
               <span className="text-xs font-semibold text-[#92400E]">
@@ -339,14 +351,14 @@ export function Analytics() {
             className="bg-card rounded-lg p-5 border border-border border-t-[3px] border-t-[#FCA311] shadow-sm transition-all hover:shadow-[0_8px_16px_rgba(252,163,17,0.15)]"
           >
             <div className="text-xs uppercase tracking-wide text-card-foreground mb-2 font-semibold opacity-60">
-              {activeCategory === 'Hackathons' ? 'PARTICIPATING' : activeCategory === 'Others' ? 'IN PROGRESS' : 'INTERVIEWING'}
+              {activeCategory === 'Jobs' ? 'REJECTED' : 'LOST'}
             </div>
             <div className="text-4xl font-bold text-foreground mb-3 leading-none">
-              {overview?.interviewing ?? 0}
+              {overview?.rejected ?? 0}
             </div>
             <div className="inline-flex items-center px-3 py-1.5 bg-[#FDE2E2] rounded-full">
               <span className="text-xs font-semibold text-[#B42318]">
-                {overview?.totalJobs ? `${Math.round(((overview?.interviewing ?? 0) / overview.totalJobs) * 100)}%` : '0%'}
+                {overview?.totalJobs ? `${Math.round(((overview?.rejected ?? 0) / overview.totalJobs) * 100)}%` : '0%'}
               </span>
             </div>
           </motion.div>
@@ -607,7 +619,7 @@ export function Analytics() {
                 Avg Match: All Jobs
               </div>
               <div className="mt-3 text-4xl font-bold text-card-foreground">
-                {matchInsights?.allJobsAverage ?? 0}%
+                {matchInsights?.allJobsAverage != null ? `${matchInsights.allJobsAverage}%` : 'N/A'}
               </div>
               <p className="mt-2 text-sm text-muted-foreground">
                 Average match score across every scored job in your pipeline.
@@ -615,14 +627,14 @@ export function Analytics() {
             </div>
 
             <div className="rounded-lg border border-border bg-secondary-foreground/5 p-4">
-              <div className="text-xs font-semibold uppercase tracking-wide text-secondary-foreground">
-                Avg Match: Interviewing / Offer
+              <div className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">
+                Avg Match: Progressing
               </div>
-              <div className="mt-3 text-4xl font-bold text-secondary-foreground">
-                {matchInsights?.interviewAverage ? `${matchInsights.interviewAverage}%` : 'N/A'}
+              <div className="mt-3 text-4xl font-bold text-card-foreground">
+                {matchInsights?.interviewAverage != null ? `${matchInsights.interviewAverage}%` : 'N/A'}
               </div>
-              <p className="mt-2 text-sm text-secondary-foreground/80">
-                Average match score for the jobs that are progressing the furthest.
+              <p className="mt-2 text-sm text-muted-foreground">
+                Average match score for the opportunities that are actively moving forward or offered.
               </p>
             </div>
           </div>
@@ -777,7 +789,7 @@ export function Analytics() {
                       {activeCategory === 'Hackathons' ? 'Total Registrations' : activeCategory === 'Others' ? 'Total Saved' : 'Total Apps'}
                     </th>
                     <th className="px-4 py-3 font-semibold text-center">
-                      {activeCategory === 'Hackathons' ? 'Participating' : activeCategory === 'Others' ? 'Active' : 'Interviewing'}
+                      {activeCategory === 'Hackathons' ? 'Participating' : activeCategory === 'Others' ? 'Active' : 'Applied / Interviewing'}
                     </th>
                     <th className="px-4 py-3 font-semibold text-center">
                       {activeCategory === 'Hackathons' ? 'Won' : activeCategory === 'Others' ? 'Completed' : 'Offers'}

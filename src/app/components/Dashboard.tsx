@@ -344,10 +344,10 @@ export function Dashboard() {
         apps: filteredApps.filter((app) => app.stage === 'Saved'),
       },
       {
-        key: 'jobs-applied',
+        key: 'jobs-applied-interviewing',
         title: 'Applied / Interviewing',
         apps: filteredApps.filter(
-          (app) => app.stage === 'Applied' || app.stage === 'Interviewing'
+          (app) => app.stage === 'Applied' || app.stage === 'Interviewing' || app.stage === 'Applied / Interviewing'
         ),
       },
       {
@@ -374,20 +374,21 @@ export function Dashboard() {
         apps: filteredApps.filter((app) => app.stage === 'Saved'),
       },
       {
-        key: 'hackathons-registered',
-        title: 'Registered',
-        apps: filteredApps.filter((app) => app.stage === 'Registered'),
-      },
-      {
-        key: 'hackathons-participated',
-        title: 'Participated',
-        apps: filteredApps.filter((app) => app.stage === 'Participated'),
+        key: 'hackathons-registered-participated',
+        title: 'Registered / Participated',
+        apps: filteredApps.filter((app) => app.stage === 'Registered' || app.stage === 'Participated' || app.stage === 'Applied' || app.stage === 'Interviewing' || app.stage === 'Registered / Participated'),
       },
       {
         key: 'hackathons-completed',
         title: 'Completed / Won',
-        apps: filteredApps.filter((app) => app.stage === 'Completed' || app.stage === 'Won'),
+        apps: filteredApps.filter((app) => ['Completed', 'Won', 'Offer', 'Offered', 'Won / Completed'].includes(app.stage)),
         variant: 'selected',
+      },
+      {
+        key: 'hackathons-lost',
+        title: 'Lost',
+        apps: filteredApps.filter((app) => ['Lost', 'Rejected'].includes(app.stage)),
+        variant: 'rejected',
       },
     ],
     [filteredApps]
@@ -402,8 +403,8 @@ export function Dashboard() {
       },
       {
         key: 'others-active',
-        title: 'Active',
-        apps: filteredApps.filter((app) => app.stage === 'Active'),
+        title: 'Active / In Progress',
+        apps: filteredApps.filter((app) => app.stage === 'Active' || app.stage === 'In Progress' || app.stage === 'Active / In Progress'),
       },
       {
         key: 'others-completed',
@@ -413,7 +414,7 @@ export function Dashboard() {
       },
       {
         key: 'others-rejected',
-        title: 'Rejected / Lost',
+        title: 'Lost',
         apps: filteredApps.filter((app) => app.stage === 'Rejected' || app.stage === 'Lost'),
         variant: 'rejected',
       },
@@ -432,7 +433,7 @@ export function Dashboard() {
     activeTab === 'jobs'
       ? `Total Jobs: ${activeSummary.totalJobs} | Saved: ${activeSummary.saved} | Applied / Interviewing: ${activeSummary.applied + activeSummary.interviewing} | Offers: ${activeSummary.offers} | Rejected: ${activeSummary.rejected}`
       : activeTab === 'hackathons'
-      ? `Total Hackathons/Contests: ${filteredApps.length} | Saved: ${hackathonSections[0].apps.length} | Registered: ${hackathonSections[1].apps.length} | Participated: ${hackathonSections[2].apps.length} | Completed: ${hackathonSections[3].apps.length}`
+      ? `Total Hackathons/Contests: ${filteredApps.length} | Saved: ${hackathonSections[0].apps.length} | Reg / Part: ${hackathonSections[1].apps.length} | Won: ${hackathonSections[2].apps.length} | Lost: ${hackathonSections[3].apps.length}`
       : `Total Others: ${filteredApps.length} | Saved: ${othersSections[0].apps.length} | Active: ${othersSections[1].apps.length} | Completed: ${othersSections[2].apps.length} | Rejected: ${othersSections[3].apps.length}`;
 
   const renderCard = (

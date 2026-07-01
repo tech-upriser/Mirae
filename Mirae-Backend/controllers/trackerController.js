@@ -163,9 +163,9 @@ Given the noisy raw text extracted from a webpage, extract:
 2. A precise list of ONLY technical skills required (Programming Languages, Frameworks, Databases, Tools). Ignore soft skills.
 3. The category of this opportunity. Must be exactly one of: "Jobs", "Hackathons", or "Others".
 4. The current status of the user's application based on the text. If there is no explicit confirmation of application, default to "Saved". 
-   - For Jobs: "Saved", "Applied", "Interviewing", "Offer", "Rejected".
-   - For Hackathons: "Saved", "Registered", "Participated", "Won", "Lost".
-   - For Others: "Saved", "Active", "In Progress", "Completed", "Lost".
+   - For Jobs: "Saved", "Applied / Interviewing", "Offer", "Rejected".
+   - For Hackathons: "Saved", "Registered / Participated", "Won / Completed", "Lost".
+   - For Others: "Saved", "Active / In Progress", "Completed", "Lost".
 
 Return ONLY valid JSON.
 

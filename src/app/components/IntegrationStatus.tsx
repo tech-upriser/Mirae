@@ -102,7 +102,7 @@ export function IntegrationStatus({
           ) : (
             <button
               onClick={onConnect}
-              className="group flex items-center gap-2 rounded-lg bg-secondary text-secondary-foreground transition-colors hover:bg-[#1a2a4f]"
+              className="group flex items-center gap-2 rounded-lg bg-secondary text-secondary-foreground transition-colors hover:bg-secondary/90"
             >
               Connect Account
               <ArrowRight

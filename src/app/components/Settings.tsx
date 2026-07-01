@@ -743,7 +743,7 @@ export function Settings({
                     type="button"
                     onClick={handleSaveProfile}
                     disabled={saving}
-                    className="rounded-lg bg-secondary text-secondary-foreground px-4 py-3 font-medium transition-all hover:bg-[#1a2a4f] disabled:opacity-60"
+                    className="rounded-lg bg-secondary text-secondary-foreground px-4 py-3 font-medium transition-all hover:bg-secondary/90 disabled:opacity-60"
                   >
                     Save
                   </button>
@@ -841,7 +841,7 @@ export function Settings({
                   <button
                     type="button"
                     onClick={handleConnectGmail}
-                    className="w-full rounded-lg bg-secondary text-secondary-foreground px-4 py-3 font-medium transition-all hover:bg-[#1a2a4f]"
+                    className="w-full rounded-lg bg-secondary text-secondary-foreground px-4 py-3 font-medium transition-all hover:bg-secondary/90"
                   >
                     Connect Gmail Account
                   </button>
@@ -892,7 +892,7 @@ export function Settings({
                   <button
                     type="button"
                     onClick={handleConnectGoogleCalendar}
-                    className="w-full rounded-lg bg-secondary text-secondary-foreground px-4 py-3 font-medium transition-all hover:bg-[#1a2a4f]"
+                    className="w-full rounded-lg bg-secondary text-secondary-foreground px-4 py-3 font-medium transition-all hover:bg-secondary/90"
                   >
                     Connect Google Calendar
                   </button>
@@ -1025,14 +1025,14 @@ export function Settings({
                 <button
                   type="button"
                   onClick={handleEnableAllNotifications}
-                  className="w-full rounded-lg bg-secondary text-secondary-foreground px-4 py-3 font-medium hover:bg-[#1a2a4f] transition-colors"
+                  className="w-full rounded-lg bg-secondary text-secondary-foreground px-4 py-3 font-medium hover:bg-secondary/90 transition-colors"
                 >
                   Enable All Notifications
                 </button>
                 <button
                   type="button"
                   onClick={handleDisableAllNotifications}
-                  className="w-full rounded-lg border border-[#14213D] px-4 py-3 font-medium text-card-foreground hover:bg-muted transition-colors"
+                  className="w-full rounded-lg border border-border px-4 py-3 font-medium text-card-foreground hover:bg-muted/50 transition-colors"
                 >
                   Disable All Notifications
                 </button>
@@ -1060,12 +1060,10 @@ export function Settings({
               <button
                 type="button"
                 onClick={() => setShowPasswordModal(true)}
-                className="w-full flex items-center justify-between p-3 rounded-lg border border-[#14213D] text-card-foreground hover:bg-secondary text-secondary-foreground transition-colors"
+                className="w-full flex items-center justify-center gap-2 rounded-lg bg-secondary text-secondary-foreground px-4 py-3 font-medium hover:bg-secondary/90 transition-colors"
               >
-                <div className="flex items-center gap-3">
-                  <Lock className="w-5 h-5" />
-                  <span className="font-medium">Change Password</span>
-                </div>
+                <Lock className="w-5 h-5" />
+                Change Password
               </button>
               <button
                 type="button"
