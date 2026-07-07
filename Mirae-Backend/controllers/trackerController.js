@@ -884,7 +884,7 @@ exports.createJob = async (req, res) => {
     }
 
     // 4. Compute matchedSkills and missingSkills
-    const gap = computeSkillGap(resumeSkills, normalizedJobSkills);
+    const gap = computeSkillGap(resumeSkills, normalizedJobSkills, hasResume ? user.resumeText : '');
     const matchPercentage = gap.matchPercentage;
     const matchedSkills = gap.matchedSkills;
     const missingSkills = gap.missingSkills;
