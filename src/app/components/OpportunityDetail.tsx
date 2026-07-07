@@ -53,7 +53,20 @@ import { useState, useEffect } from 'react';
 
 export function OpportunityDetail({ application, onClose, onStatusChange }: Props) {
   const isHackathon = application.category === 'Hackathons';
-  const [status, setStatus] = useState(application.stage || 'Saved');
+  const normalizeStatus = (stage: string) => {
+    if (!stage) return 'Saved';
+    if (isHackathon) {
+      if (['Registered', 'Participated', 'Applied', 'Interviewing'].includes(stage)) return 'Registered / Participated';
+      if (['Completed', 'Won', 'Offer', 'Offered', 'Won / Completed'].includes(stage)) return 'Completed / Won';
+      if (['Lost', 'Rejected'].includes(stage)) return 'Lost';
+    } else {
+      if (['Active', 'In Progress'].includes(stage)) return 'Active / In Progress';
+      if (['Lost', 'Rejected'].includes(stage)) return 'Lost';
+    }
+    return stage;
+  };
+
+  const [status, setStatus] = useState(normalizeStatus(application.stage));
   const [activeTab, setActiveTab] = useState('overview');
   const tabs = ['Overview', 'Timeline'];
   
@@ -62,7 +75,7 @@ export function OpportunityDetail({ application, onClose, onStatusChange }: Prop
   );
 
   useEffect(() => {
-    setStatus(application.stage || 'Saved');
+    setStatus(normalizeStatus(application.stage));
   }, [application.stage]);
 
   const handleStatusChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
@@ -117,18 +130,16 @@ export function OpportunityDetail({ application, onClose, onStatusChange }: Prop
                   {isHackathon ? (
                     <>
                       <option value="Saved">Saved</option>
-                      <option value="Registered">Registered</option>
-                      <option value="Participated">Participated</option>
-                      <option value="Won">Won</option>
-                      <option value="Completed">Completed</option>
+                      <option value="Registered / Participated">Registered / Participated</option>
+                      <option value="Completed / Won">Completed / Won</option>
+                      <option value="Lost">Lost</option>
                     </>
                   ) : (
                     <>
                       <option value="Saved">Saved</option>
-                      <option value="Active">Active</option>
+                      <option value="Active / In Progress">Active / In Progress</option>
                       <option value="Completed">Completed</option>
                       <option value="Lost">Lost</option>
-                      <option value="Rejected">Rejected</option>
                     </>
                   )}
                 </select>

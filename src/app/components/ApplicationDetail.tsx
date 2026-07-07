@@ -50,7 +50,12 @@ interface Props {
 
 export function ApplicationDetail({ application, onClose, onStatusChange, onContactsSaved, onNotesSaved }: Props) {
   const [activeTab, setActiveTab] = useState('overview');
-  const normalizeStatusValue = (value: string) => (value === 'Interviewing' ? 'Applied' : value);
+  const normalizeStatusValue = (value: string) => {
+    if (!value) return 'Saved';
+    if (['Applied', 'Interviewing'].includes(value)) return 'Applied / Interviewing';
+    if (['Offer', 'Offered'].includes(value)) return 'Offers';
+    return value;
+  };
   const [status, setStatus] = useState(normalizeStatusValue(application.stage || 'Saved'));
   
   // New State Variables for Networking
@@ -277,9 +282,8 @@ export function ApplicationDetail({ application, onClose, onStatusChange, onCont
                   className="px-4 py-2 bg-secondary-foreground text-secondary rounded-md font-bold hover:bg-secondary-foreground/90 transition-all cursor-pointer outline-none appearance-none pr-8 border-none"
                 >
                   <option value="Saved">Saved</option>
-                  <option value="Applied">Applied</option>
-                  <option value="Interviewing">Interviewing</option>
-                  <option value="Offer">Offered</option>
+                  <option value="Applied / Interviewing">Applied / Interviewing</option>
+                  <option value="Offers">Offers</option>
                   <option value="Rejected">Rejected</option>
                 </select>
                 <ChevronDown className="absolute right-2.5 top-1/2 -translate-y-1/2 h-4 w-4 pointer-events-none text-secondary" />
