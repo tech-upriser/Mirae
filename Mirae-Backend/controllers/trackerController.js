@@ -241,28 +241,119 @@ function normalize(text) {
 
 // Configurable Synonym Dictionary (Bidirectional Groups)
 const SYNONYM_GROUPS = [
+  // --- Languages ---
   ['javascript', 'js'],
   ['typescript', 'ts'],
-  ['c#', 'c sharp'],
+  ['c#', 'c sharp', 'csharp'],
+  ['c++', 'cpp'],
   ['golang', 'go'],
-  ['sql', 'mysql', 'postgresql', 'postgres'],
+  ['python', 'py'],
+  ['ruby', 'ruby on rails', 'rails', 'ror'],
+  ['rust', 'rustlang'],
+  ['kotlin', 'kt'],
+  ['swift', 'swiftui'],
+
+  // --- Databases ---
+  ['sql', 'mysql', 'postgresql', 'postgres', 'structured query language'],
+  ['mongodb', 'mongo db', 'mongo'],
+  ['dynamodb', 'dynamo db', 'amazon dynamodb'],
+  ['redis', 'redis cache'],
+  ['cassandra', 'apache cassandra'],
+  ['elasticsearch', 'elastic search', 'es'],
+  ['firebase', 'firebase realtime database', 'firestore'],
+  ['neo4j', 'neo 4j'],
+  ['sqlite', 'sqlite3'],
+
+  // --- Frontend ---
   ['react', 'react.js', 'reactjs'],
+  ['next.js', 'nextjs', 'next js'],
+  ['vue', 'vue.js', 'vuejs'],
+  ['angular', 'angularjs', 'angular.js'],
+  ['svelte', 'sveltekit'],
+  ['tailwind', 'tailwindcss', 'tailwind css'],
+  ['bootstrap', 'bootstrap css'],
+  ['html', 'html5'],
+  ['css', 'css3'],
+  ['sass', 'scss'],
+  ['jquery', 'j query'],
+
+  // --- Backend ---
   ['node.js', 'nodejs', 'node js'],
   ['express.js', 'express', 'expressjs'],
-  ['mongodb', 'mongo db'],
-  ['kubernetes', 'k8s'],
-  ['aws', 'amazon web services'],
-  ['google cloud', 'gcp'],
-  ['azure', 'microsoft azure'],
-  ['git', 'github', 'gitlab'],
+  ['django', 'django rest framework', 'drf'],
+  ['flask', 'flask api'],
+  ['spring', 'spring boot', 'springboot'],
+  ['fastapi', 'fast api'],
+  ['graphql', 'graph ql'],
   ['rest api', 'restful api', 'rest apis', 'restful apis', 'rest'],
-  ['distributed systems', 'distributed system'],
-  ['algorithms', 'algorithmic'],
-  ['software development', 'software engineering'],
+
+  // --- Cloud & DevOps ---
+  ['aws', 'amazon web services'],
+  ['google cloud', 'gcp', 'google cloud platform'],
+  ['azure', 'microsoft azure'],
+  ['docker', 'containerization', 'containers'],
+  ['kubernetes', 'k8s'],
+  ['terraform', 'iac', 'infrastructure as code'],
+  ['ci/cd', 'continuous integration', 'continuous deployment', 'cicd', 'jenkins', 'github actions'],
+  ['nginx', 'reverse proxy'],
+  ['linux', 'unix', 'ubuntu', 'centos'],
+  ['apache kafka', 'kafka'],
+  ['rabbitmq', 'rabbit mq', 'message queue'],
+
+  // --- AI / ML / Data Science ---
   ['machine learning', 'ml'],
   ['artificial intelligence', 'ai'],
+  ['deep learning', 'dl'],
+  ['natural language processing', 'nlp'],
+  ['computer vision', 'cv', 'image recognition'],
+  ['tensorflow', 'tf', 'tensor flow'],
+  ['pytorch', 'torch'],
+  ['scikit-learn', 'sklearn', 'scikit learn'],
+  ['pandas', 'pd'],
+  ['numpy', 'np'],
+  ['opencv', 'open cv'],
+  ['keras', 'tf.keras'],
+  ['hugging face', 'huggingface', 'transformers'],
+  ['large language models', 'llm', 'llms'],
+  ['generative ai', 'gen ai', 'genai'],
+  ['data science', 'data analytics'],
+  ['data engineering', 'data pipelines', 'etl'],
+  ['power bi', 'powerbi'],
+  ['tableau', 'data visualization'],
+  ['apache spark', 'spark', 'pyspark'],
+  ['hadoop', 'mapreduce'],
+
+  // --- Mobile ---
+  ['react native', 'react-native'],
+  ['flutter', 'dart'],
+  ['android', 'android development'],
+  ['ios', 'ios development'],
+
+  // --- Version Control & Collaboration ---
+  ['git', 'github', 'gitlab', 'bitbucket', 'version control'],
+
+  // --- CS Fundamentals ---
   ['dsa', 'data structures and algorithms', 'data structures & algorithms'],
-  ['oop', 'object-oriented programming', 'object oriented programming']
+  ['oop', 'object-oriented programming', 'object oriented programming'],
+  ['algorithms', 'algorithmic'],
+  ['distributed systems', 'distributed system', 'distributed computing'],
+  ['system design', 'systems design', 'high level design', 'hld', 'low level design', 'lld'],
+  ['operating systems', 'os'],
+  ['computer networks', 'networking', 'tcp/ip'],
+  ['dbms', 'database management system', 'database management systems'],
+
+  // --- Security ---
+  ['cybersecurity', 'cyber security', 'information security', 'infosec'],
+  ['penetration testing', 'pen testing', 'ethical hacking'],
+
+  // --- Other Tools & Concepts ---
+  ['software development', 'software engineering'],
+  ['agile', 'scrum', 'kanban'],
+  ['jira', 'project management'],
+  ['figma', 'ui design', 'ux design'],
+  ['postman', 'api testing'],
+  ['selenium', 'web automation', 'test automation'],
+  ['webpack', 'bundler', 'vite'],
 ];
 
 // Generate lookup map for synonyms
