@@ -661,12 +661,15 @@ const normalizeCategory = (raw, context = '') => {
     'scholarship',
     'meetup',
     'conference',
-    'summit'
+    'summit',
+    'summer school',
+    'program',
+    'course'
   ];
 
   if (hackathonKeywords.some((keyword) => combined.includes(keyword))) return 'Hackathons';
-  if (strongJobKeywords.some((keyword) => combined.includes(keyword))) return 'Jobs';
   if (otherKeywords.some((keyword) => combined.includes(keyword))) return 'Others';
+  if (strongJobKeywords.some((keyword) => combined.includes(keyword))) return 'Jobs';
 
   return 'Others';
 };
