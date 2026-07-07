@@ -583,6 +583,19 @@ const computeSkillGap = (resumeSkills = [], jobSkills = [], resumeText = '') => 
 const ensureJobSkillsAndMatch = async (job, user) => {
   let updated = false;
 
+  // Skip match score for non-Jobs (hackathons, events, etc.)
+  if (job.category && job.category !== 'Jobs') {
+    if (job.matchScore !== null) {
+      job.matchScore = null;
+      updated = true;
+    }
+    if (updated) {
+      await job.save();
+      console.log(`💾 [Job Skills Healing] Job ${job._id} (${job.category}) - match score cleared.`);
+    }
+    return job;
+  }
+
   // Initialize job.jobSkills if missing
   if (!job.jobSkills || job.jobSkills.length === 0) {
     const fallbackAll = job.skills?.all || [];
@@ -1052,7 +1065,7 @@ exports.createJob = async (req, res) => {
       company: finalCompany,
       url: url || 'https://unknown',
       description: finalDescription,
-      matchScore: matchPercentage,
+      matchScore: finalCategory === 'Jobs' ? matchPercentage : null,
       skills: safeSkills,
       jobSkills: normalizedJobSkills,
       location: incomingData.location || '',
