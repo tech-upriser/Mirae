@@ -989,12 +989,16 @@ exports.createJob = async (req, res) => {
         history.push({ status: finalStatus, date: createdAt });
       }
 
-      existingJob.title = finalData.title;
-      existingJob.company = finalData.company;
-      existingJob.description = finalData.description;
-      existingJob.matchScore = finalData.matchScore;
-      existingJob.skills = finalData.skills;
-      existingJob.jobSkills = finalData.jobSkills;
+      existingJob.title = finalData.title || existingJob.title;
+      existingJob.company = finalData.company || existingJob.company;
+      existingJob.description = finalData.description || existingJob.description;
+      
+      if (finalData.jobSkills && finalData.jobSkills.length > 0) {
+        existingJob.matchScore = finalData.matchScore;
+        existingJob.skills = finalData.skills;
+        existingJob.jobSkills = finalData.jobSkills;
+      }
+
       existingJob.location = finalData.location;
       existingJob.postedDate = finalData.postedDate;
       existingJob.salary = finalData.salary;
