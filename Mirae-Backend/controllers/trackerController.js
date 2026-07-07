@@ -1029,6 +1029,7 @@ exports.createJob = async (req, res) => {
       return res.status(200).json({
         message: 'This job was already saved. Mirae refreshed its details.',
         job: existingJob,
+        hasResume,
         matchPercentage,
         matchedSkills,
         missingSkills,
@@ -1051,6 +1052,7 @@ exports.createJob = async (req, res) => {
     res.status(201).json({
       message: "Analysis Complete and Personalized!",
       job: newJob,
+      hasResume,
       matchPercentage,
       matchedSkills,
       missingSkills,
