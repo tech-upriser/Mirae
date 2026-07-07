@@ -341,25 +341,25 @@ export function Dashboard() {
       {
         key: 'jobs-saved',
         title: 'Saved',
-        apps: filteredApps.filter((app) => app.stage === 'Saved'),
+        apps: filteredApps.filter((app) => !app.stage || app.stage === 'Saved'),
       },
       {
         key: 'jobs-applied-interviewing',
         title: 'Applied / Interviewing',
         apps: filteredApps.filter(
-          (app) => app.stage === 'Applied' || app.stage === 'Interviewing' || app.stage === 'Applied / Interviewing'
+          (app) => ['Applied', 'Interviewing', 'Applied / Interviewing', 'Registered', 'Participated', 'Active', 'In Progress'].includes(app.stage)
         ),
       },
       {
         key: 'jobs-offers',
         title: 'Offers',
-        apps: filteredApps.filter((app) => app.stage === 'Offer'),
+        apps: filteredApps.filter((app) => ['Offer', 'Offered', 'Offers', 'Won', 'Completed'].includes(app.stage)),
         variant: 'selected',
       },
       {
         key: 'jobs-rejected',
         title: 'Rejected',
-        apps: filteredApps.filter((app) => app.stage === 'Rejected'),
+        apps: filteredApps.filter((app) => ['Rejected', 'Lost'].includes(app.stage)),
         variant: 'rejected',
       },
     ],
@@ -371,17 +371,17 @@ export function Dashboard() {
       {
         key: 'hackathons-saved',
         title: 'Saved',
-        apps: filteredApps.filter((app) => app.stage === 'Saved'),
+        apps: filteredApps.filter((app) => !app.stage || app.stage === 'Saved'),
       },
       {
         key: 'hackathons-registered-participated',
         title: 'Registered / Participated',
-        apps: filteredApps.filter((app) => app.stage === 'Registered' || app.stage === 'Participated' || app.stage === 'Applied' || app.stage === 'Interviewing' || app.stage === 'Registered / Participated'),
+        apps: filteredApps.filter((app) => ['Registered', 'Participated', 'Registered / Participated', 'Applied', 'Interviewing', 'Active', 'In Progress'].includes(app.stage)),
       },
       {
         key: 'hackathons-completed',
         title: 'Completed / Won',
-        apps: filteredApps.filter((app) => ['Completed', 'Won', 'Offer', 'Offered', 'Won / Completed'].includes(app.stage)),
+        apps: filteredApps.filter((app) => ['Completed', 'Won', 'Completed / Won', 'Offer', 'Offered'].includes(app.stage)),
         variant: 'selected',
       },
       {
@@ -399,23 +399,23 @@ export function Dashboard() {
       {
         key: 'others-saved',
         title: 'Saved',
-        apps: filteredApps.filter((app) => app.stage === 'Saved'),
+        apps: filteredApps.filter((app) => !app.stage || app.stage === 'Saved'),
       },
       {
         key: 'others-active',
         title: 'Active / In Progress',
-        apps: filteredApps.filter((app) => app.stage === 'Active' || app.stage === 'In Progress' || app.stage === 'Active / In Progress'),
+        apps: filteredApps.filter((app) => ['Active', 'In Progress', 'Active / In Progress', 'Applied', 'Interviewing', 'Registered', 'Participated'].includes(app.stage)),
       },
       {
         key: 'others-completed',
         title: 'Completed',
-        apps: filteredApps.filter((app) => app.stage === 'Completed'),
+        apps: filteredApps.filter((app) => ['Completed', 'Won', 'Offer', 'Offered'].includes(app.stage)),
         variant: 'selected',
       },
       {
         key: 'others-rejected',
         title: 'Lost',
-        apps: filteredApps.filter((app) => app.stage === 'Rejected' || app.stage === 'Lost'),
+        apps: filteredApps.filter((app) => ['Rejected', 'Lost'].includes(app.stage)),
         variant: 'rejected',
       },
     ],
