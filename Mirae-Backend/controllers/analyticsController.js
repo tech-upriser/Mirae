@@ -372,9 +372,23 @@ const getCompanyBreakdown = async (req, res) => {
     
     const companyStats = {};
     
-    const inProgressStatuses = category === 'Hackathons' ? ['Participated', 'Interviewing'] : category === 'Others' ? ['In Progress'] : ['Applied', 'Interviewing'];
-    const successStatuses = category === 'Hackathons' ? ['Won', 'Completed', 'Offer', 'Offered'] : category === 'Others' ? ['Completed', 'Won', 'Offer', 'Offered'] : ['Offer', 'Offered'];
-    const rejectStatuses = category === 'Others' ? ['Lost', 'Rejected'] : ['Rejected'];
+    const inProgressStatuses = category === 'Hackathons' 
+      ? ['Participated', 'Registered', 'Registered / Participated', 'Applied', 'Interviewing'] 
+      : category === 'Others' 
+        ? ['In Progress', 'Active', 'Active / In Progress'] 
+        : ['Applied', 'Interviewing', 'Applied / Interviewing'];
+        
+    const successStatuses = category === 'Hackathons' 
+      ? ['Won', 'Completed', 'Completed / Won', 'Offer', 'Offered'] 
+      : category === 'Others' 
+        ? ['Completed', 'Won', 'Offer', 'Offered'] 
+        : ['Offer', 'Offered', 'Offers'];
+        
+    const rejectStatuses = category === 'Others' 
+      ? ['Lost', 'Rejected'] 
+      : category === 'Hackathons'
+        ? ['Lost', 'Rejected']
+        : ['Rejected'];
 
     jobs.forEach(job => {
       const company = job.company;
