@@ -525,6 +525,8 @@ export function Dashboard() {
               ? 'Open details'
               : activeTab === 'others'
               ? 'Keep this handy'
+              : (!app.skills?.all?.length && !app.jobSkills?.length)
+              ? 'Open details'
               : 'Add resume for Match Score'}
           </div>
 
