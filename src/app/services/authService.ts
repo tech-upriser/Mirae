@@ -15,11 +15,23 @@ const getAuthHeaders = () => {
 export const authService = {
   // --- AUTHENTICATION METHODS ---
 
-  async register(name: string, email: string, password: string) {
+  async sendOtp(email: string) {
+    const response = await fetch(`${AUTH_URL}/send-otp`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email }),
+    });
+
+    const data = await response.json();
+    if (!response.ok) throw new Error(data.error || 'Failed to send verification code');
+    return data;
+  },
+
+  async register(name: string, email: string, password: string, otp: string) {
     const response = await fetch(`${AUTH_URL}/register`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ name, email, password }),
+      body: JSON.stringify({ name, email, password, otp }),
     });
 
     const data = await response.json();

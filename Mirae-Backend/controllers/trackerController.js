@@ -129,7 +129,7 @@ Rules:
           { role: "system", content: systemPrompt },
           { role: "user", content: userMessage }
         ],
-        model: "llama-3.3-70b-versatile",
+        model: "openai/gpt-oss-120b",
         response_format: { type: "json_object" },
         temperature: 0.2,
       });
@@ -163,9 +163,11 @@ Given the noisy raw text extracted from a webpage, extract:
 2. A precise list of ONLY technical skills required (Programming Languages, Frameworks, Databases, Tools). Ignore soft skills.
 3. The category of this opportunity. Must be exactly one of: "Jobs", "Hackathons", or "Others".
 4. The current status of the user's application based on the text. If there is no explicit confirmation of application, default to "Saved". 
-   - For Jobs: "Saved", "Applied / Interviewing", "Offer", "Rejected".
-   - For Hackathons: "Saved", "Registered / Participated", "Won / Completed", "Lost".
-   - For Others: "Saved", "Active / In Progress", "Completed", "Lost".
+   - For Jobs: "Saved", "Applied", "Interviewing", "Offer", "Rejected".
+   - For Hackathons: "Saved", "Registered", "Participated", "Won", "Completed", "Lost", "Offer" (if shortlisted/selected).
+   - For Others: "Saved", "Active", "Completed", "Lost", "Offer" (if shortlisted/selected).
+   If the text indicates the user has been shortlisted, selected, accepted, or won a round/contest, set the status to "Offer".
+5. The application deadline or registration deadline mentioned in the text. Format it as an ISO date string (YYYY-MM-DD) if possible, or just return the date text (e.g. "July 28, 2026") or "Not specified" if not found.
 
 Return ONLY valid JSON.
 
@@ -174,7 +176,8 @@ Format:
   "description": "String containing the cleaned job description...",
   "skills": ["Skill1", "Skill2"],
   "category": "Jobs|Hackathons|Others",
-  "status": "String (one of the valid statuses above based on category)"
+  "status": "String (one of the valid statuses above based on category)",
+  "deadline": "String (e.g. 'YYYY-MM-DD' or date text, or 'Not specified')"
 }`;
 
   const userMessage = `Job Posting Text:\n${text.substring(0, 25000)}`;
@@ -190,7 +193,7 @@ Format:
           { role: "system", content: systemPrompt },
           { role: "user", content: userMessage }
         ],
-        model: "llama-3.3-70b-versatile",
+        model: "openai/gpt-oss-120b",
         response_format: { type: "json_object" },
         temperature: 0.2,
       });
@@ -203,7 +206,8 @@ Format:
           description: parsed.description || '',
           skills: Array.isArray(parsed.skills) ? parsed.skills : [],
           category: parsed.category || null,
-          status: parsed.status || null
+          status: parsed.status || null,
+          deadline: parsed.deadline || null
         };
       }
     } catch (error) {
@@ -676,6 +680,21 @@ const normalizeCategory = (raw, context = '') => {
 
 const PIPELINE_STATUSES = ['Saved', 'Applied', 'Interviewing', 'Offer', 'Rejected'];
 
+const STATUS_WEIGHTS = {
+  'Saved': 1,
+  'Applied': 2,
+  'Registered': 2,
+  'Participated': 2,
+  'Active': 2,
+  'In Progress': 2,
+  'Interviewing': 3,
+  'Offer': 4,
+  'Won': 4,
+  'Completed': 4,
+  'Rejected': 5,
+  'Lost': 5
+};
+
 const normalizePipelineStatusValue = (raw) => {
   const value = String(raw || '').toLowerCase().trim();
   if (!value) return null;
@@ -736,10 +755,11 @@ const inferPipelineStatus = ({ rawStatus, category, context }) => {
   }
 
   if (hasAnyPattern(text, [
-    /\bcongratulations\b.{0,100}\b(?:offer|selected|accepted|winner)\b/,
+    /\bcongratulations\b.{0,100}\b(?:offer|selected|accepted|winner|shortlisted)\b/,
     /\b(?:offer|acceptance)\s+(?:letter|received|extended|accepted)\b/,
-    /\byou\s+(?:have\s+been\s+)?(?:selected|accepted)\b/,
+    /\byou\s+(?:have\s+been\s+)?(?:selected|accepted|shortlisted)\b/,
     /\bwinner\b/,
+    /\byour\s+result\b.{0,50}\bshortlisted\b/,
   ])) {
     return 'Offer';
   }
@@ -893,7 +913,7 @@ exports.createJob = async (req, res) => {
           ? extractedData.category 
           : normalizeCategory(null, categoryContext));
 
-    const finalDeadline = parseDeadline(incomingData.deadline);
+    const finalDeadline = parseDeadline(incomingData.deadline) || parseDeadline(extractedData.deadline);
 
     const statusContext = [
       incomingData.status,
@@ -978,9 +998,16 @@ exports.createJob = async (req, res) => {
       existingJob.location = finalData.location;
       existingJob.postedDate = finalData.postedDate;
       existingJob.salary = finalData.salary;
-      existingJob.deadline = finalData.deadline;
+      existingJob.deadline = finalData.deadline || existingJob.deadline;
       existingJob.category = finalData.category;
-      existingJob.status = finalData.status;
+      
+      const oldWeight = STATUS_WEIGHTS[existingJob.status] || 1;
+      const newWeight = STATUS_WEIGHTS[finalData.status] || 1;
+      if (finalData.status && (finalData.status !== 'Saved' || existingJob.status === 'Saved')) {
+        if (newWeight >= oldWeight || finalData.status === 'Rejected' || finalData.status === 'Lost') {
+          existingJob.status = finalData.status;
+        }
+      }
       existingJob.appliedDate = finalData.appliedDate || existingJob.appliedDate;
       existingJob.history = history;
       existingJob.updatedAt = createdAt;

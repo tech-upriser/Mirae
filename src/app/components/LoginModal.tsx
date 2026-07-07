@@ -46,6 +46,12 @@ export function LoginModal({ onClose }: LoginModalProps) {
       return;
     }
 
+    // Validate Gmail
+    if (!email.trim().toLowerCase().endsWith('@gmail.com')) {
+      setError('Only @gmail.com addresses are allowed.');
+      return;
+    }
+
     try {
       setIsLoading(true);
       
@@ -110,7 +116,7 @@ export function LoginModal({ onClose }: LoginModalProps) {
                 type="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                placeholder="you@example.com"
+                placeholder="you@gmail.com"
                 className="h-11 bg-background"
                 disabled={isLoading}
               />
